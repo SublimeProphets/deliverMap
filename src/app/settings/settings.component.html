@@ -4,7 +4,7 @@
   <md-card-header>Datengrundlage</md-card-header>
   
   <md-card-content>
-    <h3>Excel (.xls, .xlsx) hochladen</h3>
+    Sie können hier nur Excel (.xls, .xlsx) und OpenOffice-Dokumente (.ODS) hochladen
     <fileuploader></fileuploader></md-card-content>
 </md-card>
 <md-card>
@@ -12,7 +12,7 @@
   
   <md-card-content>
     
-    <md-radio-group (change)="workspaceChanged()" [(ngModel)]="settings.workspace">
+    <md-radio-group (change)="workspaceChanged()" [(ngModel)]="workspaceSlug">
             <md-list-item><md-radio-button value="12d" checked>1-2-Domicile</md-radio-button></md-list-item>
             <md-list-item><md-radio-button value="wili">Wili</md-radio-button></md-list-item>
         </md-radio-group>
@@ -21,9 +21,30 @@
 </md-card>
 
 <md-card>
+  <md-card-header>Filteroptionen</md-card-header>
+  
+  <md-card-content>
+    <p>In diesem Abschnitt können sie alle Grundeinstellungen vornehmen, mit welchen die Filteroptionen arbeiten.</p>
+  
+    <md-input-container hintLabel='Wird für "Keine Bestellungen seit XX Tagen"-Filter verwendet.'>
+        
+        <input mdInput type="number" placeholder="Inaktivitätszeitraum" [(ngModel)]="settings.filters.noOrdersSinceDays">
+        <span mdSuffix>Tage</span>
+        
+        
+    </md-input-container>
+    </md-card-content>
+</md-card>
+
+
+
+
+<md-card>
   <md-card-header>Geschäfte verwalten</md-card-header>
   
   <md-card-content>
     
     </md-card-content>
 </md-card>
+
+<button md-raised-button (click)="saveSettings()">Einstellungen speichern</button><button md-raised-button (click)="loadDefaults()">Standardeinstellungen laden</button>

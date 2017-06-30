@@ -51,6 +51,7 @@ import { ClientsService} from './clients.service';
 // import { GmcoordinatesService} from './gmcoordinates.service';
 import { MapService } from './map.service';
 import { GeocodingService } from './geocoding.service';
+import { SettingsService } from "./settings.service";
 
 
 // App
@@ -149,7 +150,8 @@ import { FiltersComponent } from './filters/filters.component';
   providers: [
     ClientsService,
     GeocodingService,
-    MapService
+    MapService,
+    SettingsService
   ],
   bootstrap: [AppComponent]
 })

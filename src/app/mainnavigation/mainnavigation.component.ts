@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MapService} from "../map.service";
+import { SettingsService } from "../settings.service";
 
 
 
@@ -13,13 +14,11 @@ import {MapService} from "../map.service";
 export class MainnavigationComponent implements OnInit {
 
   selectedMap: string;
-  settings: Object = {
-    workspace: {
-      slug: "12d",
-      name: "1-2-Domicile"
-    }
-  }
-  constructor(private mapService: MapService) { }
+  settings: any;
+
+  constructor(
+    private mapService: MapService,
+    private settingsService:SettingsService) { }
 
    
   
@@ -27,7 +26,7 @@ export class MainnavigationComponent implements OnInit {
 
   ngOnInit() {
     this.selectedMap = this.mapService.selectedBaseMap;
-    
+    this.settings = this.settingsService.settings;  
   }
   
 

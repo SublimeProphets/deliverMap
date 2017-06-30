@@ -38,4 +38,4 @@ Before running the tests make sure you are serving the app via `ng serve`.
 
 ## Further help
 
-Get in touch thourgh github or mail me on dev[@T]thoeni.me
+Get in touch through github or mail me on dev[@T]thoeni.me

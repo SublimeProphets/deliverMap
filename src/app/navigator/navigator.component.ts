@@ -14,8 +14,6 @@ import { Store, STORES } from '../stores/stores.component';
 })
 export class NavigatorComponent {
     address: string;
-
-    private map: Map;
     private searchResultMarker: any;
     public searchStorage:any = {
         clients: {
@@ -42,9 +40,10 @@ export class NavigatorComponent {
     }
 
     ngOnInit() {
-        this.mapService.disableMouseEvent("goto");
-        this.mapService.disableMouseEvent("place-input");
-        this.map = this.mapService.map;
+        // idk why this was here..
+        // this.mapService.disableMouseEvent("goto");
+        //this.mapService.disableMouseEvent("place-input");
+        
         this.searchHasFocus = false;
         this.searchHasResults = false;
     }
@@ -111,11 +110,14 @@ export class NavigatorComponent {
             
             var searchText = this.address.toLowerCase();
             fullClientList.forEach(function(item) {
+                console.log(item);
                 item.type = "client";
                 if( item.name.toLowerCase().indexOf(searchText) >= 0) {
                     this.addResultItem(item);
-                } else if(item.address.toLowerCase().indexOf(searchText) >= 0) {
-                    this.addResultItem(item);
+                } else if(typeof item.address != "undefined") {
+                    if(item.address.toLowerCase().indexOf(searchText) >= 0) {
+                        this.addResultItem(item);
+                    }
                 }
 
             }, this);
