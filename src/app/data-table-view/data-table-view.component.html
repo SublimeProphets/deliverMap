@@ -1,0 +1,39 @@
+<h1>Kundenliste ({{clients.length}} Einträge)</h1>
+  <table>
+  <thead>
+    <tr>
+      <td>ID</td>
+      <td>Name</td>
+      <td>Adresse</td>
+      <td>PLZ</td>
+      <td>Ort</td>
+      <td>Telefon</td>
+      <td>eMail</td>
+      <td>Abo-ID</td>
+      <td>Anzahl Lieferungen</td>
+      <td>Letzter Store</td>
+      <td>Letzter Einkauf</td>
+      <td>Latitude</td>
+      <td>Longitude</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of clients">
+      <td>{{row.id}}</td>
+      <td>{{row.name}}</td>
+      <td>{{row.address}}</td>
+      <td>{{row.postleihzahl}}</td>
+      <td>{{row.city}}</td>
+      <td>{{row.tel}}</td>
+      <td>{{row.email}}</td>
+      <td>{{row.abo}}</td>
+      <td>{{row.deliveryCount}}</td>
+      <td>{{row.defaultStore}}</td>
+      <td>{{row.lastDeliveryDate}}</td>
+      <td>{{row.lat}}</td>
+      <td>{{row.lng}}</td>
+    </tr>
+  </tbody>
+</table>
+      
+      

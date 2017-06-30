@@ -1,0 +1,29 @@
+<h1>Einstellungen</h1>
+
+<md-card>
+  <md-card-header>Datengrundlage</md-card-header>
+  
+  <md-card-content>
+    <h3>Excel (.xls, .xlsx) hochladen</h3>
+    <fileuploader></fileuploader></md-card-content>
+</md-card>
+<md-card>
+  <md-card-header>Arbeitsmodus</md-card-header>
+  
+  <md-card-content>
+    
+    <md-radio-group (change)="workspaceChanged()" [(ngModel)]="settings.workspace">
+            <md-list-item><md-radio-button value="12d" checked>1-2-Domicile</md-radio-button></md-list-item>
+            <md-list-item><md-radio-button value="wili">Wili</md-radio-button></md-list-item>
+        </md-radio-group>
+
+    </md-card-content>
+</md-card>
+
+<md-card>
+  <md-card-header>Geschäfte verwalten</md-card-header>
+  
+  <md-card-content>
+    
+    </md-card-content>
+</md-card>

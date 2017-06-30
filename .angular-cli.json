@@ -19,9 +19,14 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css"
+        "styles.css",
+        "./assets/styles/MarkerCluster.css",
+        "./assets/styles/MarkerCluster.Default.css"
       ],
-      "scripts": [],
+      "scripts": [
+        
+        
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

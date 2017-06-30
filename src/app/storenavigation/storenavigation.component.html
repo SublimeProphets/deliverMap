@@ -1,0 +1,11 @@
+
+<md-list>
+  <md-list-item *ngFor="let store of stores"
+    [class.selected]="store === selectedStore"
+    (click)="onSelect(store)">
+    <img md-list-avatar src="assets/icons/stores_{{store.group}}.svg" alt="{{store.name}}">
+    <!-- <img src="/assets/icons/stores_{{store.icon}}" title="{{store.name}}" class="icon"/>  -->
+    <p md-line><b> {{store.name}}</b></p>
+    <span md-line>{{store.address}}</span>
+  </md-list-item>
+</md-list>

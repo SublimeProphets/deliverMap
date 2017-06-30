@@ -1,0 +1,13 @@
+.starred {
+    color: red;
+}
+.selected {
+    background: #eee;
+}
+.isActive {
+    background: gray;
+}
+.name {
+    font-size: 1.25em;
+    font-weight: bold;
+}

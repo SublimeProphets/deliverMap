@@ -1,0 +1,49 @@
+
+<div class="searchbox">
+
+    <md-input-container>
+    
+        <input mdInput id="place-input" type="search" placeholder="Kundenname, Geschäft, Strasse oder Ort suchen..."
+        [(ngModel)]="address" (keyup.enter)="goto()" (focus)="toggleInputFocus(true)" (blur)="toggleInputFocus(false)">
+
+        <md-icon id="goto" mdSuffix class="md-24" title="Suchen" (click)="goto()">
+            search
+        </md-icon>
+    </md-input-container>
+    <button md-raised-button [disabled]="!searchHasResults" (click)="openSearchResults()" class="showResults">
+        <md-icon class="md-24">arrow_drop_down</md-icon>Ergebnisse</button>
+</div>
+
+<div [ngClass]="{'active': searchHasFocus}" class="searchoptions-container" (click)="toggleInputFocus(true)">
+    <md-checkbox class="example-margin" [(ngModel)]="searchStorage.places.active" (change)="goto()">Orte (Strassen etc.)</md-checkbox>
+    <md-checkbox class="example-margin" [(ngModel)]="searchStorage.clients.active" (change)="goto()">Kunden</md-checkbox>
+    <md-checkbox class="example-margin" [(ngModel)]="searchStorage.stores.active" (change)="goto()">Geschäfte</md-checkbox>
+
+</div>
+
+<div class="searchresults-container" [ngClass]="{'active': showSearchResults}">
+    <button md-icon-button class="close" (click)="closeSearchResults()"><md-icon>close</md-icon></button>
+        <!-- <p *ngIf="searchStorage.places.active == false">Die Suche nach Orten ist deaktiviert</p> -->
+    
+        <p *ngIf="searchStorage.results.length == 0">Es wurden keine Ergebnisse gefunden</p>
+        <p *ngIf="searchStorage.results.length >= 1">Es wurden <b>{{searchStorage.results.length}} Ergebnisse</b> gefunden</p>
+        
+        <md-list>
+            
+        
+            <md-list-item *ngFor="let result of searchStorage.results"
+                [class.selected]=""
+                (click)="selectResult(result)">
+                <img md-list-avatar src="/assets/icons/{{result.type}}.svg" alt="{{result.name}}">
+                
+                <!-- <img src="/assets/icons/stores_{{store.icon}}" title="{{store.name}}" class="icon"/>  -->
+                <p md-line><b> {{result.name}}</b></p>
+                <p md-line>{{result.address}}</p>
+                
+            </md-list-item>
+        </md-list>
+            
+    
+</div>
+
+

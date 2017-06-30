@@ -1,0 +1,12 @@
+
+	<xlsx-file-upload (uploadedXls)="xlsxUploaded($event)"> {{ uploaderContent | async }} </xlsx-file-upload>
+  <div *ngIf="percent < 100">
+  
+    <div class="percent">{{percent}}% erledigt</div>
+    <div class="subline">{{progressCount}} von {{totalSteps}} Koordinaten lokalisiert.</div>
+  </div>
+  <div *ngIf="percent >= 100">
+  
+    <div class="percent">Erfolgreich verarbeitet</div>
+    <div class="subline"><button md-raised-button routerLink="/clients">Kundenliste anzeigen</button></div>
+  </div>
