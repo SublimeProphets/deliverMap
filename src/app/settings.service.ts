@@ -38,7 +38,8 @@ private getSettingsFromLocalStorage() {
 public loadDefaults() {
     this.settings = {
       filters: {
-        noOrdersSinceDays: 100
+        noOrdersSinceDays: 100,
+        amountForReturningClients: 2
       },
       workspace: {
         name:"1-2-Domicile",

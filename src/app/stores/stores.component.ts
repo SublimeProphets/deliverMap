@@ -7,6 +7,8 @@ export class Store {
   slug: string;
   group: string; // write always lowercase
   address?: string;
+  city?: string;
+  plz?: number;
   customerCount?: number = 0;
   lat?: number;
   lng?: number;

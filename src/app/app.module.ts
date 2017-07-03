@@ -25,7 +25,7 @@ import { RouterModule, Routes } from '@angular/router';
 // import { CompleterCmpMd } from "./completer-cmp-md/completer-cmp-md";
 
 
-// Material
+// Material and Design
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';    
 import {MdToolbarModule,
   MdSnackBarModule ,
@@ -42,8 +42,12 @@ import {MdToolbarModule,
   MdSelectModule, 
   MdDatepickerModule, 
   MdNativeDateModule,
-  MdProgressBarModule } from '@angular/material';
-import {MdSidenavModule} from '@angular/material';
+  MdProgressBarModule,
+  MdDialogModule,
+  MdSidenavModule
+} from '@angular/material';
+
+
 
 
 // Services
@@ -75,8 +79,8 @@ import { DataTableViewComponent } from './data-table-view/data-table-view.compon
 // OSM
 import { OSMComponent} from './osm/osm.component';
 import {NavigatorComponent} from "./navigator/navigator.component";
-import {ToolbarComponent} from "./toolbar/toolbar.component";
-import { SettingsComponent } from './settings/settings.component';
+
+import { SettingsComponent, EditStoreDialog } from './settings/settings.component';
 import { FiltersComponent } from './filters/filters.component';
 
 
@@ -94,7 +98,7 @@ import { FiltersComponent } from './filters/filters.component';
     HomepageComponent,
     StorenavigationComponent,
     DataTableViewComponent,
-    
+    EditStoreDialog,
     SettingsComponent,
     // TestPipe,
     //CompleterCmp,
@@ -105,7 +109,6 @@ import { FiltersComponent } from './filters/filters.component';
     // OSM
     OSMComponent,
     NavigatorComponent,
-    ToolbarComponent,
     FiltersComponent,
     
     
@@ -136,6 +139,7 @@ import { FiltersComponent } from './filters/filters.component';
     MdCheckboxModule,
     MdSnackBarModule,
     MdProgressBarModule,
+    MdDialogModule,
     FileUploadModule,
     LocalStorageModule.withConfig({
             prefix: 'my-app',
@@ -153,7 +157,8 @@ import { FiltersComponent } from './filters/filters.component';
     MapService,
     SettingsService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [EditStoreDialog]
 })
 export class AppModule { 
   constructor(){}

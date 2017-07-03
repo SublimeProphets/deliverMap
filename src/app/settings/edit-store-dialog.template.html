@@ -1,0 +1,57 @@
+<h2>{{tmpData.name}} bearbeiten</h2>
+
+
+
+<md-input-container class="example-full-width">
+      <input mdInput placeholder="Name des Geschäfts" [(ngModel)]="tmpData.name">
+      <md-hint align="end">Dieser Name wird überall zur Anzeige verwendet</md-hint>
+    </md-input-container>
+    
+    <md-input-container class="example-full-width">
+      <input mdInput placeholder="Slug des Geschäftes" [(ngModel)]="tmpData.slug">
+      <md-hint align="end">Muss exakt mit dem Namen in der Excel-Statistik übereinstimmen, anhand dessen wird die Zuordnung vorgenommen</md-hint>
+    </md-input-container>
+
+
+    <md-input-container class="example-full-width">
+      <input mdInput placeholder="Gruppe" [(ngModel)]="tmpData.group">
+      <md-hint align="end">Verbindet alle Typen eines Geschäfts miteinander - der Name muss gleich geschrieben sein, idealerweise alles klein.</md-hint>
+    </md-input-container>
+
+
+
+<h3>Adresse</h3>
+
+    <md-input-container class="example-full-width">
+      <input mdInput placeholder="Adresse" [(ngModel)]="tmpData.address">
+    </md-input-container>
+
+  <table cellspacing="0" class="example-full-width"><tr>
+    <td><md-input-container>
+      <input mdInput #postalCode maxlength="4" placeholder="Postleihzahl" [(ngModel)]="tmpData.plz">
+      <md-hint align="end">{{postalCode.value.length}} / 4</md-hint>
+    </md-input-container></td>
+    <td><md-input-container>
+      <input mdInput placeholder="Stadt" [(ngModel)]="tmpData.city">
+    </md-input-container></td>
+  </tr>
+  </table>
+  <table>
+  <tr><td>
+      <md-input-container>
+      <input mdInput placeholder="Breitengraden" [(ngModel)]="tmpData.lat" type="number">
+      <md-hint align="end"></md-hint>
+    </md-input-container>
+</td>
+<td>
+    <md-input-container>
+      <input mdInput placeholder="Längengraden" [(ngModel)]="tmpData.lng" type="number">
+      <md-hint align="end"></md-hint>
+    </md-input-container>
+</td>
+  </tr>
+  
+  </table>
+
+  <button (click)="save()"><md-icon>save</md-icon> Aktualisieren</button>
+  <button (click)="abort()"><md-icon>cancel</md-icon> Verwerfen</button>

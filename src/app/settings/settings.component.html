@@ -1,5 +1,10 @@
-<h1>Einstellungen</h1>
+<div class="controls" >
 
+<button md-raised-button (click)="saveSettings()"><md-icon>save</md-icon> Einstellungen Speichern</button>
+<button md-raised-button (click)="loadDefaults()"><md-icon>settings_backup_restore</md-icon>Auf Standard zurücksetzten</button>
+</div>
+<div class="container">
+<h1 class="title">Einstellungen</h1>
 <md-card>
   <md-card-header>Datengrundlage</md-card-header>
   
@@ -26,13 +31,17 @@
   <md-card-content>
     <p>In diesem Abschnitt können sie alle Grundeinstellungen vornehmen, mit welchen die Filteroptionen arbeiten.</p>
   
-    <md-input-container hintLabel='Wird für "Keine Bestellungen seit XX Tagen"-Filter verwendet.'>
-        
+    <md-input-container hintLabel='Wird für "Keine Bestellungen seit XX Tagen"-Filter verwendet.'>    
         <input mdInput type="number" placeholder="Inaktivitätszeitraum" [(ngModel)]="settings.filters.noOrdersSinceDays">
         <span mdSuffix>Tage</span>
-        
-        
     </md-input-container>
+
+    <md-input-container hintLabel='Kunden mit mehr als XX Lieferungen werden als wiederkehrende Kunden gefiltert.'>    
+        <input mdInput type="number" placeholder="Mindestbestellungen wiederkehrende Kunden" [(ngModel)]="settings.filters.amountForReturningClients">
+        <span mdSuffix>Tage</span>
+    </md-input-container>
+
+
     </md-card-content>
 </md-card>
 
@@ -44,7 +53,20 @@
   
   <md-card-content>
     
+    <md-list>
+      <md-list-item *ngFor="let store of stores; let i = index">
+        <img md-list-avatar src="assets/icons/stores_{{store.group}}.svg" alt="{{store.name}}">
+        <!-- <img src="/assets/icons/stores_{{store.icon}}" title="{{store.name}}" class="icon"/>  -->
+        <p md-line><b> {{store.name}}</b></p>
+        <span md-line>
+          <button md-button (click)="editStore(i)"><md-icon>mode_edit</md-icon>Bearbeiten</button>
+          <button md-button (click)="editStore(i)"><md-icon>delete_forever</md-icon>Löschen</button>
+         </span>
+      </md-list-item>
+
+    </md-list>
+
+
     </md-card-content>
 </md-card>
-
-<button md-raised-button (click)="saveSettings()">Einstellungen speichern</button><button md-raised-button (click)="loadDefaults()">Standardeinstellungen laden</button>
+</div>

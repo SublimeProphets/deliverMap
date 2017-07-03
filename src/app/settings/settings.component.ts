@@ -1,19 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { SettingsService } from "../settings.service";
+import { STORES, Store } from "../stores/stores.component";
+import {MdDialog, MdDialogRef} from '@angular/material';
+import {MD_DIALOG_DATA} from '@angular/material';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.css']
+  styleUrls: ['./settings.component.less']
 })
 export class SettingsComponent implements OnInit {
 
-  constructor(private settingsService: SettingsService) { 
+  constructor(private settingsService: SettingsService, public dialog: MdDialog) { 
     this.settings = settingsService.settings;
     this.workspaceSlug = this.settings.workspace.slug;
   }
   settings: any;
   workspaceSlug:string;
+  stores: any = STORES;
+  val: any;
 
   ngOnInit() {}
 
@@ -51,4 +56,31 @@ export class SettingsComponent implements OnInit {
   }
 
 
+  public editStore(index:number): void {
+    let store = this.stores[index];
+
+    let dialogRef = this.dialog.open(EditStoreDialog, {
+      data: store,
+      width: "500px"
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log("closed", result)
+    });
+  }
+
+
+}
+
+
+@Component({
+  selector: 'editStoreDialog',
+  templateUrl: 'edit-store-dialog.template.html',
+  styleUrls: ['./settings.component.less']
+})
+export class EditStoreDialog {
+  tmpData: any;
+  constructor(@Inject(MD_DIALOG_DATA) public store: any) {
+    this.tmpData = store;
+    console.log("woot dialog has", store);
+  }
 }
