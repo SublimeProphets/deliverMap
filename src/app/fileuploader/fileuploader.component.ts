@@ -5,7 +5,8 @@ import { BehaviorSubject } from 'rxjs';
 import { Client } from '../client/client.component';
 import { CLIENTS } from '../client/client.mock';
 import { ClientsService } from '../clients.service';
-import { Store, STORES } from "../stores/stores.component";
+
+import { SettingsService } from "../settings.service";
 
 
 
@@ -18,7 +19,8 @@ import { Store, STORES } from "../stores/stores.component";
 export class FileuploaderComponent implements OnInit {
  public uploaderContent: BehaviorSubject<string> = new BehaviorSubject('please drop file in');
   constructor(
-    private clientsService: ClientsService
+    private clientsService: ClientsService,
+    private settingsService: SettingsService
     
     ) {} 
   
@@ -270,7 +272,7 @@ private  lookupStoreGroup(storeSlugString:any) :string {
   if(typeof storeSlugString === "undefined") {
             return "unknown";
           } else {
-            let storeArray = STORES.map(function(e) { if( e.slug == storeSlugString ) return e.group });
+            let storeArray = this.settingsService.settings.stores.map(function(e) { if( e.slug == storeSlugString ) return e.group });
             console.log(storeArray);
 
             for(var i = 0; i <= storeArray.length; i++) {

@@ -69,7 +69,6 @@ import { FileuploaderComponent } from './fileuploader/fileuploader.component';
 import { XlsxFileUploadComponent } from './xlsx-file-upload/xlsx-file-upload.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { HomepageComponent } from './homepage/homepage.component';
-import { Store } from './stores/stores.component';
 import { StorenavigationComponent } from './storenavigation/storenavigation.component';
 import { DataTableViewComponent } from './data-table-view/data-table-view.component';
  

@@ -4,7 +4,7 @@ import {MapService} from "../map.service";
 import { ClientsService } from "../clients.service";
 import {Location} from "../core/location.class";
 import {Map} from "leaflet";
-import { Store, STORES } from '../stores/stores.component';
+import { SettingsService } from "../settings.service";
 
 @Component({
     selector: "navigator",
@@ -13,8 +13,21 @@ import { Store, STORES } from '../stores/stores.component';
     providers: []
 })
 export class NavigatorComponent {
+
+
+    constructor(
+        private geocoder: GeocodingService, 
+        private mapService: MapService,
+        private clientService:ClientsService,
+        private settingsService:SettingsService) {
+            
+        this.address = "";
+    }
+
+
     address: string;
     private searchResultMarker: any;
+    private stores = this.settingsService.settings.stores;
     public searchStorage:any = {
         clients: {
             active: true
@@ -31,13 +44,6 @@ export class NavigatorComponent {
     searchHasResults: boolean;
     showSearchResults: boolean = false;
 
-    constructor(
-        private geocoder: GeocodingService, 
-        private mapService: MapService,
-        private clientService:ClientsService) {
-            
-        this.address = "";
-    }
 
     ngOnInit() {
         // idk why this was here..
@@ -129,7 +135,7 @@ export class NavigatorComponent {
             
             
             var searchText = this.address.toLowerCase();
-            STORES.forEach(function(item) {
+            this.stores.forEach(function(item) {
                 item.type = "stores_" + item.group;
                 if( item.name.toLowerCase().indexOf(searchText) >= 0) {
                     this.addResultItem(item);

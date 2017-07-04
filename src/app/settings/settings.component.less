@@ -1,3 +1,6 @@
+*:not(md-icon) {
+    font-family: sans-serif;
+}
 h1 {
     margin: 2.5%;
 }
@@ -16,16 +19,31 @@ md-input-container {
 }
 .controls {
     position: absolute;
-    top: 10px;
-    right: 24px;
+    top: 6px;
+    right: 12px;
     width: 500px;
-
+    z-index: 1000;
     text-align: right;
     
     > button:first-of-type {
-        margin-right: 8px;
+        margin-right: 4px;
+    }
+    button {
+        background: white;
     }
 }
 .example-full-width {
   width: 100%;
+}
+
+.stores {
+
+    width:21%;
+    float: left;
+    margin: 0 0 1% 1%;
+    img {
+        max-width: 80%;
+        padding: 0 10%;
+        height: auto;
+    }
 }

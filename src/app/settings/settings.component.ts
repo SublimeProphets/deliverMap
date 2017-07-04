@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { SettingsService } from "../settings.service";
-import { STORES, Store } from "../stores/stores.component";
 import {MdDialog, MdDialogRef} from '@angular/material';
 import {MD_DIALOG_DATA} from '@angular/material';
 
@@ -17,7 +16,6 @@ export class SettingsComponent implements OnInit {
   }
   settings: any;
   workspaceSlug:string;
-  stores: any = STORES;
   val: any;
 
   ngOnInit() {}
@@ -57,14 +55,15 @@ export class SettingsComponent implements OnInit {
 
 
   public editStore(index:number): void {
-    let store = this.stores[index];
+    let store = this.settings.stores[index];
 
     let dialogRef = this.dialog.open(EditStoreDialog, {
       data: store,
       width: "500px"
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log("closed", result)
+      // Save store to the localStorage
+      console.log("closed", result);
     });
   }
 

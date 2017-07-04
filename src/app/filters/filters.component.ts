@@ -1,7 +1,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import {ClientsService} from "../clients.service";
-import { Store, STORES } from '../stores/stores.component';
+import { SettingsService } from "../settings.service";
 
 
 @Component({
@@ -13,7 +13,7 @@ export class FiltersComponent implements OnInit {
 
   
 
-  constructor(private clientsService: ClientsService) { 
+  constructor(private clientsService: ClientsService,private settingsService:SettingsService) { 
 
 
 
@@ -23,7 +23,7 @@ export class FiltersComponent implements OnInit {
   progressbar: string = "determinate";
   clients: any;
   filterstate: any;
-  stores = STORES;
+  stores = this.settingsService.settings.stores;
   
   filteredClientsTotal: number = 0;
   bezirk:Array<Object> = [

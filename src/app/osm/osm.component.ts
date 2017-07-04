@@ -6,7 +6,7 @@ import {ClientsService } from '../clients.service';
 import {MapService} from "../map.service";
 import {GeocodingService} from "../geocoding.service";
 import {Location} from "../core/location.class";
-import { STORES } from "../stores/stores.component";
+import { SettingsService } from "../settings.service";
 import { ActivatedRoute } from '@angular/router';
 import {MdSnackBar} from '@angular/material';
 
@@ -29,6 +29,7 @@ export class OSMComponent implements OnInit {
         private mapService: MapService, 
         private geocoder: GeocodingService,
         private clientsService:ClientsService,
+        private settingsService:SettingsService,
         private route: ActivatedRoute,
         public snackBar: MdSnackBar
     ) {}            
@@ -348,18 +349,18 @@ export class OSMComponent implements OnInit {
     private createStoresMarkers(id:number) {
 
         // STORES
-        var stores = STORES;    
+        var stores = this.settingsService.settings.stores;    
         var storesMarkers: Array<any> = [];
         
         // iterate all stores
-        for(var i = 0; i < STORES.length; i++) {
-            var m = STORES[i];
+        for(var i = 0; i < stores.length; i++) {
+            var m = stores[i];
             var popupContent = "<div class='left'><img src='/assets/icons/stores_" + m.group + ".svg' alt='" + m.name + "' /></div>";
                 popupContent += "<div class='right'><p class='name'><b>#" + m.id + "</b> " + m.name + "</p>";
                 popupContent += "<p>" + m.address + "</p>";
                 popupContent += "<p><a href='/map/clientFromStore/" + m.slug + "'>Kunden anzeigen</a></p></div><div style='clear: both; float: none'></div>";
 
-            let coords = {lat: STORES[i].lat,  lng: STORES[i].lng};
+            let coords = {lat: stores[i].lat,  lng: stores[i].lng};
             storesMarkers[i] = L.marker(coords,{
                     icon: L.icon({
                         iconUrl: "assets/icons/stores_" + m.group + ".svg",

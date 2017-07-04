@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Store, STORES } from '../stores/stores.component';
+
+import { SettingsService, Store, Settings } from "../settings.service";
 
 
 @Component({
@@ -9,11 +10,15 @@ import { Store, STORES } from '../stores/stores.component';
 })
 export class StorenavigationComponent {
 
-
+  constructor(private settingsService: SettingsService) {
+     this.settings = this.settingsService.settings;
+     this.stores = this.settings.stores;
+     this.storesGroups = this.settings.storesGroups;
+  }
   
-
-  stores: Store[] = STORES;
-  
+  settings: Settings;
+  stores: Store[];
+  storesGroups: any;
 
   
 }

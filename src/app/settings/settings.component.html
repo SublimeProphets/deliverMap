@@ -1,10 +1,7 @@
-<div class="controls" >
-
-<button md-raised-button (click)="saveSettings()"><md-icon>save</md-icon> Einstellungen Speichern</button>
-<button md-raised-button (click)="loadDefaults()"><md-icon>settings_backup_restore</md-icon>Auf Standard zurücksetzten</button>
-</div>
 <div class="container">
-<h1 class="title">Einstellungen</h1>
+<md-tab-group>
+  <md-tab label="Grundeinstellungen">
+    <h1 class="title">Grundeinstellungen</h1>
 <md-card>
   <md-card-header>Datengrundlage</md-card-header>
   
@@ -46,27 +43,40 @@
 </md-card>
 
 
+    
+    
+    </md-tab>
+  <md-tab label="Geschäfte verwalten">
+<h1 class="title">Geschäfte verwalten</h1>
 
-
-<md-card>
-  <md-card-header>Geschäfte verwalten</md-card-header>
+<md-card *ngFor="let store of settings.stores; let i = index" class="stores">
+  <md-card-header> {{store.name}}</md-card-header>
   
   <md-card-content>
     
-    <md-list>
-      <md-list-item *ngFor="let store of stores; let i = index">
-        <img md-list-avatar src="assets/icons/stores_{{store.group}}.svg" alt="{{store.name}}">
+        <img md-list-avatar src="assets/icons/stores/{{settings.storesGroups[store.group].slug}}_full.svg" alt="{{store.name}}">
         <!-- <img src="/assets/icons/stores_{{store.icon}}" title="{{store.name}}" class="icon"/>  -->
-        <p md-line><b> {{store.name}}</b></p>
+        <p md-line><b></b></p>
         <span md-line>
           <button md-button (click)="editStore(i)"><md-icon>mode_edit</md-icon>Bearbeiten</button>
           <button md-button (click)="editStore(i)"><md-icon>delete_forever</md-icon>Löschen</button>
          </span>
-      </md-list-item>
-
-    </md-list>
-
-
+     
     </md-card-content>
 </md-card>
+
+
+
+  </md-tab>
+</md-tab-group>
+
+
 </div>
+
+
+<div class="controls" >
+
+<button md-button (click)="saveSettings()"><md-icon>save</md-icon> Einstellungen Speichern</button>
+<button md-button (click)="loadDefaults()"><md-icon>settings_backup_restore</md-icon>Auf Standard zurücksetzten</button>
+</div>
+
