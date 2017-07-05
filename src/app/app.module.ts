@@ -44,7 +44,8 @@ import {MdToolbarModule,
   MdNativeDateModule,
   MdProgressBarModule,
   MdDialogModule,
-  MdSidenavModule
+  MdSidenavModule,
+  MdGridListModule
 } from '@angular/material';
 
 
@@ -140,6 +141,7 @@ import { FiltersComponent } from './filters/filters.component';
     MdProgressBarModule,
     MdDialogModule,
     FileUploadModule,
+    MdGridListModule,
     LocalStorageModule.withConfig({
             prefix: 'my-app',
             storageType: 'localStorage'
@@ -154,7 +156,8 @@ import { FiltersComponent } from './filters/filters.component';
     ClientsService,
     GeocodingService,
     MapService,
-    SettingsService
+    SettingsService,
+    NavigatorComponent
   ],
   bootstrap: [AppComponent],
   entryComponents: [EditStoreDialog]
