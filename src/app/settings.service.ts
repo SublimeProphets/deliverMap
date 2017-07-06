@@ -324,17 +324,38 @@ private defaultStores: Array<Store> = [
 
 public saveSettingsToLocalStorage(settingsObj:Object) {
     this.localStorageService.set("settings", settingsObj);
+    console.log("saveSettingsToLocalStorage", settingsObj);
     this.snackBar.open('Die Einstellungen wurden gespeichert','', { duration: 3000  });
 }
 private getSettingsFromLocalStorage() {
     //this.settings = this.localStorageService.get("settings");
     console.log(this.localStorageService.get("settings"));
-    this.settings = this.loadDefaults();
+    this.settings = this.localStorageService.get("settings") as Settings;
+    
 }
 public getStoreGroupSlug(id) {
-    let storeGroupID = this.settings.stores[id].group;
-    return this.settings.storesGroups[storeGroupID].slug;
+    let index = this.settings.storesGroups.map(function(e) { return e.id; }).indexOf(id);
+    return this.settings.storesGroups[index].slug;
+}
+public getStoreGroupById(id:number) {
+    let index = this.settings.storesGroups.map(function(e) { return e.id; }).indexOf(id);
+    return this.settings.storesGroups[index];
+}
+public getStoreGroupImage(id, type?:string) {
+    
+    // get index 
+    let index = this.settings.storesGroups.map(function(e) { return e.id; }).indexOf(id);
+    
+    // failsafe detection of the type
+    let suffix = (type == "full") ? "full" : "icon";
 
+    // if not found return undefine image
+    if("undefined" === typeof this.settings.storesGroups[index]) {
+      return "assets/icons/stores/undefined_" + suffix + ".svg";
+    } else {
+      return "assets/icons/stores/" + this.settings.storesGroups[index].slug + "_" + suffix + ".svg";
+    }
+    
 }
 
 public loadDefaults() {
@@ -348,7 +369,11 @@ public loadDefaults() {
         slug: "12d"
       },
       stores: this.defaultStores,
-      storesGroups: this.defaultStoresGroups
+      storesGroups: this.defaultStoresGroups,
+      importAssistant: {
+        workspace: "12d",
+        fileHasHeader: true
+      }
     }
     this.saveSettingsToLocalStorage(this.settings);
     this.snackBar.open('Die Standardeinstellungen wurden geladen', '', { duration: 3000  });
@@ -364,7 +389,8 @@ export interface Settings {
   filters: Object;
   workspace: Object;
   stores: Array<Store>;
-  storesGroups: Array<StoreGroup>
+  storesGroups: Array<StoreGroup>;
+  importAssistant: any;
 }
 
 

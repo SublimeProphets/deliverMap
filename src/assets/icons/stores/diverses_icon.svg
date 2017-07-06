@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) by Marsupilami -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.0"
+   width="757"
+   height="768"
+   viewBox="0 0 131.30544 133.29994"
+   id="svg2646"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="veganismus_logo_unsure.svg">
+  <metadata
+     id="metadata3060">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="798"
+     inkscape:window-height="883"
+     id="namedview3058"
+     showgrid="true"
+     inkscape:zoom="0.57486979"
+     inkscape:cx="313.38365"
+     inkscape:cy="355.32637"
+     inkscape:window-x="0"
+     inkscape:window-y="15"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2646">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3090" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2648" />
+  <g
+     transform="translate(-310.62705,-461.67857)"
+     id="layer1"
+     style="fill:#ff7f2a">
+    <path
+       d="m 75.84375,16.53125 c -30.856412,0 -55.90625,25.0811 -55.90625,55.9375 0,27.6888 20.1856,50.68955 46.625,55.125 l 0,-1.8125 C 41.094967,121.3812 21.75,99.19519 21.75,72.46875 21.749999,42.577807 45.95281,18.3125 75.84375,18.3125 105.73469,18.3125 130,42.57781 130,72.46875 c 0,26.616309 -19.24471,48.72225 -44.5625,53.25 l 0,1.84375 c 26.29329,-4.55753 46.34375,-27.50878 46.34375,-55.09375 -1e-5,-30.856403 -25.0811,-55.9375 -55.9375,-55.9375 z"
+       transform="translate(299.66272,453.03568)"
+       id="path2572"
+       style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ssccsssccss" />
+    <path
+       d="m 375.21987,581.39523 c 30.85592,0.17487 56.0475,-24.76387 56.22236,-55.61977 0.15692,-27.68836 -19.898,-50.80314 -46.31184,-55.38835 l -0.0103,1.81247 c 25.44218,4.54431 44.66111,26.83959 44.50964,53.5656 -0.16939,29.89046 -24.50933,54.01822 -54.39979,53.84883 -29.89046,-0.1694 -54.01787,-24.57184 -53.84847,-54.4623 0.15084,-26.61588 19.52052,-48.6124 44.86356,-52.9966 l 0.0104,-1.84372 c -26.31869,4.40845 -46.4989,27.2457 -46.65523,54.83023 -0.17486,30.8559 24.76369,56.07874 55.61959,56.25361 z"
+       id="path2572-5"
+       style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ssccsssccss" />
+  </g>
+  <text
+     xml:space="preserve"
+     style="font-size:65.19067383px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+     x="48.556309"
+     y="88.172356"
+     id="text3092"
+     sodipodi:linespacing="125%"><tspan
+       sodipodi:role="line"
+       id="tspan3094"
+       x="48.556309"
+       y="88.172356">?</tspan></text>
+</svg>

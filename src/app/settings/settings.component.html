@@ -3,15 +3,15 @@
   <md-tab label="Grundeinstellungen">
     <h1 class="title">Grundeinstellungen</h1>
 <md-card>
-  <md-card-header>Datengrundlage</md-card-header>
-  
+  <md-card-title>Datengrundlage</md-card-title>
+  <md-card-subtitle>Lade hier eine Excel-Datei hoch.</md-card-subtitle>
   <md-card-content>
     Sie können hier nur Excel (.xls, .xlsx) und OpenOffice-Dokumente (.ODS) hochladen
     <fileuploader></fileuploader></md-card-content>
 </md-card>
 <md-card>
-  <md-card-header>Arbeitsmodus</md-card-header>
-  
+  <md-card-title>Arbeitsmodus</md-card-title>
+  <md-card-subtitle>Hier kannst Du zwischen verschiedenen Workspaces wählen. Beachte, dass für jeden Arbeitsmodus ein eigener Datenspeicher besteht.</md-card-subtitle>
   <md-card-content>
     
     <md-radio-group (change)="workspaceChanged()" [(ngModel)]="workspaceSlug">
@@ -23,10 +23,9 @@
 </md-card>
 
 <md-card>
-  <md-card-header>Filteroptionen</md-card-header>
-  
+  <md-card-title>Filteroptionen</md-card-title>
+  <md-card-subtitle>Alle Einstellungen, welche im Zusammenhang mit Filtern von Daten verwendet werden.</md-card-subtitle>
   <md-card-content>
-    <p>In diesem Abschnitt können sie alle Grundeinstellungen vornehmen, mit welchen die Filteroptionen arbeiten.</p>
   
     <md-input-container hintLabel='Wird für "Keine Bestellungen seit XX Tagen"-Filter verwendet.'>    
         <input mdInput type="number" placeholder="Inaktivitätszeitraum" [(ngModel)]="settings.filters.noOrdersSinceDays">
@@ -47,25 +46,81 @@
     
     </md-tab>
   <md-tab label="Geschäfte verwalten">
-<h1 class="title">Geschäfte verwalten</h1>
-
-<md-card *ngFor="let store of settings.stores; let i = index" class="stores">
-  <md-card-header> {{store.name}}</md-card-header>
+    <div class="flex-container">
+<div class="flex-item">
+   <h2>{{settings.stores.length}} Geschäfte <button md-raised-button (click)="editStore('new')"><md-icon>add</md-icon> Geschäft</button></h2>
+<div class="stores-container">
+  <md-card *ngFor="let store of settings.stores; let i = index" class="stores">
+  <md-card-title> {{store.name}}</md-card-title>
+  <md-card-subtitle>{{store.address}}</md-card-subtitle>
   
-  <md-card-content>
-    
-        <img md-list-avatar src="assets/icons/stores/{{settings.storesGroups[store.group].slug}}_full.svg" alt="{{store.name}}">
-        <!-- <img src="/assets/icons/stores_{{store.icon}}" title="{{store.name}}" class="icon"/>  -->
-        <p md-line><b></b></p>
-        <span md-line>
-          <button md-button (click)="editStore(i)"><md-icon>mode_edit</md-icon>Bearbeiten</button>
-          <button md-button (click)="editStore(i)"><md-icon>delete_forever</md-icon>Löschen</button>
-         </span>
-     
-    </md-card-content>
+        <img md-card-image src="{{settingsService.getStoreGroupImage(store.group, 'full')}}" alt="{{store.name}}">
+  
+    <md-card-actions>
+          <button md-button (click)="editStore(i)"><md-icon>mode_edit</md-icon>Ändern</button>
+          <a md-button routerLink="/map/store/{{store.id}}"><md-icon>location_on</md-icon> Karte</a>
+        </md-card-actions>
 </md-card>
+</div>
+</div>
+<div class="flex-item">
 
+  
+  <h2>Kundengruppen <button md-raised-button (click)="editStoresGroup('new')"><md-icon>add</md-icon> Gruppe</button></h2>
+  
+  <ngx-datatable
+        class="material storesGroups"
+        [columnMode]="'force'"
+        [reorderable]="false"
+        [headerHeight]="50"
+        [footerHeight]="50"
+        [rowHeight]="50"
+        [rows]="settings.storesGroups"
+        [trackByProp]="'updated'"
+        [messages]="{emptyMessage: 'Es sind keine Gruppen hinterlegt. Erstelle eine neue Gruppe mit dem obenliegeneden Button.', totalMessage: 'Total Gruppen'}"
+        (activate)='editStoresGroup($event)'
+        [selectionType]="'row'"
+      >
+        <ngx-datatable-column name="slug" [width]="48">
+           <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+            &nbsp;
+          </ng-template>
+          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            <img src="assets/icons/stores/{{value}}_icon.svg" alt="{{value}}">
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Name">
+           <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+            <button md-button (click)="sort()"><md-icon>sort_by_alpha</md-icon>Sortieren</button>
+          </ng-template>
+          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{value}}
+          </ng-template>
+        </ngx-datatable-column>
+       
+        
+      </ngx-datatable>
+  
 
+</div>
+</div>
+  </md-tab>
+  <md-tab label="Daten importieren">
+    <h1>Import-Assistent</h1>
+  <md-card>
+    <md-card-title>1. Dateiupload</md-card-title>
+     <md-card-content>
+       <p>Daten für <md-radio-group [(ngModel)]="settings.importAssistant.workspace">
+            <md-radio-button value="12d">1-2-Domicile</md-radio-button>
+            <md-radio-button value="wili">Wili</md-radio-button>
+        </md-radio-group></p>
+
+        <md-checkbox
+          [checked]="settings.importAssistant.fileHasHeader"> Datei enthält Spaltenüberschriften
+      </md-checkbox>
+      <fileuploader></fileuploader>
+     </md-card-content>
+  </md-card>
 
   </md-tab>
 </md-tab-group>

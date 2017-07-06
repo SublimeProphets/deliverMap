@@ -11,8 +11,8 @@
         
         <p class="select">
         <md-select md-line placeholder="Kunde von Geschäft" [(ngModel)]="filterstate.defaultStore.value" (change)="setFilter('defaultStore')">
-            <md-option *ngFor="let store of stores" [value]="store.slug">
-                <img src="/assets/icons/stores_{{store.group}}.svg" alt="{{ store.name }}" />
+            <md-option *ngFor="let store of settings.stores" [value]="store.slug">
+                <img src="{{settingsService.getStoreGroupImage(store.group, 'icon')}}" alt="{{ store.name }}" />
                 {{ store.name }}</md-option>
         </md-select>
         </p>

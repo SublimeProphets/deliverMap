@@ -1,3 +1,8 @@
+@import '~@swimlane/ngx-datatable/release/index.css';
+@import '~@swimlane/ngx-datatable/release/themes/material.css';
+@import '~@swimlane/ngx-datatable/release/assets/icons.css';
+
+
 md-sidenav-container {
     height: 100vh;
     max-height: 100vh;
@@ -10,6 +15,7 @@ md-sidenav-container {
     left: 0px;
     width: 100%;
     z-index: 1;
+    // overflow: scroll;
 }
 header-bar {
     position: absolute;
@@ -26,3 +32,10 @@ md-sidenav.infonav {
 
   
 
+
+
+.stores-icon-24 {
+    max-width: 24px;
+    height: auto;
+    max-height: 24px;
+}

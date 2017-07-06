@@ -135,7 +135,8 @@ export class FileuploaderComponent implements OnInit {
 
           // lastDeliveryDate
           case "J":
-            tmpClient[0].lastDeliveryDate = new Date(res[key].v);
+           
+            tmpClient[0].lastDeliveryDate = new Date(( parseInt(res[key].v) - (25567 + 1))*86400*1000);
           break;
 
           // Latitude

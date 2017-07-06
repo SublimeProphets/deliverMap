@@ -1,0 +1,31 @@
+<div class="relative">
+<button md-mini-fab [md-dialog-close]="false" class="closebutton"><md-icon>close</md-icon></button>
+<h2 md-dialog-title *ngIf="!isNew">Gruppe {{tmpData.name}} bearbeiten</h2>
+<h2 md-dialog-title *ngIf="isNew">Neue Gruppe erfassen</h2>
+<div md-dialog-content>
+
+
+<md-input-container class="example-full-width">
+      <input mdInput placeholder="Name der Gruppe" [(ngModel)]="tmpData.name">
+      <md-hint align="end">Dieser Name wird zur Anzeige verwendet</md-hint>
+    </md-input-container>
+    
+    <md-input-container class="example-full-width">
+      <input mdInput placeholder="Slug der Gruppe" [(ngModel)]="tmpData.slug">
+      <md-hint align="end">Muss eindeutig und kleingeschrieben sein (z.B. migros)</md-hint>
+    </md-input-container>
+
+    <h4>Grosses Logo</h4>
+    <img src="assets/icons/stores/{{tmpData.slugOriginal}}_full.svg" alt="Grosses Logo" class="storesGroups_image_full" />
+    
+    <h4>Icon</h4>
+    <img src="assets/icons/stores/{{tmpData.slugOriginal}}_icon.svg" alt="Icon"  class="storesGroups_image_icon"/>
+    
+    <div class="smallinfos" *ngIf="!isNew">Interne Gruppe-ID: <b> {{tmpData.id}}</b><br />Letztes Update dieser Gruppe: <b> {{tmpData.updated | date:'medium' }}</b></div>
+
+</div>
+<div md-dialog-action>
+  <button md-raised-button [md-dialog-close]="tmpData"><md-icon>save</md-icon> Speichern</button>
+  <button  md-raised-button [md-dialog-close]="tmpData.id"><md-icon>delete_forever</md-icon> Löschen</button>
+</div>
+</div>

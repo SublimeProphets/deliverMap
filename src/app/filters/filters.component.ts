@@ -1,7 +1,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import {ClientsService} from "../clients.service";
-import { SettingsService } from "../settings.service";
+import { SettingsService, Settings } from "../settings.service";
 
 
 @Component({
@@ -23,7 +23,7 @@ export class FiltersComponent implements OnInit {
   progressbar: string = "determinate";
   clients: any;
   filterstate: any;
-  stores = this.settingsService.settings.stores;
+  settings: Settings = this.settingsService.settings;
   
   filteredClientsTotal: number = 0;
   bezirk:Array<Object> = [
