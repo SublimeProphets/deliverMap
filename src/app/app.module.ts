@@ -44,9 +44,9 @@ import {MdToolbarModule,
   MdNativeDateModule,
   MdProgressBarModule,
   MdDialogModule,
-  MdSidenavModule,
-  MdGridListModule
+  MdSidenavModule
 } from '@angular/material';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 
 
@@ -80,8 +80,8 @@ import { DataTableViewComponent } from './data-table-view/data-table-view.compon
 import { OSMComponent} from './osm/osm.component';
 import {NavigatorComponent} from "./navigator/navigator.component";
 
-import { SettingsComponent, EditStoreDialog } from './settings/settings.component';
-import { FiltersComponent } from './filters/filters.component';
+import { SettingsComponent, EditStoreDialog, EditStoreGroupDialog } from './settings/settings.component';
+import { FiltersComponent } from './filters/filters.component'; 
 
 
 
@@ -98,12 +98,12 @@ import { FiltersComponent } from './filters/filters.component';
     HomepageComponent,
     StorenavigationComponent,
     DataTableViewComponent,
-    EditStoreDialog,
-    SettingsComponent,
-    // TestPipe,
-    //CompleterCmp,
- //    CompleterCmpMd,
 
+    // SETTINGS
+    EditStoreDialog,
+    EditStoreGroupDialog,
+    SettingsComponent,
+    
 
 
     // OSM
@@ -141,7 +141,7 @@ import { FiltersComponent } from './filters/filters.component';
     MdProgressBarModule,
     MdDialogModule,
     FileUploadModule,
-    MdGridListModule,
+    NgxDatatableModule,
     LocalStorageModule.withConfig({
             prefix: 'my-app',
             storageType: 'localStorage'
@@ -156,11 +156,10 @@ import { FiltersComponent } from './filters/filters.component';
     ClientsService,
     GeocodingService,
     MapService,
-    SettingsService,
-    NavigatorComponent
+    SettingsService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [EditStoreDialog]
+  entryComponents: [EditStoreDialog, EditStoreGroupDialog]
 })
 export class AppModule { 
   constructor(){}

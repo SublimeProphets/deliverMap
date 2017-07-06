@@ -1,0 +1,28 @@
+md-sidenav-container {
+    height: 100vh;
+    max-height: 100vh;
+    
+}
+.mainframe {
+    height: calc(100% - 64px);
+    position: absolute;
+    top: 64px;
+    left: 0px;
+    width: 100%;
+    z-index: 1;
+}
+header-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 100%;
+
+}
+md-sidenav.infonav {
+    
+    min-width: 500px;
+}
+
+  
+
