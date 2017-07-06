@@ -1,10 +1,11 @@
-import {Component} from "@angular/core";
+import {Component, Input, EventEmitter} from "@angular/core";
 import {GeocodingService} from "../geocoding.service";
 import {MapService} from "../map.service";
 import { ClientsService } from "../clients.service";
 import {Location} from "../core/location.class";
 import {Map} from "leaflet";
 import { SettingsService } from "../settings.service";
+import * as Rx from 'rxjs'; // TODO load only needed components
 
 @Component({
     selector: "navigator",
@@ -12,7 +13,9 @@ import { SettingsService } from "../settings.service";
     styleUrls: ['./navigator.component.less'],
     providers: []
 })
-export class NavigatorComponent {
+
+
+export class NavigatorComponent  {
 
 
     constructor(
@@ -22,9 +25,13 @@ export class NavigatorComponent {
         private settingsService:SettingsService) {
             
         this.address = "";
+
+
+
     }
 
-
+    @Input('showOptions') showOptions: boolean;
+    public resultsUpdated:EventEmitter<any> = new EventEmitter();
     address: string;
     private searchResultMarker: any;
     private stores = this.settingsService.settings.stores;
@@ -46,19 +53,31 @@ export class NavigatorComponent {
 
 
     ngOnInit() {
+
+
+        var obs = Rx.Observable.interval(500).take(5)
+            .do(i => console.log("obs value "+ i) );
+
+            obs.subscribe(value => console.log("observer 1 received " + value));
+
+obs.subscribe(value => console.log("observer 2 received " + value));
+
+
         // idk why this was here..
         // this.mapService.disableMouseEvent("goto");
         //this.mapService.disableMouseEvent("place-input");
         
-        this.searchHasFocus = false;
+        this.searchHasFocus = (this.showOptions) ? true : false; //Check for showOptions in attribute, if true then always show
         this.searchHasResults = false;
     }
 
     toggleInputFocus(state:boolean) {
-        this.searchHasFocus = state;
+        
+            this.searchHasFocus = (this.showOptions) ? true : state; //Check for showOptions in attribute, if true then always show
     }
     closeSearchResults(): void {
-        this.showSearchResults = false;
+        
+            this.showSearchResults = false;
     }
     openSearchResults(): void {
         this.showSearchResults = true;
@@ -78,7 +97,11 @@ export class NavigatorComponent {
         this.searchStorage.results.push(item);
         this.searchHasResults = true;
         this.showSearchResults = true;
+        this.resultsUpdated.emit(this.searchStorage.results);
     }
+
+    
+
 
     goto() {
         if (!this.address) { return; }

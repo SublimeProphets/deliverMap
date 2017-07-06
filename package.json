@@ -42,7 +42,6 @@
     "leaflet.markercluster": "^1.0.6",
     "ng2-completer": "^1.5.2",
     "ng2-file-upload": "^1.2.1",
-    "ng2-typeahead": "^1.2.0",
     "rxjs": "^5.4.1",
     "ts-xlsx": "0.0.11",
     "zone": "^0.3.4",

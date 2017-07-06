@@ -15,9 +15,9 @@
 </div>
 
 <div [ngClass]="{'active': searchHasFocus}" class="searchoptions-container" (click)="toggleInputFocus(true)">
-    <md-checkbox class="example-margin" [(ngModel)]="searchStorage.places.active" (change)="goto()">Orte (Strassen etc.)</md-checkbox>
-    <md-checkbox class="example-margin" [(ngModel)]="searchStorage.clients.active" (change)="goto()">Kunden</md-checkbox>
-    <md-checkbox class="example-margin" [(ngModel)]="searchStorage.stores.active" (change)="goto()">Geschäfte</md-checkbox>
+    <md-checkbox [(ngModel)]="searchStorage.places.active" (change)="goto()">Orte (Strassen etc.)</md-checkbox>
+    <md-checkbox [(ngModel)]="searchStorage.clients.active" (change)="goto()">Kunden</md-checkbox>
+    <md-checkbox  [(ngModel)]="searchStorage.stores.active" (change)="goto()">Geschäfte</md-checkbox>
 
 </div>
 

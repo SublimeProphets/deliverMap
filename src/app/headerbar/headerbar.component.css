@@ -12,4 +12,8 @@
     height: 100%;
     font-size: 18px;
   }
+ .searchoptions-container,
+.searchresults-container {
  
+    background: #3f51b5;
+}
