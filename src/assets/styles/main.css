@@ -1,5 +1,4 @@
+/* Material styles throws error if included in app.component.scss */
+
 @import "./material-icons.css";
 @import "./indigo-pink.css";
-@import "./leaflet.css";
-@import "./leaflet-custom.css";
-@import "./typographie.css";

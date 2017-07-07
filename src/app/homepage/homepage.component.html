@@ -1,16 +1,26 @@
-  <md-grid-list cols="6" rowHeight="1:1" gutterSize="10" rowHeight="fit" class="gridlist">
-  <md-grid-tile colspan="6" rowspan="1"><h1>Willkommen auf MDMap</h1></md-grid-tile>
-  <md-grid-tile colspan="1" rowspan="1">&nbsp;</md-grid-tile>
-  <md-grid-tile colspan="4" rowspan="1"> <navigator showOptions="true"></navigator></md-grid-tile>
-  <md-grid-tile colspan="1" rowspan="1">&nbsp;</md-grid-tile>
-  <md-grid-tile colspan="1" rowspan="1" class="quicktile">2</md-grid-tile>
-  <md-grid-tile colspan="1" rowspan="1" class="quicktile">3</md-grid-tile>
-  
-  <md-grid-tile colspan="2" rowspan="2" class="resultsfield">SEARCHFIELDS</md-grid-tile>
-  <md-grid-tile colspan="2" rowspan="1" class="righttile">FAV</md-grid-tile>
-  <md-grid-tile colspan="1" rowspan="1" class="quicktile">4</md-grid-tile>
-  <md-grid-tile colspan="1" rowspan="1" class="quicktile">5</md-grid-tile>
-  <md-grid-tile colspan="2" rowspan="1" class="righttile">IMPORT</md-grid-tile>
-  
+<md-grid-list cols="6" rowHeight="1:1" gutterSize="10" rowHeight="fit" class="gridlist">
+    <md-grid-tile colspan="6" rowspan="1">
+        <h1>Willkommen auf <span>MD</span>hub</h1>
+    </md-grid-tile>
+    <md-grid-tile colspan="1" rowspan="1">&nbsp;</md-grid-tile>
+    <md-grid-tile colspan="4" rowspan="1">
+        <navigator showOptions="true"></navigator>
+    </md-grid-tile>
+    <md-grid-tile colspan="1" rowspan="1">&nbsp;</md-grid-tile>
+    <md-grid-tile colspan="1" rowspan="1" class="quicktile">2</md-grid-tile>
+    <md-grid-tile colspan="1" rowspan="1" class="quicktile">3</md-grid-tile>
+
+    <md-grid-tile colspan="2" rowspan="2" class="resultsfield">
+        <md-list>
+            <md-list-item *ngFor="let result of resultItems">
+                {{result.name}}
+            </md-list-item>
+        </md-list>
+    </md-grid-tile>
+    <md-grid-tile colspan="2" rowspan="1" class="righttile">FAV</md-grid-tile>
+    <md-grid-tile colspan="1" rowspan="1" class="quicktile">4</md-grid-tile>
+    <md-grid-tile colspan="1" rowspan="1" class="quicktile">5</md-grid-tile>
+    <md-grid-tile colspan="2" rowspan="1" class="righttile">IMPORT</md-grid-tile>
+
 
 </md-grid-list>

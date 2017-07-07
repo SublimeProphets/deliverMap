@@ -1,0 +1,25 @@
+<div class="search-result-container" [ngClass]="{'active': hasResults && showOverlay }">
+
+    <div class="search-result-content">
+        <div class="row">
+            <section>
+                <h3> Kunden</h3>
+                <ngx-datatable class="datatable " [columnMode]=" 'force' " [headerHeight]="0" [footerHeight]="0 " [rowHeight]="30 " [scrollbarV]="true " [scrollbarH]="false " [rows]="resultsList ">
+
+                    <ngx-datatable-column name="name "></ngx-datatable-column>
+
+                </ngx-datatable>
+            </section>
+            <section>
+                2
+            </section>
+            <section>
+                3</section>
+
+        </div>
+
+
+        <button mdButton>Ganze Seite</button>
+    </div>
+    <div class="search-overlay" (click)="closeOverlay()"></div>
+</div>

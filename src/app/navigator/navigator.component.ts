@@ -1,11 +1,13 @@
-import {Component, Input, EventEmitter} from "@angular/core";
-import {GeocodingService} from "../geocoding.service";
-import {MapService} from "../map.service";
+import { Component, Input } from "@angular/core";
+import { GeocodingService } from "../geocoding.service";
+import { MapService } from "../map.service";
 import { ClientsService } from "../clients.service";
-import {Location} from "../core/location.class";
-import {Map} from "leaflet";
+import { Location } from "../core/location.class";
+import { Map } from "leaflet";
 import { SettingsService } from "../settings.service";
 import * as Rx from 'rxjs'; // TODO load only needed components
+import { Subject } from "rxjs/Subject";
+import { SearchService } from "../search.service";
 
 @Component({
     selector: "navigator",
@@ -15,160 +17,166 @@ import * as Rx from 'rxjs'; // TODO load only needed components
 })
 
 
-export class NavigatorComponent  {
+export class NavigatorComponent {
 
 
     constructor(
-        private geocoder: GeocodingService, 
+        private geocoder: GeocodingService,
         private mapService: MapService,
-        private clientService:ClientsService,
-        private settingsService:SettingsService) {
-            
-        this.address = "";
+        private clientService: ClientsService,
+        private settingsService: SettingsService,
+        private searchService: SearchService
+    ) {
+
+        this.clients = this.clientService.getClients();
+        this.stores = this.settingsService.settings.stores;
+
+        this.searchService.searchResult$.subscribe((results) => {
+            console.log("recieved update from searchService.searchResult");
+            this.results = this.searchService.resultsList;
+            this.searchHasResults = true;
+            this.showSearchResults = true;
+        })
+
 
 
 
     }
 
     @Input('showOptions') showOptions: boolean;
-    public resultsUpdated:EventEmitter<any> = new EventEmitter();
-    address: string;
+    searchTerm$ = new Subject<string>();
+
+    searchString: string;
+
     private searchResultMarker: any;
-    private stores = this.settingsService.settings.stores;
-    public searchStorage:any = {
-        clients: {
-            active: true
-        },
-        stores: {
-            active: false
-        },
-        places: {
-            active: true
-        },
-        results: []
-    };
+    private stores: any;
+    private clients: any;
+    public searchStorage: any;
+    public results = [];
+
+
     searchHasFocus: boolean;
-    searchHasResults: boolean;
+    searchHasResults: boolean; // switchen the disabled state of the button
     showSearchResults: boolean = false;
 
 
     ngOnInit() {
 
+        // Get default for filters
+        this.searchStorage = this.settingsService.settings.search.filters;
 
-        var obs = Rx.Observable.interval(500).take(5)
-            .do(i => console.log("obs value "+ i) );
-
-            obs.subscribe(value => console.log("observer 1 received " + value));
-
-obs.subscribe(value => console.log("observer 2 received " + value));
-
-
-        // idk why this was here..
-        // this.mapService.disableMouseEvent("goto");
-        //this.mapService.disableMouseEvent("place-input");
-        
+        //Check if options are shown default
         this.searchHasFocus = (this.showOptions) ? true : false; //Check for showOptions in attribute, if true then always show
+
+        // while initialization there are no results...
         this.searchHasResults = false;
+
+        // recieve the latest input
+        this.searchTerm$.debounceTime(300).subscribe((term) => {
+            this.searchService.executeSearch(term);
+            //this.searchString = term.toLowerCase();
+            //this.searchService.executeSearch(term);
+            //this.goto();
+        })
+
+
+
+
     }
 
-    toggleInputFocus(state:boolean) {
-        
-            this.searchHasFocus = (this.showOptions) ? true : state; //Check for showOptions in attribute, if true then always show
+    toggleInputFocus(state: boolean) {
+        this.searchHasFocus = (this.showOptions) ? true : state; //Check for showOptions in attribute, if true then always show
     }
     closeSearchResults(): void {
-        
-            this.showSearchResults = false;
+        this.showSearchResults = false;
     }
     openSearchResults(): void {
         this.showSearchResults = true;
     }
 
     resetResults(): void {
-        this.searchStorage.results = [];
+        this.results = [];
         this.searchHasResults = false;
 
         // Delete old marker if it exists..
-        if(typeof this.searchResultMarker == "object") 
+        if (typeof this.searchResultMarker == "object")
             this.mapService.map.removeLayer(this.searchResultMarker);
 
     }
 
     private addResultItem(item): void {
-        this.searchStorage.results.push(item);
+        this.results.push(item);
         this.searchHasResults = true;
         this.showSearchResults = true;
-        this.resultsUpdated.emit(this.searchStorage.results);
+        //  this.searchResult$.next(item);
+        console.log("searchResult$ next")
+
     }
 
-    
+
+
 
 
     goto() {
-        if (!this.address) { return; }
-        
+        if (!this.searchString) { return; }
+
         // Back to 0
         this.resetResults();
 
 
         // PLACES / LOCATION
-        if(this.searchStorage.places.active) {
-            this.geocoder.geocode(this.address)
-            .subscribe(location => {
-                
-                if(location.length > 0) {
+        if (this.searchStorage.places.active) {
+            this.geocoder.geocode(this.searchString)
+                .subscribe(location => {
+                    if (location.length > 0) {
+                        location.forEach(function (item) {
+                            item.type = "location";
+                            this.addResultItem(item);
 
-                
-                    location.forEach(function(item){
-                        item.type = "location";
-                        this.addResultItem(item);
+                        }, this);
 
-                    }, this);
-                
-                    
-                
-                    
-                }
+                    }
 
-            }, error => console.error(error));
+                }, error => console.error(error));
         }
 
 
-        if(this.searchStorage.clients.active) {
-            
-            var fullClientList = this.clientService.getClients();
-            
-            var searchText = this.address.toLowerCase();
-            fullClientList.forEach(function(item) {
-                console.log(item);
+        if (this.searchStorage.clients.active) {
+
+
+
+
+            this.clients.forEach(function (item) {
+                //    console.log(item);
                 item.type = "client";
-                if( item.name.toLowerCase().indexOf(searchText) >= 0) {
+                if (item.name.toLowerCase().indexOf(this.searchString) >= 0) {
                     this.addResultItem(item);
-                } else if(typeof item.address != "undefined") {
-                    if(item.address.toLowerCase().indexOf(searchText) >= 0) {
+                } else if (typeof item.address != "undefined") {
+                    if (item.address.toLowerCase().indexOf(this.searchString) >= 0) {
                         this.addResultItem(item);
                     }
                 }
 
             }, this);
-            
-            
+
+
         }
 
-        if(this.searchStorage.stores.active) {
-            
-            
-            var searchText = this.address.toLowerCase();
-            this.stores.forEach(function(item) {
+        if (this.searchStorage.stores.active) {
+
+
+
+            this.stores.forEach(function (item) {
                 item.type = "stores_" + item.group;
-                if( item.name.toLowerCase().indexOf(searchText) >= 0) {
+                if (item.name.toLowerCase().indexOf(this.searchString) >= 0) {
                     this.addResultItem(item);
-                } else if(item.address.toLowerCase().indexOf(searchText) >= 0) {
+                } else if (item.address.toLowerCase().indexOf(this.searchString) >= 0) {
                     this.addResultItem(item);
                 }
 
             }, this);
-            
-            
+
+
         }
 
 
@@ -185,11 +193,11 @@ obs.subscribe(value => console.log("observer 2 received " + value));
 
 
     public selectResult(result) {
-        
-        
+
+
         console.log(result);
 
-        
+
 
         /*
             this.mapService.map.fitBounds(location.viewBounds, {});

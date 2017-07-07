@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ClientsService } from '../clients.service';
-import { NavigatorComponent } from '../navigator/navigator.component';
+import { SearchService } from '../search.service';
+
 @Component({
   selector: 'homepage',
   templateUrl: './homepage.component.html',
@@ -8,19 +9,17 @@ import { NavigatorComponent } from '../navigator/navigator.component';
 })
 export class HomepageComponent implements OnInit {
 
-  
+  resultsList:Array<any>;
 
   ngOnInit() {
   }
 
   searchResults:any;
-  constructor( private navigatorComponent:NavigatorComponent) {
-    
-
-    this.navigatorComponent.resultsUpdated.subscribe((results) => {
-        this.searchResults = results;
-        alert(results);
-    });
+  constructor( private searchService:SearchService) {
+    this.searchService.searchResult$.subscribe((results) => {
+      console.log("recieved update from searchService.searchResult");  
+      this.resultsList = this.searchService.resultsList;
+    })
   }
 
 

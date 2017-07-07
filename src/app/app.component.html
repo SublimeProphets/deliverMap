@@ -1,43 +1,35 @@
-
-       
-       
-
-  
-  
 <md-sidenav-container>
-  <header-bar (navToggle)="mainnav.toggle()" (infoToggle)="infonav.toggle()"></header-bar>
- <md-sidenav #mainnav mode="side" opened>
-    <mainnavigation></mainnavigation>
- </md-sidenav>
-  
-      <div class="mainframe">
-       <router-outlet></router-outlet>
-      </div>
-    
-      <md-sidenav #infonav mode="over" align="end" class="infonav">
-       <md-tab-group>
-        <md-tab>
-          <ng-template md-tab-label>
-            <md-icon>supervisor_account</md-icon> Kunden
-          </ng-template>
-          <h2>Kunden</h2>
-          <infonavigation></infonavigation>
-        </md-tab>
-        <md-tab>
-          <ng-template md-tab-label>
-            <md-icon>store</md-icon> Geschäfte
-          </ng-template>
-          <h2>Geschäfte</h2>
-          <storenavigation></storenavigation>
-        </md-tab>
-      </md-tab-group>
- 
+    <header-bar (navToggle)="mainnav.toggle()" (infoToggle)="infonav.toggle()"></header-bar>
+    <md-sidenav #mainnav mode="side" opened>
+        <mainnavigation></mainnavigation>
+    </md-sidenav>
 
-      </md-sidenav>
+    <div class="mainframe">
+        <search-results></search-results>
+        <router-outlet></router-outlet>
+    </div>
+
+    <md-sidenav #infonav mode="over" align="end" class="infonav">
+        <md-tab-group>
+            <md-tab>
+                <ng-template md-tab-label>
+                    <md-icon>supervisor_account</md-icon> Kunden
+                </ng-template>
+                <h2>Kunden</h2>
+                <infonavigation></infonavigation>
+            </md-tab>
+            <md-tab>
+                <ng-template md-tab-label>
+                    <md-icon>store</md-icon> Geschäfte
+                </ng-template>
+                <h2>Geschäfte</h2>
+                <storenavigation></storenavigation>
+            </md-tab>
+        </md-tab-group>
+
+
+    </md-sidenav>
 
 
 
 </md-sidenav-container>
-
-
-       

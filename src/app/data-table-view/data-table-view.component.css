@@ -4,22 +4,24 @@
 }
 
 table {
-    font-family: Arial, serif;
     border-collapse: separate;
     border-spacing: 10px 2px;
 }
+
 td {
     padding: 4px;
-    
 }
+
 tr {
     margin: 4px 0;
 }
+
 thead td {
     font-size: 1.5em;
     color: #444;
     background: white;
 }
+
 tr:nth-child(odd) {
     background: lightblue;
 }

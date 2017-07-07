@@ -1,15 +1,20 @@
  md-toolbar {
-    background: lightgray;
-    padding: 0;
-  }
-  .example-fill-remaining-space {
-    /* This fills the remaining space, by using flexbox. 
-     Every toolbar row uses a flexbox row layout. */
-    flex: 1 1 auto;
-    padding: 0 16px;
-  }
-  button {
-    height: 100%;
-    font-size: 18px;
-  }
+     background: lightgray;
+     padding: 0;
+ }
  
+ .example-fill-remaining-space {
+     /* This fills the remaining space, by using flexbox. 
+     Every toolbar row uses a flexbox row layout. */
+     flex: 1 1 auto;
+     padding: 0 16px;
+ }
+ 
+ .headerbar button {
+     height: 100%;
+     font-size: 18px;
+ }
+ 
+ .searchoptions-container {
+     background: darkgray;
+ }

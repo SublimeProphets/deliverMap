@@ -1,10 +1,11 @@
-import { Component, Output, EventEmitter} from '@angular/core';
+import { Component, Output, EventEmitter, ViewEncapsulation} from '@angular/core';
 import {NavigatorComponent} from "../navigator/navigator.component";
 
 @Component({
   selector: 'header-bar',
   templateUrl: './headerbar.template.html',
-  styleUrls: ['./headerbar.component.css']
+  styleUrls: ['./headerbar.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class HeaderBar {

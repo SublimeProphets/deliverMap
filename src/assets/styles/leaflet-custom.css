@@ -1,8 +1,7 @@
-
- 
- .headerbar md-toolbar-row {
+.headerbar md-toolbar-row {
     align-items: flex-start !important;
 }
+
 .on-map {
     position: absolute;
     z-index: 1000;
@@ -14,28 +13,31 @@
     text-align: center;
 }
 
-
 .leaflet-clickable {
-  cursor: crosshair !important;
+    cursor: crosshair !important;
 }
 
 .leaflet-container {
-  cursor: help !important;
+    cursor: help !important;
+    font-family: "Dosis", sans-serif;
 }
 
 .leaflet-container .leaflet-popup-content img {
     max-height: 24px;
     width: auto;
 }
+
 .leaflet-container .left {
     float: left;
-    width: 90px;   
-    margin-right: 10px; 
+    width: 90px;
+    margin-right: 10px;
 }
+
 .leaflet-container .right {
     float: right;
-    width: 200px;    
+    width: 200px;
 }
+
 .leaflet-container .name {
     font-size: 1.25em;
     font-weight: bold;
@@ -48,6 +50,7 @@
     padding: 1em;
     box-sizing: border-box;
 }
+
 .leaflet-container section.cright {
     width: 158px;
     float: right;
@@ -58,6 +61,7 @@
     height: 220px;
     text-align: center;
 }
+
 .leaflet-container section.cclear {
     clear: both;
     float: none;
@@ -67,6 +71,7 @@
     font-size: 2.5em;
     display: block;
 }
+
 .leaflet-popup-content .name {
     font-size: 1.15em;
     color: #333;
