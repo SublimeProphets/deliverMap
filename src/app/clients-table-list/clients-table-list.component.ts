@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { ClientsService } from "../clients.service";
 
 @Component({
   selector: 'clients-table-list',
@@ -16,7 +17,9 @@ export class ClientsTableListComponent implements OnInit {
   originalData:any;
   lastOpenedRow:any = false;
 
-  constructor() {
+  constructor(
+    private clientsService:ClientsService
+  ) {
 
   }
 
@@ -63,6 +66,22 @@ export class ClientsTableListComponent implements OnInit {
 
   }
 
+  // Toggles the "starred" state
+  showOnMap(selectedClient:any) {    
+     this.clientsService.clientSelected(selectedClient.id);
+    // this.infoToggle.emit(true);
+  }
+  public changeVisible(id: number): void {
+    this.clientsService.changeVisible(id);  
+  }
+  public markAsFavorit(id: number):void {
+   // search the index for the id
+    var index = this.data.map(function(e) { return e.id; }).indexOf(id);
 
+    var status = this.data[index].starred;
+
+    if(status) this.data[index].starred = false;
+    if(!status) this.data[index].starred = true; 
+  }
 
 }
