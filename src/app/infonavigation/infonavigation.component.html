@@ -1,5 +1,5 @@
-<clients-table-list data="clients"></clients-table-list>
-
+<clients-table-list [data]="clients" limit="10" quicksearch="true"></clients-table-list>
+<!--
 <h4>{{clients.length}} Kunden in dieser Ansicht</h4>
 
 <div *ngIf="clients">
@@ -9,7 +9,7 @@
             <p md-line>{{client.address}}, {{client.postleihzahl}} {{client.city}}</p>
             <p md-line>{{client.deliveryCount}} Lieferungen aus <b>{{client.defaultStore}}</b></p>
             <p md-line>Letzte Lieferung vor XXX Tagen ({{client.lastDeliveryDate}})</p>
-            <!-- <p md-line style="font-size: 0.75em"><b>ID: </b> {{client.id}} <b>lng:</b> {{client.lng}} | <b>lat:</b> {{client.lat}} </p>-->
+           
             <md-slide-toggle [(checked)]="client.visible" (change)="changeVisible(client.id)">
                 Anzeigen
             </md-slide-toggle>
@@ -23,3 +23,4 @@
         </md-list-item>
     </md-list>
 </div>
+-->

@@ -1,5 +1,49 @@
-<ngx-datatable class="datatable " [columnMode]=" 'force' " [headerHeight]="0" [footerHeight]="0 " [rowHeight]="30 " [scrollbarV]="true " [scrollbarH]="false " [rows]="data ">
+<input mdInput *ngIf="quicksearchEnabled" type='text' placeholder='Schnellsuche nach Namen..' (keyup)='updateFilter($event)' />
+<ngx-datatable class="material " #table [columnMode]=" 'force' " [headerHeight]="0" [footerHeight]="30" [rowHeight]="30" [scrollbarV]="true " [scrollbarH]="false " [rows]="data ">
 
-    <ngx-datatable-column name="name "></ngx-datatable-column>
+    <!-- Row Detail Template -->
+    <ngx-datatable-row-detail [rowHeight]="120" #myDetailRow (toggle)="onDetailToggle($event)">
+        <ng-template let-row="row" ngx-datatable-row-detail-template>
+            <div class="detail-box">
+                <section>
+                    <button md-raised-button (click)="onSelect(client)" [disabled]="row.selected"><md-icon>remove_red_eye</md-icon> Auf Karte</button><br />
+                    <md-slide-toggle [(checked)]="row.visible" (change)="changeVisible(row.id)">Sichtbar</md-slide-toggle><br />
+                    <button md-icon-button (click)="changeStarred(row.id)">
+                        <md-icon *ngIf="!row.starred">star_border</md-icon>
+                        <md-icon *ngIf="row.starred">star</md-icon>
+                    </button>
+                </section>
+
+                <section>
+                    {{row.name}}<br /> {{row.address}}
+                    <br /> {{row.postleihzahl}} {{row.city}}
+                </section>
+
+                <section>
+
+                </section>
+
+
+
+
+
+            </div>
+        </ng-template>
+    </ngx-datatable-row-detail>
+    <!-- Column Templates -->
+    <ngx-datatable-column [width]="32" [resizeable]="false" [sortable]="false" [draggable]="false" [canAutoResize]="false">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+            <a href="#" [class.datatable-icon-right]="!row.$$expanded" [class.datatable-icon-down]="row.$$expanded" title="Expand/Collapse Row" (click)="toggleExpandRow(row)">
+            </a>
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="name" width="auto" [resizeable]="false" [sortable]="false" [draggable]="false" [canAutoResize]="true" (click)="toggleExpandRow(row)">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+            <strong>{{row.name}}</strong> {{row.address}}
+            <md-icon *ngIf="row.starred">star</md-icon>
+        </ng-template>
+    </ngx-datatable-column>
+
+
 
 </ngx-datatable>
