@@ -14,6 +14,7 @@ export class ClientsTableListComponent implements OnInit {
   @ViewChild('table') table: any;
   temp = [];
   originalData:any;
+  lastOpenedRow:any = false;
 
   constructor() {
 
@@ -22,11 +23,19 @@ export class ClientsTableListComponent implements OnInit {
   ngOnInit() {
     console.log(this.limit);
     this.originalData = this.data;
+    
   }
 
   toggleExpandRow(row) {
-    console.log('Toggled Expand Row!', row);
+    
+    // Close previous one
+    if(this.lastOpenedRow !== false) this.table.rowDetail.toggleExpandRow(this.lastOpenedRow);
+    
+    // Open the new
     this.table.rowDetail.toggleExpandRow(row);
+
+    // remember the old one
+    this.lastOpenedRow = row;
   }
 
   onDetailToggle(event) {

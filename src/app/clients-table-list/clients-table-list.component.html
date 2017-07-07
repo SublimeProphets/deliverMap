@@ -2,27 +2,35 @@
 <ngx-datatable class="material " #table [columnMode]=" 'force' " [headerHeight]="0" [footerHeight]="30" [rowHeight]="30" [scrollbarV]="true " [scrollbarH]="false " [rows]="data ">
 
     <!-- Row Detail Template -->
-    <ngx-datatable-row-detail [rowHeight]="120" #myDetailRow (toggle)="onDetailToggle($event)">
+    <ngx-datatable-row-detail [rowHeight]="160" #myDetailRow (toggle)="onDetailToggle($event)">
         <ng-template let-row="row" ngx-datatable-row-detail-template>
             <div class="detail-box">
-                <section>
-                    <button md-raised-button (click)="onSelect(client)" [disabled]="row.selected"><md-icon>remove_red_eye</md-icon> Auf Karte</button><br />
-                    <md-slide-toggle [(checked)]="row.visible" (change)="changeVisible(row.id)">Sichtbar</md-slide-toggle><br />
-                    <button md-icon-button (click)="changeStarred(row.id)">
+                <div class="row-detail">
+
+                    <section>
+                        {{row.name}}<br /> {{row.address}}
+                        <br /> {{row.postleihzahl}} {{row.city}}
+                    </section>
+
+                    <section>
+                        <span>{{row.deliveryCount}}</span> aus {{row.lastDeliveryStore}}
+                    </section>
+                </div>
+                <div class="row-actions">
+                    <section class="showOnMap">
+                        <button md-raised-button (click)="showOnMap(client)" [disabled]="row.selected"><md-icon>remove_red_eye</md-icon> Auf Karte</button>
+                    </section>
+                    <section class="markAsFavorit">
+                        <md-slide-toggle [(checked)]="row.visible" (change)="changeVisible(row.id)">Sichtbar</md-slide-toggle><br />
+                    </section>
+                    <section class="isVisible">
+                        <button md-icon-button (click)="changeStarred(row.id)">
                         <md-icon *ngIf="!row.starred">star_border</md-icon>
                         <md-icon *ngIf="row.starred">star</md-icon>
                     </button>
-                </section>
+                    </section>
 
-                <section>
-                    {{row.name}}<br /> {{row.address}}
-                    <br /> {{row.postleihzahl}} {{row.city}}
-                </section>
-
-                <section>
-
-                </section>
-
+                </div>
 
 
 
@@ -39,7 +47,7 @@
     </ngx-datatable-column>
     <ngx-datatable-column name="name" width="auto" [resizeable]="false" [sortable]="false" [draggable]="false" [canAutoResize]="true" (click)="toggleExpandRow(row)">
         <ng-template let-row="row" ngx-datatable-cell-template>
-            <strong>{{row.name}}</strong> {{row.address}}
+            <a href="#" (click)="toggleExpandRow(row)"><strong>{{row.name}}</strong> {{row.address}}</a>
             <md-icon *ngIf="row.starred">star</md-icon>
         </ng-template>
     </ngx-datatable-column>

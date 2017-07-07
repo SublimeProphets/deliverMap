@@ -1,12 +1,41 @@
 a {
     text-decoration: none;
 }
-
+.datatable-body-cell {
+    cursor: pointer;
+}
 .detail-box {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    >section {
-        flex: 1 1 auto;
+    height: 0px !important;
+    transition: height 1s;
+    &:not(:empty){    
+        height:150px !important;
+        transition: height 1s;
     }
+    .row-details,
+    .row-actions {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        >section {
+            flex: 1 1 auto;
+            vertical-align: center;
+            
+        }
+    }
+    .row-actions {
+        >section {
+            background: #ddd;
+            border: 1px solid white;
+            width: 33%;
+            box-sizing: border-box;
+            padding: 4px;
+            &:hover, 
+            &:focus {
+                background: #eee;
+                
+            }
+        }
+    }
+
+    
 }
