@@ -3,6 +3,7 @@ import { Client } from './client/client.component';
 import { CLIENTS } from './client/client.mock';
 import { LocalStorageService } from 'angular-2-local-storage';
 import { Http } from "@angular/http";
+import { Subject } from "rxjs/Subject";
 
 const FILTERSTATEORG: any = {
     abo: { active: false, value: false},
@@ -29,7 +30,8 @@ export class ClientsService {
     private localStorageService: LocalStorageService,
     private http: Http
     ) {
-       
+      
+
        // Add default values if localStorage was empty
       if(this.localStorageService.get("clients") === null) {
         this.setDefaultStorage();
@@ -82,7 +84,8 @@ private activeFilters: Array<string> = [];
     return this.clients;
   }
   private setDefaultStorage() {
-    this.localStorageService.set("clients",CLIENTS)
+    this.localStorageService.set("clients",CLIENTS);
+    this.clients = CLIENTS;
   }
   private removeStorage() {
     this.clientsUpdated.emit(true);
@@ -196,6 +199,7 @@ setFilter(filtertype:string): number {
     this.clients = filteredData;
   this.updateStorage(this.clients, false);
   this.emitUpdate();
+  
   }
 
 
@@ -324,6 +328,7 @@ removeClients() {
             // Add Object to array
             newArray.push(input[0]);      
             this.addClientProgress.emit(true);
+            
             return this.updateStorage(newArray, true);
             
           }
@@ -345,6 +350,7 @@ removeClients() {
        
        newArray.push(input[0]);
        this.addClientProgress.emit(true);
+       
        return this.updateStorage(newArray, true);
        
      }

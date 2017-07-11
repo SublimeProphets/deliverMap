@@ -3,14 +3,6 @@
         <md-tab label="Grundeinstellungen">
             <h1 class="title">Grundeinstellungen</h1>
             <md-card>
-                <md-card-title>Datengrundlage</md-card-title>
-                <md-card-subtitle>Lade hier eine Excel-Datei hoch.</md-card-subtitle>
-                <md-card-content>
-                    Sie können hier nur Excel (.xls, .xlsx) und OpenOffice-Dokumente (.ODS) hochladen
-                    <fileuploader></fileuploader>
-                </md-card-content>
-            </md-card>
-            <md-card>
                 <md-card-title>Arbeitsmodus</md-card-title>
                 <md-card-subtitle>Hier kannst Du zwischen verschiedenen Workspaces wählen. Beachte, dass für jeden Arbeitsmodus ein eigener Datenspeicher besteht.</md-card-subtitle>
                 <md-card-content>
@@ -120,21 +112,7 @@
         </md-tab>
         <md-tab label="Daten importieren">
             <h1>Import-Assistent</h1>
-            <md-card>
-                <md-card-title>1. Dateiupload</md-card-title>
-                <md-card-content>
-                    <p>Daten für
-                        <md-radio-group [(ngModel)]="settings.importAssistant.workspace">
-                            <md-radio-button value="12d">1-2-Domicile</md-radio-button>
-                            <md-radio-button value="wili">Wili</md-radio-button>
-                        </md-radio-group>
-                    </p>
-
-                    <md-checkbox [checked]="settings.importAssistant.fileHasHeader"> Datei enthält Spaltenüberschriften
-                    </md-checkbox>
-                    <fileuploader></fileuploader>
-                </md-card-content>
-            </md-card>
+            <fileuploader></fileuploader>
 
         </md-tab>
     </md-tab-group>

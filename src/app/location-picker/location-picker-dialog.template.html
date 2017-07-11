@@ -1,0 +1,10 @@
+<div id="locationPickerMap"></div>
+<div class="actions">
+    <md-input-container>
+        <input mdInput type="number" [value]="data.lat" placeholder="Breitengraden" />
+    </md-input-container>
+    <md-input-container>
+        <input mdInput type="number" [value]="data.lng" placeholder="Längengraden" />
+    </md-input-container>
+    <button md-raised-button (click)="save()"><md-icon>save</md-icon>Speichern</button>
+    <button md-raised-button (click)="cancel()"><md-icon>close</md-icon>Abbrechen</button>

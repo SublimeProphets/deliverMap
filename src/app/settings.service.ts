@@ -372,7 +372,12 @@ export class SettingsService {
       storesGroups: this.defaultStoresGroups,
       importAssistant: {
         workspace: "12d",
-        fileHasHeader: true
+        fileHasHeader: true,
+        importResults: {
+          showSuccess: true,
+          showCorrupt: true,
+          showSkipped: false
+        }
       },
       search: {
         filters: {

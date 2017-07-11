@@ -85,7 +85,8 @@ import {NavigatorComponent} from "./navigator/navigator.component";
 import { SettingsComponent, EditStoreDialog, EditStoreGroupDialog } from './settings/settings.component';
 import { FiltersComponent } from './filters/filters.component';
 import { SearchResultsComponent } from './search-results/search-results.component';
-import { ClientsTableListComponent } from './clients-table-list/clients-table-list.component'; 
+import { ClientsTableListComponent } from './clients-table-list/clients-table-list.component';
+import { LocationPickerComponent, LocationPickerDialog } from './location-picker/location-picker.component'; 
 
 
 
@@ -116,6 +117,8 @@ import { ClientsTableListComponent } from './clients-table-list/clients-table-li
     FiltersComponent,
     SearchResultsComponent,
     ClientsTableListComponent,
+    LocationPickerComponent,
+    LocationPickerDialog
     
     
 
@@ -167,7 +170,7 @@ import { ClientsTableListComponent } from './clients-table-list/clients-table-li
     SearchService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [EditStoreDialog, EditStoreGroupDialog]
+  entryComponents: [EditStoreDialog, EditStoreGroupDialog, LocationPickerDialog]
 })
 export class AppModule { 
   constructor(){}
