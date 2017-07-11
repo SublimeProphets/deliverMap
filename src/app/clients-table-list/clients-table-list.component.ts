@@ -24,7 +24,7 @@ export class ClientsTableListComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.limit);
+    console.log(this.quicksearchEnabled);
     this.originalData = this.data;
     
   }
@@ -67,8 +67,8 @@ export class ClientsTableListComponent implements OnInit {
   }
 
   // Toggles the "starred" state
-  showOnMap(selectedClient:any) {    
-     this.clientsService.clientSelected(selectedClient.id);
+  public showOnMap(id:number) {    
+     this.clientsService.clientSelected(id);
     // this.infoToggle.emit(true);
   }
   public changeVisible(id: number): void {

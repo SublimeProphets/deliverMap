@@ -1,8 +1,20 @@
-a {
-    text-decoration: none;
-}
-.datatable-body-cell {
+.clickable {
     cursor: pointer;
+}
+
+ngx-datatable {
+    height: calc(~"100vh - 172px");
+}
+.quicksearch-enabled ngx-datatable {
+    height: 100%;
+}
+.quicksearch {
+    padding: 16px;
+    box-sizing: border-box;
+    height: 100px;
+    > * {
+        width: 100%;
+    }
 }
 .detail-box {
     height: 0px !important;
@@ -16,24 +28,34 @@ a {
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
+        justify-content: space-between;
         >section {
             flex: 1 1 auto;
             vertical-align: center;
-            
+        }
+    }
+    .row-details {
+        section {
+            width: 50%;
+
         }
     }
     .row-actions {
         >section {
-            background: #ddd;
-            border: 1px solid white;
-            width: 33%;
+            
+            // border: 1px solid white;
+            width: 25%;
             box-sizing: border-box;
-            padding: 4px;
+            // padding: 4px;
             &:hover, 
             &:focus {
-                background: #eee;
                 
             }
+        }
+        .fullsize {
+            width: 100%;
+            height: 100%;
+            background-color: white;
         }
     }
 
