@@ -23,7 +23,7 @@ ngx-datatable {
         height:150px !important;
         transition: height 1s;
     }
-    .row-details,
+    .row-detail,
     .row-actions {
         display: flex;
         flex-direction: row;
@@ -34,10 +34,18 @@ ngx-datatable {
             vertical-align: center;
         }
     }
-    .row-details {
-        section {
-            width: 50%;
-
+    .row-detail 
+    {
+        > section {
+            margin-bottom: 12px;
+        }
+        .address {         min-width: 30%;   padding: 0 12px;   }
+        .infos {         max-width: 40%;      }
+        .infos2 {         min-width: 30%;      }
+        .deliveryCount {
+            padding: 2px 4px;
+            background: #45ccce;
+            text-align: center;
         }
     }
     .row-actions {

@@ -46,11 +46,35 @@
                <option [value]="200">200</option>
              </select>
              -->
+<ngx-datatable class="material maintable" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="50" [limit]="50" [scrollbarV]="true" [scrollbarH]="true" [rows]="clients">
+    <ngx-datatable-column name="id" width="auto" [resizeable]="false" [sortable]="false" [draggable]="false" [canAutoResize]="false" (click)="toggleExpandRow(row)">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+            <client-edit-dialog (onChange)="updateClient(row.id, $event)" [client]="row">
+            </client-edit-dialog>
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Id" [width]="50"></ngx-datatable-column>
+    <ngx-datatable-column name="Name" [width]="250"></ngx-datatable-column>
+    <ngx-datatable-column name="Adresse" prop="address"></ngx-datatable-column>
+    <ngx-datatable-column name="PLZ" prop="postleihzahl" [width]="60"></ngx-datatable-column>
+    <ngx-datatable-column name="City" [width]="100" prop="city"></ngx-datatable-column>
+
+    <ngx-datatable-column name="eMail" prop="email"></ngx-datatable-column>
+    <ngx-datatable-column name="tel" prop="tel"></ngx-datatable-column>
+    <ngx-datatable-column name="Abo" prop="abo" [width]="30"></ngx-datatable-column>
+    <ngx-datatable-column name="Lieferungen" prop="deliveryCount" [width]="30"></ngx-datatable-column>
+    <ngx-datatable-column name="Geschäft" prop="defaultStore" [width]=""></ngx-datatable-column>
+    <ngx-datatable-column name="Letzte Lieferung" prop="lastDeliveryDate" [width]=""></ngx-datatable-column>
+    <ngx-datatable-column name="Breitengraden" prop="lat" [width]="60"></ngx-datatable-column>
+    <ngx-datatable-column name="Längengraden" prop="lng" [width]=""></ngx-datatable-column>
+
+</ngx-datatable>
+<!--
 <div class="frame">
-    <ngx-datatable class="material fullscreen" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="0" [rowHeight]="50" [scrollbarV]="true" [scrollbarH]="true" [rows]="clients">
-        <ngx-datatable-column name="id" width="auto" [resizeable]="false" [sortable]="false" [draggable]="false" [canAutoResize]="true" (click)="toggleExpandRow(row)">
+    <ngx-datatable class="material maintable" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="0" [rowHeight]="50" [limit]="50" [scrollbarV]="true" [scrollbarH]="true" [rows]="clients">
+        <ngx-datatable-column name="id" width="auto" [resizeable]="false" [sortable]="false" [draggable]="false" [canAutoResize]="false" (click)="toggleExpandRow(row)">
             <ng-template let-row="row" ngx-datatable-cell-template>
-                <client-edit-dialog (onChange)="updateRow(row.id, $event)" [client]="row" style="width: 300px; height: 200px">x
+                <client-edit-dialog (onChange)="updateClient(row.id, $event)" [client]="row">
                 </client-edit-dialog>
             </ng-template>
         </ngx-datatable-column>
@@ -71,3 +95,4 @@
 
     </ngx-datatable>
 </div>
+-->

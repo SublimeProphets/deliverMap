@@ -49,6 +49,8 @@ import {MdToolbarModule,
   MdGridListModule
 } from '@angular/material';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import {RoundProgressModule} from 'angular-svg-round-progressbar';
+
 
 
 
@@ -155,6 +157,7 @@ import { ClientsTableListComponent } from './clients-table-list/clients-table-li
     MdDialogModule,
     MdGridListModule,
     FileUploadModule,
+    RoundProgressModule,
     NgxDatatableModule,
     LocalStorageModule.withConfig({
             prefix: 'my-app',

@@ -30,7 +30,7 @@ header-bar {
 }
 
 md-sidenav.infonav {
-    min-width: 500px;
+    width: 400px;
 }
 
 .stores-icon-24 {
@@ -58,4 +58,8 @@ ngx-datatable .empty-row {
     text-align: center !important;
     font-size: 1.25em;
     font-family: "Poiret One"
+}
+
+ngx-datatable.maintable {
+    height: 100%;
 }

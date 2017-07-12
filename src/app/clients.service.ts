@@ -243,7 +243,12 @@ setFilter(filtertype:string): number {
   }
 
 
-
+public updateClient(id, client) {
+    var index = this.clients.map(function(e) { return e.id; }).indexOf(id);
+    this.clients[index] = client;
+    this.updateStorage(this.clients, true);
+    
+}
 
 public clientSelected(id:number) {
               
@@ -300,74 +305,6 @@ removeClients() {
     this.removeStorage();
   }
   
-// Add a single Client
-  addClient(input: Client[]) {
-    
-    
-
-    // Cache old one
-    let newArray = this.clients;
-    // if("undefined" !== typeof input[0].lng || "undefined" !== typeof input[0].lat ) {
-
-      // Only do if necessary
-
-
-
-    if ("undefined" === typeof input[0].lat || "undefined" === typeof input[0].lat ){
-      
-      // Add coordinates
-      this.getCoordinates(input[0].address + ", " + input[0].city).subscribe(      
-          res => {
-            
-            console.log("coordinates updated!", res);
-            input[0].lng = ("undefined" === typeof res.lng) ? "0" : res.lng;
-            input[0].lat = ("undefined" === typeof res.lat) ? "0" : res.lat; 
-            // write coordinates into object
-            
-
-            // Add Object to array
-            newArray.push(input[0]);      
-            this.addClientProgress.emit(true);
-            
-            return this.updateStorage(newArray, true);
-            
-          }
-        );
-
-     } else {
-       
-       
-       
-       
-       
-       if(this.clients == []) {
-        var length:number = 0;
-        
-       } else {
-         var length:number = this.clients.length + 1;
-       }
-        
-       
-       newArray.push(input[0]);
-       this.addClientProgress.emit(true);
-       
-       return this.updateStorage(newArray, true);
-       
-     }
-    
-    
-
-
-
-
-    
-    
-    
-
-  }
-
-
-
 
 
 

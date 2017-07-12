@@ -21,22 +21,36 @@
         <h3>Lieferungen</h3>
         <!--  [(ngModel)]="" (change)="setFilter('defaultStore')" -->
         <md-select md-line placeholder="Letzte Lieferung aus">
-            <md-option *ngFor="let store of stores" [value]="store.slug">
+            <md-option *ngFor="let store of stores" [(value)]="store.slug">
                 <img src="{{settingsService.getStoreGroupImage(store.group, 'icon')}}" alt="{{ store.name }}" class="stores-icon-24" /> {{ store.name }}</md-option>
         </md-select>
+        <md-input-container>
+            <span mdSuffix>
+        Lieferungen
+    </span>
+            <input mdInput type="string" placeholder="Tota Lieferungen" [(ngModel)]="data.deliveryCount" />
+        </md-input-container>
+
+
+        <md-input-container>
+            <input mdInput [mdDatepicker]="picker" placeholder="Letzte Bestellung am" [value]="data.lastDeliveryDate" type="date">
+            <button mdSuffix [mdDatepickerToggle]="picker"></button>
+        </md-input-container>
+        <md-datepicker #picker></md-datepicker>
+
     </div>
     <div class="flex-item">
         <h3>Adresse und Positionierung</h3>
 
         <md-input-container class="example-full-width">
-            <input mdInput placeholder="Adresse" [ngModel]="data.address">
-        </md-input-container>
+            <input mdInput placeholder="Adresse" [(ngModel)]="data.address">
+        </md-input-container>false
 
         <table cellspacing="0" class="example-full-width">
             <tr>
                 <td style="width: 30%">
                     <md-input-container>
-                        <input mdInput #postalCode maxlength="4" placeholder="Postleihzahl" [(ngModel)]="data.plz">
+                        <input mdInput #postalCode maxlength="4" placeholder="Postleihzahl" [(ngModel)]="data.postleihzahl">
                         <md-hint align="end">{{postalCode.value.length}} / 4</md-hint>
                     </md-input-container>
                 </td>

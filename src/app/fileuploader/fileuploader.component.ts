@@ -28,6 +28,16 @@ export class FileuploaderComponent implements OnInit {
   //temporary Object for one Client
   private tmpClient: Client[];
   public timePassedSinceImport: Number;
+  public totalRows: number = 0; // 
+  public progress:any = {
+    buffer: 0,
+    bufferPercent: 0,
+    finished: 0,
+    finishedPercent: 0
+  }
+
+  public userProgress: number = 1; // represents the numbered md-card's
+
   @ViewChild('missingtable') missingTable: any;
 
 
@@ -129,14 +139,20 @@ export class FileuploaderComponent implements OnInit {
   public xlsxUploaded(result: UploadResult) {
 
     // this.uploaderContent.next(JSON.stringify(result));
-console.log(result);
-    this.uploaderContent.next("File erfolgreich hochgeladen");
-
+    console.log(result);
+      this.uploaderContent.next("File erfolgreich hochgeladen");
+      this.userProgress = 2;
 
     // Set last importDate
     this.settingsService.settings.importAssistant.lastImportDate = Date();
 
-
+    // reset progress
+    this.progress = {
+      buffer: 0,
+      bufferPercent: 0,
+      finished: 0,
+      finishedPercent: 0
+    }
     // this.importResults$.next();
 
 
@@ -146,7 +162,15 @@ console.log(result);
 
 
     let res = result.payload[0];
-    let totalProperties = this.numKeys(res);
+    
+
+    // Check how many row the file contains
+    
+    for (var key in res) {
+        let num = Number(key.replace(/^\D+/g, ''));
+        if(num > this.totalRows) this.totalRows = num;
+        
+    }
 
 
     this.uploadResult = result.payload[0];
@@ -185,7 +209,7 @@ console.log(result);
     var firstRound: boolean = true;
 
     var i = 0;
-
+    var ms = Date.now();
 
     // Iterates all cells
     for (var key in res) {
@@ -264,15 +288,30 @@ console.log(result);
             this.tmpClient[previousRow].lastDeliveryDate = new Date((parseInt(res[key].v) - (25567 + 1)) * 86400 * 1000);
             break;
 
-          // Latitude
+          //FirstOrderDate
           case "K":
+            this.tmpClient[previousRow].firstOrderDate = new Date((parseInt(res[key].v) - (25567 + 1)) * 86400 * 1000);
+          break;
+
+          // Starred
+          case "L":
+            this.tmpClient[previousRow].starred = (res[key].v == "") ? false : true;
+          break;
+
+          // Comments
+          case "M":
+            this.tmpClient[previousRow].comments = res[key].v;
+          break;
+
+          // Latitude
+          case "N":
             if (res[key].v !== "") {
               this.tmpClient[previousRow].lat = res[key].v;
             }
             break;
 
           //Longitude
-          case "L":
+          case "O":
 
             if (res[key].v !== "") {
               this.tmpClient[previousRow].lng = res[key].v;
@@ -312,11 +351,10 @@ console.log(result);
                 console.log("oh lala address not here BIATCH!!", this.tmpClient[previousRow]);
                 this.importResults.missingCoordinates.push(this.tmpClient[previousRow]);
               } else {
-
-              
+                this.updateProgess(false);
 
               // Add coordinates
-              let latLng = this.getCoordinates(this.tmpClient[previousRow].address + ", " + this.tmpClient[previousRow].postleihzahl + " " + this.tmpClient[previousRow].city, previousRow).subscribe(
+              let latLng = this.getCoordinates(this.tmpClient[previousRow].address + ", " + this.tmpClient[previousRow].postleihzahl + " " + this.tmpClient[previousRow].city, previousRow, i).subscribe(
                 (res) => {
                  
                 },
@@ -327,7 +365,11 @@ console.log(result);
               }
 
             } else {
-
+              
+              // once true once false to increae buffer as well as finished
+              this.updateProgess(false);
+              this.updateProgess(true);
+              
               // i already have coordinates
               this.importResults.success.push(this.tmpClient[previousRow]);
             }
@@ -346,7 +388,6 @@ console.log(result);
             id: previousRow,
             name: res[key].v,
             visible: true,
-            starred: false,
             selected: false,
             isOpen: false,
             draggable: false,
@@ -357,23 +398,23 @@ console.log(result);
           // Yes, we executed it at least once
           firstRound = false;
 
-
-          i++;
-
-
-
-
-          if (totalProperties <= i) {
+          if (this.totalRows <= i) {
             console.error("ALL IMPORTED");
             console.log(this.importResults);
             //Do something if the end of the loop
             // this.clientsService.emitUpdate();
           }
 
+          i++;
+
+
+
+          
+
         }
 
 
-        this.totalSteps = previousRow;
+        
 
       }
     }
@@ -390,16 +431,8 @@ console.log(result);
 
 
   }
-  totalSteps: number;
-  progressCount: number = 0;
-  percent: number = 0;
-
-  private progressTracker(stepdone: any) {
-
-
-
-    // this.uploaderContent.next("<div class='percent'>" + percent + "%</div><div class='subline'>(" + this.progressCount +" von " + this.totalSteps + ")</div>");
-  }
+ 
+  
   numKeys(o) {
     var res = 0;
     for (var k in o) {
@@ -407,6 +440,22 @@ console.log(result);
     }
     return res;
   }
+
+private updateProgess(isFinished): void {
+  
+  if(isFinished) {
+    this.progress.finished++
+    this.progress.finishedPercent = 100 / this.totalRows * this.progress.finished;
+
+    // Check if finished
+    if(this.progress.finishedPercent >= 99) this.userProgress = 3;
+
+  } else {
+    this.progress.buffer++;
+  this.progress.bufferpercent = 100 / this.totalRows * this.progress.buffer;
+  }
+    console.info("progress:", this.progress.finishedPercent, this.progress.finished);
+}
 
 
   // Lookup the stores objects to find the right group membership. StoreSlugString has to be any because it may also pass undefined.
@@ -431,7 +480,7 @@ console.log(result);
   }
 
 
-  private getCoordinates(address, index) {
+  private getCoordinates(address, index, iteration) {
 
 
     var combinedAndEncodedSearchString = encodeURIComponent(address);
@@ -456,16 +505,24 @@ console.log(result);
             this.importResults.success.push(this.tmpClient[index]);
 
           } else {
+            console.log("failed", response)
             filtered = { lng: 0, lat: 0 }
             console.log("füge missingCoords hinzu");
             this.importResults.missingCoordinates.push(this.tmpClient[index]);
           }
 
+          // update status
+          this.updateProgess(true);
+          
 
         }
 
 
 
+      },
+      // onComplete
+      () => {
+        
       }
     )
   }
@@ -497,16 +554,9 @@ public toggleExpandRow(row) {
 public updateRow(id, values) {
   console.log(id, values);
   let index = this.importResults.missingCoordinates.map(function(e) { return e.id; }).indexOf(id);
-  let myElem = this.importResults.missingCoordinates[index];
-console.log(index, this.importResults.missingCoordinates); 
   
-  myElem.lat = values.lat;
-  myElem.lng = values.lng;
-  console.log(myElem);
-
-  //Remove from array and add to success one
 this.importResults.missingCoordinates.splice(index, 1);
-  this.importResults.success.push(myElem);
+  this.importResults.success.push(values);
   
 }
 public saveImportedData():void {

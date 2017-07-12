@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ClientsService } from "../clients.service";
+import { SettingsService } from "../settings.service";
 
 @Component({
   selector: 'clients-table-list',
@@ -16,9 +17,11 @@ export class ClientsTableListComponent implements OnInit {
   temp = [];
   originalData:any;
   lastOpenedRow:any = false;
-
+  public stores:any;
+  public deliveryCountRadius: number = 50;
   constructor(
-    private clientsService:ClientsService
+    private clientsService:ClientsService,
+    private settingsService:SettingsService
   ) {
 
   }
@@ -26,9 +29,22 @@ export class ClientsTableListComponent implements OnInit {
   ngOnInit() {
     console.log(this.quicksearchEnabled);
     this.originalData = this.data;
-    
+    this.stores = this.settingsService.settings.stores;
   }
+getOverlayStyle() {
+    
+    let transform = 'translateY(-50%) translateX(-50%)';
 
+    return {
+      'top': 'auto',
+      'bottom': '5%',
+      'left': '50%',
+      'transform': transform,
+      '-moz-transform': transform,
+      '-webkit-transform': transform,
+      'font-size': this.deliveryCountRadius / 3.5 + 'px'
+    };
+}
   toggleExpandRow(row) {
     
     // Close previous one

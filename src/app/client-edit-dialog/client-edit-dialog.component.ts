@@ -17,13 +17,14 @@ export class ClientEditDialog implements OnInit {
   @Input("client") client:any;
   @Output() onChange = new EventEmitter();
   
+  
 
   ngOnInit() {
     console.log(this.client);
     
   }
   public openDialog():void {
-        
+                  
     let dialogRef = this.dialog.open(clientEditDialogForm, {
         data: this.client,
         width: "80%"
@@ -33,9 +34,8 @@ export class ClientEditDialog implements OnInit {
       {
       if(typeof result !== "undefined") {
         if(result.doUpdate) {
-          // this.lat = result.data.lat;
-          // this.lng = result.data.lng;
-          // this.onChange.emit({lat: this.lat, lng: this.lng});
+          
+          this.onChange.emit(this.client);
         }
       }
       

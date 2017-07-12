@@ -25,6 +25,9 @@ export class OSMComponent implements OnInit {
     firstRun: boolean = true;
     clientsMarkers: Array<any> = [];
     clientsLayerGroup: any = L.markerClusterGroup();
+    storesMarkers: Array<any> = [];
+    storesLayerGroup:any;
+    storesLayerGroups:any;
     constructor(
         private mapService: MapService, 
         private geocoder: GeocodingService,
@@ -75,24 +78,28 @@ export class OSMComponent implements OnInit {
         // Bind the created map to the service
         this.mapService.map = this.map;
 
-
+        this.createClientsMarkers(0);
+        this.createStoresMarkers(0);
 
         this.route.params.subscribe( (p) => {
+
+
 
             // Check if there are any params submitted
             if(Object.keys(p).length === 0 && p.constructor === Object) {
                 console.log("no params in route");
                 // no params? go default!
-                 this.createClientsMarkers(0);
-                this.createStoresMarkers(0);
+                 
 
             } else {
                 switch(p['type']) {
                 case "client":
-                    this.createClientsMarkers(p['id']);
+                    // this.createClientsMarkers(p['id']);
+                    this.selectMarker(p['id']);
                 break;
                 case "store":
-                    this.createStoresMarkers(p['id']);
+                    //this.createStoresMarkers(p['id']);
+                    this.selectStore(p['id']);
                 break;
                 case "clientFromStore":
                     this.clientsService.filterstate.defaultStore.active = true;
@@ -183,10 +190,7 @@ export class OSMComponent implements OnInit {
                 
                 // this.clientsMarkers[id].openPopup();
                 // this.map.setView(this.clientsMarkers[id].getLatLng(),18);
-                var m = this.clientsMarkers[id];
-                this.clientsLayerGroup.zoomToShowLayer(m, function() {
-                    m.openPopup();
-                });
+                this.selectMarker(id);
 
                 
             }
@@ -257,6 +261,20 @@ export class OSMComponent implements OnInit {
 
     }
 
+
+    selectMarker(id) {
+        var m = this.clientsMarkers[id];
+                this.clientsLayerGroup.zoomToShowLayer(m, function() {
+                    m.openPopup();
+                });
+    }
+    selectStore(id) {
+        var m = this.storesMarkers[id];
+         m.openPopup();
+         /*       this.storesLayerGroups.zoomToShowLayer(m, function() {
+                    m.openPopup();
+                }); */
+    }
 
     createClientsMarkers(id:number) {
 
@@ -350,20 +368,21 @@ export class OSMComponent implements OnInit {
 
         // STORES
         var stores = this.settingsService.settings.stores;    
-        var storesMarkers: Array<any> = [];
+        
         
         // iterate all stores
         for(var i = 0; i < stores.length; i++) {
             var m = stores[i];
-            var popupContent = "<div class='left'><img src='/assets/icons/stores_" + m.group + ".svg' alt='" + m.name + "' /></div>";
+            let storeSlug = this.settingsService.getStoreGroupById(m.group).slug;
+            var popupContent = "<div class='left'><img src='/assets/icons/stores/" + storeSlug + "_full.svg' alt='" + m.name + "' /></div>";
                 popupContent += "<div class='right'><p class='name'><b>#" + m.id + "</b> " + m.name + "</p>";
-                popupContent += "<p>" + m.address + "</p>";
-                popupContent += "<p><a href='/map/clientFromStore/" + m.slug + "'>Kunden anzeigen</a></p></div><div style='clear: both; float: none'></div>";
-
+                popupContent += "<p>" + m.address + "</p></div>";
+                // popupContent += "<p><a href='/map/clientFromStore/" + m.slug + "'>Kunden anzeigen</a></p></div><div style='clear: both; float: none'></div>";
+            
             let coords = {lat: stores[i].lat,  lng: stores[i].lng};
-            storesMarkers[i] = L.marker(coords,{
+            this.storesMarkers[i] = L.marker(coords,{
                     icon: L.icon({
-                        iconUrl: "assets/icons/stores_" + m.group + ".svg",
+                        iconUrl: "assets/icons/stores/" +  storeSlug + "_icon.svg",
                         shadowUrl: "assets/icons/stores_backdrop.png",
                         iconSize:     [32, 32], // size of the icon
                         shadowSize:   [48, 48], // size of the shadow
@@ -384,17 +403,18 @@ export class OSMComponent implements OnInit {
         } 
 
         // Add it to a layerGroup
-        var storesLayerGroup = L.layerGroup(storesMarkers);
+        this.storesLayerGroup = L.layerGroup(this.storesMarkers);
         
+        this.storesLayerGroup.addTo(this.map);
         // Array to contain ALL types of Markers
-        var markerLayerGroups = {
-            "Geschäfte": storesLayerGroup
+        this.storesLayerGroups = {
+            "Geschäfte": this.storesLayerGroup
             
         }
 
 
         // 
-        L.control.layers(markerLayerGroups).addTo(this.map);
+        L.control.layers(this.storesLayerGroups).addTo(this.map);
     }
      
 }

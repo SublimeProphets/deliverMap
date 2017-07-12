@@ -1,11 +1,8 @@
-
 <md-list>
-  <md-list-item *ngFor="let store of settings.stores; let i = index"
-    [class.selected]="store === selectedStore"
-    (click)="onSelect(store)">
-    <img md-list-avatar src="{{settingsService.getStoreGroupImage(store.group, 'icon')}}" alt="{{store.name}}">
-    <!-- <img src="/assets/icons/stores_{{store.icon}}" title="{{store.name}}" class="icon"/>  -->
-    <p md-line><b> {{store.name}}</b></p>
-    <span md-line>{{store.address}}</span>
-  </md-list-item>
+    <md-list-item *ngFor="let store of settings.stores; let i = index" [class.selected]="store === selectedStore">
+        <img md-list-avatar src="{{settingsService.getStoreGroupImage(store.group, 'icon')}}" alt="{{store.name}}">
+        <!-- <img src="/assets/icons/stores_{{store.icon}}" title="{{store.name}}" class="icon"/>  -->
+        <p md-line><a routerLink="/map/store/{{store.id}}"><b> {{store.name}}</b></a></p>
+        <span md-line>{{store.address}}</span>
+    </md-list-item>
 </md-list>

@@ -26,8 +26,13 @@ export class MainnavigationComponent implements OnInit {
        router.events.subscribe((url:any) => {
          console.log(url.url)
          
-        this.showFilters = (url.url == "/map" || url.url == "/clients") ? true : false;
-        this.showMapFeatures = (url.url == "/map") ? true : false;
+         var string = "foo",
+        substring = "oo";
+        
+        
+        
+        this.showFilters = (url.url.indexOf("map") !== -1 || url.url == "/clients") ? true : false;
+        this.showMapFeatures = (url.url.indexOf("map") !== -1) ? true : false;
 
        });
     }

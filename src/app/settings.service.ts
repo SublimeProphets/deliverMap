@@ -80,7 +80,7 @@ export class SettingsService {
 
   private defaultStores: Array<Store> = [
     {
-      id: 11,
+      id: 1,
       name: 'Migros Bielerhof',
       slug: 'Bielerhof Migros',
       group: 1,
@@ -90,7 +90,7 @@ export class SettingsService {
       lng: 7.244083
     },
     {
-      id: 12,
+      id: 2,
       name: 'Migros Neumarkt',
       slug: 'Neumarkt Migros',
       group: 1,
@@ -100,7 +100,7 @@ export class SettingsService {
       lng: 7.247239
     },
     {
-      id: 11,
+      id: 3,
       name: 'Migros Madretsch',
       slug: 'Madretsch Migros',
       group: 1,
@@ -110,7 +110,7 @@ export class SettingsService {
       lng: 7.252453
     },
     {
-      id: 1,
+      id: 4,
       name: 'Migros Bözingen',
       slug: 'Bözingen Migros',
       group: 1,
@@ -123,7 +123,7 @@ export class SettingsService {
 
     // COOP
     {
-      id: 1,
+      id: 5,
       name: 'Coop Megastore Bahnhof',
       slug: 'Bahnhof Coop',
       group: 2,
@@ -133,7 +133,7 @@ export class SettingsService {
       lng: 7.242938
     },
     {
-      id: 1,
+      id: 6,
       name: 'City Coop',
       slug: 'City Coop',
       group: 2,
@@ -146,7 +146,7 @@ export class SettingsService {
 
     // APOTHEKEN
     {
-      id: 1,
+      id: 7,
       name: 'Apotheke 55',
       slug: 'Apotheke 55',
       group: 3,
@@ -156,7 +156,7 @@ export class SettingsService {
       lng: 7.246271
     },
     {
-      id: 1,
+      id: 8,
       name: 'City Apotheke',
       slug: 'City-Apotheke',
       group: 3,
@@ -166,7 +166,7 @@ export class SettingsService {
       lng: 7.245548
     },
     {
-      id: 1,
+      id: 9,
       name: 'Hilfiker Apotheke',
       slug: 'Hilfiker',
       group: 3,
@@ -176,7 +176,7 @@ export class SettingsService {
       lng: 7.244160
     },
     {
-      id: 1,
+      id: 10,
       name: 'Apotheke Dufour',
       slug: 'Pharmacie dufour',
       group: 3,
@@ -186,7 +186,7 @@ export class SettingsService {
       lng: 7.252614
     },
     {
-      id: 1,
+      id: 11,
       name: 'Battenberg Apotheke',
       slug: 'Battenberg Apotheke',
       group: 3,
@@ -196,7 +196,7 @@ export class SettingsService {
       lng: 7.272842
     },
     {
-      id: 1,
+      id: 12,
       name: 'Madretsch Apotheke',
       slug: 'Madretsch-Apotheke',
       group: 3,
@@ -207,7 +207,7 @@ export class SettingsService {
     },
 
     {
-      id: 1,
+      id: 13,
       name: 'Bözingen Apotheke',
       slug: 'Bözingen Apotheke',
       group: 3,
@@ -220,7 +220,7 @@ export class SettingsService {
 
     // DENNER
     {
-      id: 11,
+      id: 14,
       name: 'Denner Florastrasse',
       slug: 'Denner Florastrasse',
       group: 5,
@@ -230,7 +230,7 @@ export class SettingsService {
       lng: 7.247312
     },
     {
-      id: 1,
+      id: 15,
       name: 'Denner Bielerhof',
       slug: 'Denner Bielerhof',
       group: 5,
@@ -240,7 +240,7 @@ export class SettingsService {
       lng: 7.244166
     },
     {
-      id: 1,
+      id: 16,
       name: 'Denner Silbergasse',
       slug: 'Denner Silbergasse',
       group: 5,
@@ -250,7 +250,7 @@ export class SettingsService {
       lng: 7.249562
     },
     {
-      id: 1,
+      id: 17,
       name: 'Denner Bözingen',
       slug: 'Denner Bözingen',
       group: 5,
@@ -260,7 +260,7 @@ export class SettingsService {
       lng: 7.263020
     },
     {
-      id: 1,
+      id: 18,
       name: 'Denner Poststrasse (Mett)',
       slug: 'Denner Poststrasse',
       group: 5,
@@ -270,7 +270,7 @@ export class SettingsService {
       lng: 7.272325
     },
     {
-      id: 1,
+      id: 19,
       name: 'Florever',
       slug: 'Florever',
       group: 4,
@@ -280,7 +280,7 @@ export class SettingsService {
       lng: 7.245424
     },
     {
-      id: 1,
+      id: 20,
       name: 'Sunneblueme',
       slug: 'Sunne-Blume Biel-Mett',
       group: 4,
@@ -290,7 +290,7 @@ export class SettingsService {
       lng: 7.273550
     },
     {
-      id: 1,
+      id: 21,
       name: 'Genossenschaft Wein (EGB)',
       slug: 'Einkaufsgenossenschaft EGB',
       group: 0,
@@ -300,7 +300,7 @@ export class SettingsService {
       lng: 7.253906
     },
     {
-      id: 1,
+      id: 22,
       name: 'Manor',
       slug: 'Manor',
       group: 0,
@@ -310,7 +310,7 @@ export class SettingsService {
       lng: 7.245810
     },
     {
-      id: 1,
+      id: 23,
       name: 'Confiserie Progin',
       slug: 'Progin',
       group: 0,

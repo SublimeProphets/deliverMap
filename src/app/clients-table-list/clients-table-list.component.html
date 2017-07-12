@@ -1,10 +1,11 @@
 <div [ngClass]="{'quisearch-enabled':quicksearchEnabled}" class="quicksearch" *ngIf="quicksearchEnabled == true">
     <md-input-container>
-    <input mdInput type='text' placeholder='Schnellsuche nach Namen..' (keyup)='updateFilter($event)' value="" />
-    <button md-icon-button mdSuffix><md-icon>search</md-icon></button>
-</md-input-container>
+        <input mdInput type='text' placeholder='Schnellsuche nach Namen..' (keyup)='updateFilter($event)' value="" />
+        <button md-icon-button mdSuffix><md-icon>search</md-icon></button>
+    </md-input-container>
 </div>
-<ngx-datatable class="material " #table [columnMode]=" 'force' " [messages]="{emptyMessage:'<div class=\'empty\'>Leider keine Einträge vorhanden.</div>'}" [headerHeight]="0" [footerHeight]="28" [rowHeight]="32" [scrollbarV]="true " [scrollbarH]="false " [rows]="data ">
+<ngx-datatable class="material " #table [columnMode]=" 'force' " [messages]="{emptyMessage:'<div class=\'empty\'>Leider keine Einträge vorhanden.</div>'}" [headerHeight]="0" [footerHeight]="28" [rowHeight]="32" [scrollbarV]="true " [scrollbarH]="false "
+    [rows]="data ">
 
     <!-- Row Detail Template -->
     <ngx-datatable-row-detail [rowHeight]="160" #myDetailRow (toggle)="onDetailToggle($event)">
@@ -18,15 +19,23 @@
                     </section>
 
                     <section class="infos">
-                        <span>{{row.deliveryCount}}</span> aus {{row.lastDeliveryStore}}
+
+
+                        <round-progress [current]="row.deliveryCount" [max]="25" [color]="'#45ccce'" [background]="'#eaeaea'" [radius]="deliveryCountRadius" [responsive]="true" [stroke]="16" [semicircle]="true" [rounded]="true" [duration]="800" [animation]="'easeInOutQuart'"
+                            [animationDelay]="0"></round-progress>
+                        <div class="deliveryCount"> <span>{{row.deliveryCount}}</span> Lieferungen</div>
+                    </section>
+                    <section class="infos2">
+
+                        <img src="{{settingsService.getStoreGroupImage(row.storeGroup, 'icon')}}" alt="{{row.defaultStore}}" class="stores-icon-24" /> {{ row.defaultStore }}
                     </section>
                 </div>
                 <div class="row-actions">
                     <section class="showOnMap">
-                        <button md-button (click)="showOnMap(row)" [disabled]="row.selected" class="fullsize"><md-icon>remove_red_eye</md-icon> Auf Karte</button>
+                        <button routerLink="/map/client/{{row.id}}" md-button [disabled]="row.selected" class="fullsize"><md-icon>remove_red_eye</md-icon> Auf Karte</button>
                     </section>
-                    <section class="markAsFavorit" (click)="markAsFavorit(row.id)" >
-                    <button md-button class="fullsize">
+                    <section class="markAsFavorit" (click)="markAsFavorit(row.id)">
+                        <button md-button class="fullsize">
                         <md-icon *ngIf="!row.starred">star_border</md-icon>
                         <md-icon *ngIf="row.starred">star</md-icon> Favorit
                     </button>

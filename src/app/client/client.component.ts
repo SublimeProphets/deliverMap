@@ -8,6 +8,8 @@
       defaultStore?: string;
       storeGroup?: string;
       lastDeliveryDate?: any;
+      firstOrderDate?: any;
+      comments?: any;
       abo?: number;
       tel?: string;
       email?:string;
@@ -20,5 +22,6 @@
       draggable?:  boolean; // agm
       DOMID?: any;
       isOpen?: any;
+      
 
     }
