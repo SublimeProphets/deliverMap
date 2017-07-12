@@ -1,0 +1,76 @@
+<h2>Bearbeite {{data.name}}</h2>
+<div class="flex-container">
+    <div class="flex-item">
+        <h3>Grundangaben</h3>
+        <md-input-container>
+            <input mdInput type="string" placeholder="Name Vorname" [ngModel]="data.name" />
+        </md-input-container>
+        <md-input-container>
+            <span mdPrefix>
+        Abo-Nr.
+    </span>
+            <input mdInput type="string" placeholder="1234" [(ngModel)]="data.abo" />
+
+            <md-hint align="start">Falls kein Abo-Kunde einfach leer lassen</md-hint>
+        </md-input-container>
+
+        <p>
+            <md-slide-toggle [(checked)]="data.visible">Sichtbar</md-slide-toggle><br /></p>
+        <p>
+            <md-slide-toggle [(checked)]="data.starred">Favorit</md-slide-toggle><br /></p>
+        <h3>Lieferungen</h3>
+        <!--  [(ngModel)]="" (change)="setFilter('defaultStore')" -->
+        <md-select md-line placeholder="Letzte Lieferung aus">
+            <md-option *ngFor="let store of stores" [value]="store.slug">
+                <img src="{{settingsService.getStoreGroupImage(store.group, 'icon')}}" alt="{{ store.name }}" class="stores-icon-24" /> {{ store.name }}</md-option>
+        </md-select>
+    </div>
+    <div class="flex-item">
+        <h3>Adresse und Positionierung</h3>
+
+        <md-input-container class="example-full-width">
+            <input mdInput placeholder="Adresse" [ngModel]="data.address">
+        </md-input-container>
+
+        <table cellspacing="0" class="example-full-width">
+            <tr>
+                <td style="width: 30%">
+                    <md-input-container>
+                        <input mdInput #postalCode maxlength="4" placeholder="Postleihzahl" [(ngModel)]="data.plz">
+                        <md-hint align="end">{{postalCode.value.length}} / 4</md-hint>
+                    </md-input-container>
+                </td>
+                <td>
+                    <md-input-container>
+                        <input mdInput placeholder="Stadt" [(ngModel)]="data.city">
+                    </md-input-container>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <md-input-container>
+                        <input mdInput placeholder="Breitengraden" [(ngModel)]="data.lat" type="number">
+                        <md-hint align="end"></md-hint>
+                    </md-input-container>
+                </td>
+                <td>
+                    <md-input-container>
+                        <input mdInput placeholder="Längengraden" [(ngModel)]="data.lng" type="number">
+                        <md-hint align="end"></md-hint>
+                    </md-input-container>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    <div class="flex-item">
+        <div id="locationPickerMap"></div>
+    </div>
+</div>
+
+
+
+
+
+<button md-raised-button [md-dialog-close]="{doUpdate:true, data:data}"><md-icon>save</md-icon>Speichern</button>
+<button md-raised-button [md-dialog-close]="{doUpdate:false, data:data}"><md-icon>close</md-icon>Abbrechen</button>

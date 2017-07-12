@@ -19,6 +19,7 @@ import {HttpModule} from "@angular/http";
 import {FileUploadModule} from "ng2-file-upload";
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { RouterModule, Routes } from '@angular/router';
+import { LOCALE_ID } from '@angular/core';
 // import { AgmCoreModule } from '@agm/core';
 // import { Ng2CompleterModule } from "ng2-completer";
 // import { CompleterCmp } from "./completer-cmp/completer-cmp";
@@ -74,8 +75,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { HomepageComponent } from './homepage/homepage.component';
 import { StorenavigationComponent } from './storenavigation/storenavigation.component';
 import { DataTableViewComponent } from './data-table-view/data-table-view.component';
- 
-// import { TestPipe } from "./pipes/test.pipe";
+import { ClientEditDialog, clientEditDialogForm } from "./client-edit-dialog/client-edit-dialog.component";
+
 
 
 // OSM
@@ -86,7 +87,7 @@ import { SettingsComponent, EditStoreDialog, EditStoreGroupDialog } from './sett
 import { FiltersComponent } from './filters/filters.component';
 import { SearchResultsComponent } from './search-results/search-results.component';
 import { ClientsTableListComponent } from './clients-table-list/clients-table-list.component';
-import { LocationPickerComponent, LocationPickerDialog } from './location-picker/location-picker.component'; 
+
 
 
 
@@ -102,6 +103,11 @@ import { LocationPickerComponent, LocationPickerDialog } from './location-picker
     PageNotFoundComponent,
     HomepageComponent,
     StorenavigationComponent,
+    
+
+    // CLIENTS
+    clientEditDialogForm,
+    ClientEditDialog,
     DataTableViewComponent,
 
     // SETTINGS
@@ -116,9 +122,7 @@ import { LocationPickerComponent, LocationPickerDialog } from './location-picker
     NavigatorComponent,
     FiltersComponent,
     SearchResultsComponent,
-    ClientsTableListComponent,
-    LocationPickerComponent,
-    LocationPickerDialog
+    ClientsTableListComponent    
     
     
 
@@ -167,10 +171,11 @@ import { LocationPickerComponent, LocationPickerDialog } from './location-picker
     GeocodingService,
     MapService,
     SettingsService,
-    SearchService
+    SearchService,
+    { provide: LOCALE_ID, useValue: "de-CH" }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [EditStoreDialog, EditStoreGroupDialog, LocationPickerDialog]
+  entryComponents: [EditStoreDialog, EditStoreGroupDialog, clientEditDialogForm]
 })
 export class AppModule { 
   constructor(){}

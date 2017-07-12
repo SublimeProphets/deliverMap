@@ -22,11 +22,6 @@ p.date {
     margin: 0;
 }
 
-img {
-    max-width: 24px;
-    max-height: 24px;
-}
-
 .deliveryAmount input {
     width: 40px;
 }

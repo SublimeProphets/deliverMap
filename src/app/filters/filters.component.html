@@ -1,30 +1,33 @@
+<p md-line class="resultsCount">
+    <b>{{filteredClientsTotal}}</b> gefunden</p>
+<button md-raised-button md-line (click)="setFilter('reset')" class="reset"><md-icon>settings_backup_restore</md-icon>Reset</button>
 
- <p md-line class="resultsCount"><b>{{filteredClientsTotal}}</b> gefunden</p>
-        <button md-raised-button md-line (click)="setFilter('reset')" class="reset"><md-icon>settings_backup_restore</md-icon>Reset</button>
-        
-       
-        <p class="select">
-            <md-select placeholder="Stadtbezirk" [(ngModel)]="filterstate.area.value" (change)="setFilter('area')">
-            <md-option *ngFor="let state of bezirk" [value]="state.code">{{ state.name }}</md-option>
-        </md-select>
-        </p>
-        
-        <p class="select">
-        <md-select md-line placeholder="Kunde von Geschäft" [(ngModel)]="filterstate.defaultStore.value" (change)="setFilter('defaultStore')">
-            <md-option *ngFor="let store of settings.stores" [value]="store.slug">
-                <img src="{{settingsService.getStoreGroupImage(store.group, 'icon')}}" alt="{{ store.name }}" />
-                {{ store.name }}</md-option>
-        </md-select>
-        </p>
-<p class="date">
-        <md-input-container>
-  <input mdInput [mdDatepicker]="picker" placeholder="Letzte Bestellung seit.." type="date">
-  <button mdSuffix [mdDatepickerToggle]="picker"></button>
-</md-input-container>
-<md-datepicker #picker></md-datepicker>
+
+<p class="select">
+    <md-select placeholder="Stadtbezirk" [(ngModel)]="filterstate.area.value" (change)="setFilter('area')">
+        <md-option *ngFor="let state of bezirk" [value]="state.code">{{ state.name }}</md-option>
+    </md-select>
 </p>
-<p><md-checkbox (click)="setFilter('abo')" [ngClass]="{'isActive': filterstate.abo.active }"  [(ngModel)]="filterstate.abo.value">Nur Abo-Kunden</md-checkbox></p>
-<p><md-checkbox >Wiederkehrende Kunden</md-checkbox></p>
+
+<p class="select">
+    <md-select md-line placeholder="Kunde von Geschäft" [(ngModel)]="filterstate.defaultStore.value" (change)="setFilter('defaultStore')">
+        <md-option *ngFor="let store of settings.stores" [value]="store.slug">
+            <img src="{{settingsService.getStoreGroupImage(store.group, 'icon')}}" alt="{{ store.name }}" class="stores-icon-24" /> {{ store.name }}</md-option>
+    </md-select>
+</p>
+<p class="date">
+    <md-input-container>
+        <input mdInput [mdDatepicker]="picker" placeholder="Letzte Bestellung seit.." type="date">
+        <button mdSuffix [mdDatepickerToggle]="picker"></button>
+    </md-input-container>
+    <md-datepicker #picker></md-datepicker>
+</p>
+<p>
+    <md-checkbox (click)="setFilter('abo')" [ngClass]="{'isActive': filterstate.abo.active }" [(ngModel)]="filterstate.abo.value">Nur Abo-Kunden</md-checkbox>
+</p>
+<p>
+    <md-checkbox>Wiederkehrende Kunden</md-checkbox>
+</p>
 
 
 <!-- <p class="deliveryAmount">

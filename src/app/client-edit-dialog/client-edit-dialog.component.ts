@@ -1,45 +1,41 @@
 import { Component, OnInit, Input, Inject, Output, EventEmitter } from '@angular/core';
 import {MdDialog, MdDialogRef} from '@angular/material';
 import {MD_DIALOG_DATA} from '@angular/material';
+import { SettingsService } from "../settings.service";
 
 @Component({
-  selector: 'location-picker',
-  templateUrl: './location-picker.component.html',
-  styleUrls: ['./location-picker.component.css']
+  selector: 'client-edit-dialog',
+  templateUrl: './client-edit-dialog.component.html',
+  styleUrls: ['./client-edit-dialog.component.less']
 })
-export class LocationPickerComponent implements OnInit {
+export class ClientEditDialog implements OnInit {
 
   constructor(
-    public dialog: MdDialog,
-
+    public dialog: MdDialog
   ) { }
   
-  @Input("lat") lat:number;
-  @Input("lng") lng:number;
-  @Input("title") title:string;
+  @Input("client") client:any;
   @Output() onChange = new EventEmitter();
+  
 
   ngOnInit() {
+    console.log(this.client);
     
   }
   public openDialog():void {
         
-    let dialogRef = this.dialog.open(LocationPickerDialog, {
-        data: {
-          lat: this.lat,
-          lng: this.lng,
-          title: this.title
-        },
-        width: "600px"
+    let dialogRef = this.dialog.open(clientEditDialogForm, {
+        data: this.client,
+        width: "80%"
       });
       
       dialogRef.afterClosed().subscribe((result) => 
       {
       if(typeof result !== "undefined") {
         if(result.doUpdate) {
-          this.lat = result.data.lat;
-          this.lng = result.data.lng;
-          this.onChange.emit({lat: this.lat, lng: this.lng});
+          // this.lat = result.data.lat;
+          // this.lng = result.data.lng;
+          // this.onChange.emit({lat: this.lat, lng: this.lng});
         }
       }
       
@@ -49,22 +45,27 @@ export class LocationPickerComponent implements OnInit {
 
 
 @Component({
-  selector: 'LocationPickerDialog',
-  templateUrl: 'location-picker-dialog.template.html',
-  styleUrls: ['./location-picker.component.css']
+  selector: 'clientEditDialogForm',
+  templateUrl: './client-edit-dialog-form.template.html',
+  styleUrls: ['./client-edit-dialog.component.less']
 })
-export class LocationPickerDialog implements OnInit {
+export class clientEditDialogForm implements OnInit {
   data: any;
   map: any;
+  public stores:any;
   
-  constructor(@Inject(MD_DIALOG_DATA) public insertedData: any) {
+  constructor(
+    @Inject(MD_DIALOG_DATA) public insertedData: any,
+    public settingsService:SettingsService
+  ) {
     this.data = insertedData;
+    this.stores = this.settingsService.settings.stores;
   }
 
   ngOnInit() {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
-    
+    console.log(this.data);
     this.data.lat = (typeof this.data.lat == "undefined") ? 47.1367785 : this.data.lat;
     this.data.lng = (typeof this.data.lng == "undefined") ? 7.2467909 : this.data.lng;
 

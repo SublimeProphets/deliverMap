@@ -27,6 +27,7 @@ export class FileuploaderComponent implements OnInit {
   private queue: any;
   //temporary Object for one Client
   private tmpClient: Client[];
+  public timePassedSinceImport: Number;
   @ViewChild('missingtable') missingTable: any;
 
 
@@ -46,13 +47,17 @@ export class FileuploaderComponent implements OnInit {
   ngOnInit(): void {
 
     this.settings = this.settingsService.settings;
+    let now = Date();
+    
 
 
 
 
 
 
-
+  }
+  gimeInfo(event) {
+    console.log(event);
   }
   /*
   
@@ -120,11 +125,16 @@ export class FileuploaderComponent implements OnInit {
     }
   
   */
+
   public xlsxUploaded(result: UploadResult) {
 
     // this.uploaderContent.next(JSON.stringify(result));
-
+console.log(result);
     this.uploaderContent.next("File erfolgreich hochgeladen");
+
+
+    // Set last importDate
+    this.settingsService.settings.importAssistant.lastImportDate = Date();
 
 
     // this.importResults$.next();
@@ -482,4 +492,25 @@ public toggleExpandRow(row) {
     // remember the old one
     this.lastOpenedRow = row;
   }
+
+
+public updateRow(id, values) {
+  console.log(id, values);
+  let index = this.importResults.missingCoordinates.map(function(e) { return e.id; }).indexOf(id);
+  let myElem = this.importResults.missingCoordinates[index];
+console.log(index, this.importResults.missingCoordinates); 
+  
+  myElem.lat = values.lat;
+  myElem.lng = values.lng;
+  console.log(myElem);
+
+  //Remove from array and add to success one
+this.importResults.missingCoordinates.splice(index, 1);
+  this.importResults.success.push(myElem);
+  
+}
+public saveImportedData():void {
+    this.clientsService.updateStorage(this.importResults.success, true);
+}
+
 }

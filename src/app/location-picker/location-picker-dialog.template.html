@@ -1,10 +1,60 @@
-<div id="locationPickerMap"></div>
-<div class="actions">
-    <md-input-container>
-        <input mdInput type="number" [value]="data.lat" placeholder="Breitengraden" />
+<h2>Bearbeite {{data.name}}</h2>
+<h3>Grundangaben</h3>
+<md-input-container>
+    <input mdInput type="string" placeholder="Name Vorname" value="data.name" />
+</md-input-container>
+<md-input-container aria-label="Falls kein Abo-Kunde einfach leer lassen">
+    <span md-prefix>
+        Abo-Nr.
+    </span>
+    <input mdInput type="string" placeholder="1234" value="data.abo" />
+
+</md-input-container>
+
+<md-slide-toggle [(checked)]="row.visible">Sichtbar</md-slide-toggle><br />
+<md-slide-toggle [(checked)]="row.starred">Favorit</md-slide-toggle><br />
+<h3>Adresse und Positionierung
+
+    <md-input-container class="example-full-width">
+        <input mdInput placeholder="Adresse" [(ngModel)]="data.address">
     </md-input-container>
-    <md-input-container>
-        <input mdInput type="number" [value]="data.lng" placeholder="Längengraden" />
-    </md-input-container>
-    <button md-raised-button (click)="save()"><md-icon>save</md-icon>Speichern</button>
-    <button md-raised-button (click)="cancel()"><md-icon>close</md-icon>Abbrechen</button>
+
+    <table cellspacing="0" class="example-full-width">
+        <tr>
+            <td style="width: 30%">
+                <md-input-container>
+                    <input mdInput #postalCode maxlength="4" placeholder="Postleihzahl" [(ngModel)]="data.plz">
+                    <md-hint align="end">{{postalCode.value.length}} / 4</md-hint>
+                </md-input-container>
+            </td>
+            <td>
+                <md-input-container>
+                    <input mdInput placeholder="Stadt" [(ngModel)]="data.city">
+                </md-input-container>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <md-input-container>
+                    <input mdInput placeholder="Breitengraden" [(ngModel)]="data.lat" type="number">
+                    <md-hint align="end"></md-hint>
+                </md-input-container>
+            </td>
+            <td>
+                <md-input-container>
+                    <input mdInput placeholder="Längengraden" [(ngModel)]="data.lng" type="number">
+                    <md-hint align="end"></md-hint>
+                </md-input-container>
+            </td>
+        </tr>
+
+    </table>
+    <div id="locationPickerMap"></div>
+
+
+
+
+
+
+    <button md-raised-button [md-dialog-close]="{doUpdate:true, data:data}"><md-icon>save</md-icon>Speichern</button>
+    <button md-raised-button [md-dialog-close]="{doUpdate:false, data:data}"><md-icon>close</md-icon>Abbrechen</button>

@@ -32,6 +32,9 @@ export class XlsxFileUploadComponent implements OnInit, OnDestroy {
     this.filesSubject = new Subject();
     this._uploadedXls = this.filesSubject.asObservable()
       .switchMap((file: File) => {
+
+        console.log(File);
+
         return new Observable<any>((observer) => {
           let reader: FileReader = new FileReader();
           reader.onload = (e) => {

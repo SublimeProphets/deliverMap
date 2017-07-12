@@ -67,7 +67,7 @@ mapFinishedMarkers:EventEmitter<boolean> = new EventEmitter();
 private activeFilters: Array<string> = [];
 
 
-  private updateStorage(input:any, isOriginalData:boolean) {
+  public updateStorage(input:any, isOriginalData:boolean) {
     this.clients = input;
     if(isOriginalData) {
       this.clientsOriginal = input;

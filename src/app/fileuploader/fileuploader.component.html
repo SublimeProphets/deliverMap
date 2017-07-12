@@ -2,6 +2,7 @@
     <md-card>
         <md-card-title>1. Dateiupload</md-card-title>
         <md-card-content>
+            <p>Letzter Import:<b>{{settings.importAssistant.lastImportDate | date:'EEEE, d.MMMM y hh:mm'}}</b></p>
             <p>Daten für
                 <md-radio-group [(ngModel)]="settings.importAssistant.workspace">
                     <md-radio-button value="12d">1-2-Domicile</md-radio-button>
@@ -65,11 +66,36 @@
                 <ngx-datatable-column name="Längengraden" prop="lng" [width]=""></ngx-datatable-column>
 
             </ngx-datatable>
+            <h2>Koordinaten fehlen</h2>
+            <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="50" [limit]="50" [scrollbarV]="true" [scrollbarH]="true" [rows]="importResults.missingCoordinates">
+                <ngx-datatable-column name="name" width="auto" [resizeable]="false" [sortable]="false" [draggable]="false" [canAutoResize]="true" (click)="toggleExpandRow(row)">
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                        <client-edit-dialog (onChange)="updateRow(row.id, $event)" [client]="row" style="width: 300px; height: 200px">x
+                        </client-edit-dialog>
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Id" [width]="50"></ngx-datatable-column>
+                <ngx-datatable-column name="Name" [width]="250"></ngx-datatable-column>
+                <ngx-datatable-column name="Adresse" prop="address"></ngx-datatable-column>
+                <ngx-datatable-column name="PLZ" prop="postleihzahl" [width]="60"></ngx-datatable-column>
+                <ngx-datatable-column name="City" [width]="100" prop="city"></ngx-datatable-column>
+
+                <ngx-datatable-column name="eMail" prop="email"></ngx-datatable-column>
+                <ngx-datatable-column name="tel" prop="tel"></ngx-datatable-column>
+                <ngx-datatable-column name="Abo" prop="abo" [width]="30"></ngx-datatable-column>
+                <ngx-datatable-column name="Lieferungen" prop="deliveryCount" [width]="30"></ngx-datatable-column>
+                <ngx-datatable-column name="Geschäft" prop="defaultStore" [width]=""></ngx-datatable-column>
+                <ngx-datatable-column name="Letzte Lieferung" prop="lastDeliveryDate" [width]=""></ngx-datatable-column>
+                <ngx-datatable-column name="Breitengraden" prop="lat" [width]="60"></ngx-datatable-column>
+                <ngx-datatable-column name="Längengraden" prop="lng" [width]=""></ngx-datatable-column>
+
+            </ngx-datatable>
 
             <h2>Koordinaten fehlen</h2>
-            <ngx-datatable class="material" #missingtable [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="50" [limit]="50" [scrollbarV]="true" [scrollbarH]="true" [rows]="importResults.missingCoordinates">
+            <!-- 
+                <ngx-datatable class="material" #missingtable [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="50" [limit]="50" [scrollbarV]="true" [scrollbarH]="true" [rows]="importResults.missingCoordinates">
 
-                <!-- Row Detail Template -->
+                
                 <ngx-datatable-row-detail [rowHeight]="400" #myDetailRow>
                     <ng-template let-row="row" ngx-datatable-row-detail-template>
                         <div class="detail-box">
@@ -84,10 +110,10 @@
                                     <span>{{row.deliveryCount}}</span> aus {{row.lastDeliveryStore}}
                                 </section>
                                 <md-input-container>
-                                    <input mdInput type="number" value="0" placeholder="Breitengraden" />
+                                    <input mdInput type="number" [value]="row.lat" placeholder="Breitengraden" />
                                 </md-input-container>
                                 <p>
-                                    <location-picker [lat]="row.lat" [lng]="row.lng" style="width: 300px; height: 200px">x
+                                    <location-picker (onChange)="row.lat = $event.value.lat" [(lat)]="row.lat" [(lng)]="row.lng" style="width: 300px; height: 200px">x
                                     </location-picker>
                                 </p>
                             </div>
@@ -101,7 +127,7 @@
                         </div>
                     </ng-template>
                 </ngx-datatable-row-detail>
-                <!-- Column Templates -->
+                
                 <ngx-datatable-column [width]="32" [resizeable]="false" [sortable]="false" [draggable]="false" [canAutoResize]="false">
                     <ng-template let-row="row" ngx-datatable-cell-template>
                         <span [class.datatable-icon-right]="!row.$$expanded" [class.datatable-icon-down]="row.$$expanded" title="Expand/Collapse Row" (click)="toggleExpandRow(row)">
@@ -117,6 +143,7 @@
 
 
             </ngx-datatable>
+            -->
 
 
             <h2>Fehler (übersprungen)</h2>
@@ -138,6 +165,14 @@
             </ngx-datatable>
 
 
+
+        </md-card-content>
+    </md-card>
+    <md-card>
+        <md-card-title>4. Import fertigstellen</md-card-title>
+        <md-card-subtitle>Stelle zuvor sicher, dass alle Daten korrekt sind. Nur Datensätze in der Liste "Erfolgreich" werden übernommen, alle anderen werden warnungslos verworfen.</md-card-subtitle>
+        <md-card-content>
+            <button md-raised-button (click)="saveImportedData()"><md-icon>save</md-icon> Daten definitiv importieren</button>
 
         </md-card-content>
     </md-card>

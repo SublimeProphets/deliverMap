@@ -373,6 +373,7 @@ export class SettingsService {
       importAssistant: {
         workspace: "12d",
         fileHasHeader: true,
+        lastImportDate: 0,
         importResults: {
           showSuccess: true,
           showCorrupt: true,
