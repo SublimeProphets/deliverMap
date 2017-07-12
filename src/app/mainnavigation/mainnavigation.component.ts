@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MapService} from "../map.service";
 import { SettingsService } from "../settings.service";
-
+import { RouterModule, Routes, ActivatedRoute, Router } from '@angular/router';
 
 
 
@@ -15,10 +15,22 @@ export class MainnavigationComponent implements OnInit {
 
   selectedMap: string;
   settings: any;
-
+  route:any;
+  showMapFeatures: boolean = false;
+  showFilters: boolean = false;
   constructor(
     private mapService: MapService,
-    private settingsService:SettingsService) { }
+    private settingsService:SettingsService,
+    private router:Router
+    ) { 
+       router.events.subscribe((url:any) => {
+         console.log(url.url)
+         
+        this.showFilters = (url.url == "/map" || url.url == "/clients") ? true : false;
+        this.showMapFeatures = (url.url == "/map") ? true : false;
+
+       });
+    }
 
    
   
@@ -27,6 +39,8 @@ export class MainnavigationComponent implements OnInit {
   ngOnInit() {
     this.selectedMap = this.mapService.selectedBaseMap;
     this.settings = this.settingsService.settings;  
+    this.route = this.router.url;
+    console.log(this.route)
   }
   
 
