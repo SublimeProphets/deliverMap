@@ -26,8 +26,9 @@
                         <div class="deliveryCount"> <span>{{row.deliveryCount}}</span> Lieferungen</div>
                     </section>
                     <section class="infos2">
-
-                        <img src="{{settingsService.getStoreGroupImage(row.storeGroup, 'icon')}}" alt="{{row.defaultStore}}" class="stores-icon-24" /> {{ row.defaultStore }}
+                        <div><img src="{{settingsService.getStoreGroupImage(row.defaultStore, 'icon')}}" alt="{{row.defaultStore}}" class="stores-icon-24" /> {{row.storeGroup}} {{ row.defaultStore }}</div>
+                        <div>{{row.lastDeliveryDate | date:'d.M.yy' }} {{daysSinceDate(row.lastDeliveryDate)}}</div>
+                        <div></div>
                     </section>
                 </div>
                 <div class="row-actions">

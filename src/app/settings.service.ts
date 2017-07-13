@@ -341,6 +341,16 @@ export class SettingsService {
     let index = this.settings.storesGroups.map(function (e) { return e.id; }).indexOf(id);
     return this.settings.storesGroups[index];
   }
+  public getStoreGroupIdBySlug(slug: string):number {
+    let index = this.settings.storesGroups.map(function (e) { return e.slug; }).indexOf(slug);
+    if(index > 0 ) {
+      return this.settings.storesGroups[index].id;
+    } else {
+      return 0;
+    }
+
+    
+  }
   public getStoreGroupImage(id, type?: string) {
 
     // get index 

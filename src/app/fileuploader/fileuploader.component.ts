@@ -278,7 +278,7 @@ export class FileuploaderComponent implements OnInit {
           case "I":
             this.tmpClient[previousRow].defaultStore = res[key].v;
 
-
+            
             // //if(storeObj) this.tmpClient[previousRow].storeGroup = storeObj.group;
             break;
 
@@ -337,8 +337,8 @@ export class FileuploaderComponent implements OnInit {
 
             //Lookup group membership
 
-            this.tmpClient[previousRow].storeGroup = this.lookupStoreGroup(this.tmpClient[previousRow].defaultStore);
-
+            //this.tmpClient[previousRow].storeGroup = this.lookupStoreGroup(this.tmpClient[previousRow].defaultStore);
+          //  this.tmpClient[previousRow].storeGroup = this.settingsService.getStoreGroupIdBySlug(res[key].v);
 
 
 

@@ -17,6 +17,7 @@ export class ClientsTableListComponent implements OnInit {
   temp = [];
   originalData:any;
   lastOpenedRow:any = false;
+  public now:any = Date.now() / 1000;
   public stores:any;
   public deliveryCountRadius: number = 50;
   constructor(
@@ -27,10 +28,38 @@ export class ClientsTableListComponent implements OnInit {
   }
 
   ngOnInit() {
+    // new Date((parseInt(res[key].v) - (25567 + 1)) * 86400 * 1000)
+
+      var now = Date.now();
+    
+
+    
     console.log(this.quicksearchEnabled);
     this.originalData = this.data;
     this.stores = this.settingsService.settings.stores;
+    
+    var date = new Date(this.originalData[0].lastDeliveryDate); // some mock date
+    var milliseconds = date.getTime(); 
+
+    console.log(milliseconds);
+    console.log(now);
+
+    
+    console.log(Math.round((now-milliseconds)/(1000*60*60*24)));
   }
+  
+daysSinceDate(date) {
+  if(typeof date !== "string") {
+    return "Keine"
+  } else {
+    let now = Date.now();
+  let tmpDate = new Date(date); // some mock date
+  var milliseconds = tmpDate.getTime(); 
+  return Math.round((now-milliseconds)/(1000*60*60*24))
+  }
+  
+}
+
 getOverlayStyle() {
     
     let transform = 'translateY(-50%) translateX(-50%)';

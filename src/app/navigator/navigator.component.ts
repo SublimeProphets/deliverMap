@@ -85,7 +85,7 @@ export class NavigatorComponent {
     }
 
     toggleInputFocus(state: boolean) {
-        this.searchHasFocus = (this.showOptions) ? true : state; //Check for showOptions in attribute, if true then always show
+        // this.searchHasFocus = (this.showOptions) ? true : state; //Check for showOptions in attribute, if true then always show
     }
     closeSearchResults(): void {
         this.showSearchResults = false;
