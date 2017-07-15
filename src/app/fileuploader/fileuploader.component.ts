@@ -258,13 +258,13 @@ export class FileuploaderComponent implements OnInit {
             break;
 
           // Addresse
-          case "F":
+          case "G":
             this.tmpClient[previousRow].email = res[key].v;
             console.error("EMAIL", this.tmpClient[previousRow].email);
             break;
 
           // Addresse
-          case "G":
+          case "F":
             this.tmpClient[previousRow].abo = res[key].v;
             console.error("ABO", this.tmpClient[previousRow].abo);
             break;

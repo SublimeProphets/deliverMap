@@ -1,0 +1,9 @@
+<button md-button (click)="setStarred()" *ngIf="label">
+  <md-icon *ngIf="!starstate">star_border</md-icon>
+  <md-icon *ngIf="starstate">star</md-icon> Favorit
+</button>
+
+
+<button md-icon-button (click)="setStarred()" *ngIf="!label">
+    <md-icon>{{starstatename}}</md-icon>
+  </button>

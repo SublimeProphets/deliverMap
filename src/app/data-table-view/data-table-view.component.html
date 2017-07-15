@@ -46,25 +46,35 @@
                <option [value]="200">200</option>
              </select>
              -->
-<ngx-datatable class="material maintable" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="50" [limit]="50" [scrollbarV]="true" [scrollbarH]="true" [rows]="clients">
-    <ngx-datatable-column name="id" width="auto" [resizeable]="false" [sortable]="false" [draggable]="false" [canAutoResize]="false" (click)="toggleExpandRow(row)">
+<ngx-datatable class="material maintable" [columnMode]="'fixed'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="50" [limit]="50" [scrollbarV]="true" [scrollbarH]="true" [rows]="clients">
+    <ngx-datatable-column name="id" width="auto" [resizeable]="false" [sortable]="false" [draggable]="false" [canAutoResize]="false">
         <ng-template let-row="row" ngx-datatable-cell-template>
             <client-edit-dialog (onChange)="updateClient(row.id, $event)" [client]="row">
             </client-edit-dialog>
+            <client-set-starred [id]="row.id" [state]="row.starred" [label]="false"></client-set-starred>
         </ng-template>
     </ngx-datatable-column>
-    <ngx-datatable-column name="Id" [width]="50"></ngx-datatable-column>
     <ngx-datatable-column name="Name" [width]="250"></ngx-datatable-column>
     <ngx-datatable-column name="Adresse" prop="address"></ngx-datatable-column>
     <ngx-datatable-column name="PLZ" prop="postleihzahl" [width]="60"></ngx-datatable-column>
     <ngx-datatable-column name="City" [width]="100" prop="city"></ngx-datatable-column>
-
     <ngx-datatable-column name="eMail" prop="email"></ngx-datatable-column>
     <ngx-datatable-column name="tel" prop="tel"></ngx-datatable-column>
     <ngx-datatable-column name="Abo" prop="abo" [width]="30"></ngx-datatable-column>
     <ngx-datatable-column name="Lieferungen" prop="deliveryCount" [width]="30"></ngx-datatable-column>
     <ngx-datatable-column name="Geschäft" prop="defaultStore" [width]=""></ngx-datatable-column>
-    <ngx-datatable-column name="Letzte Lieferung" prop="lastDeliveryDate" [width]=""></ngx-datatable-column>
+    <ngx-datatable-column name="Letzte Lieferung" prop="lastDeliveryDate" [width]="">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+            {{row.lastDeliveryDate | date:'dd.MM.yy' }}
+        </ng-template>
+
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Kunde seit" prop="firstOrderDate" [width]="">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+            {{row.firstOrderDate | date:'dd.MM.yy' }}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Kommentare" prop="comments" [width]=""></ngx-datatable-column>
     <ngx-datatable-column name="Breitengraden" prop="lat" [width]="60"></ngx-datatable-column>
     <ngx-datatable-column name="Längengraden" prop="lng" [width]=""></ngx-datatable-column>
 

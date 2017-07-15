@@ -2,7 +2,12 @@ import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 import { SettingsService } from "../settings.service";
 import {MdDialog, MdDialogRef} from '@angular/material';
 import {MD_DIALOG_DATA} from '@angular/material';
-import { ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+// import { ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { FileUploader } from "ng2-file-upload";
+import {Observable, Subject, Subscription} from "rxjs";
+import {Http} from "@angular/http";
+
+const URL = 'http://localhost/dist/php-interface.php';
 
 @Component({
   selector: 'app-settings',
@@ -10,12 +15,14 @@ import { ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
   styleUrls: ['./settings.component.less'],
   encapsulation: ViewEncapsulation.None
 })
+
+
+
 export class SettingsComponent {
 
   constructor(
     private settingsService: SettingsService, 
-    public dialog: MdDialog,
-    public ref: ChangeDetectorRef
+    public dialog: MdDialog
   ) { 
     this.settings = settingsService.settings;
     this.workspaceSlug = this.settings.workspace.slug;
@@ -221,10 +228,70 @@ export class EditStoreDialog {
 export class EditStoreGroupDialog {
   tmpData: any;
   isNew: boolean;
-  
-  constructor(@Inject(MD_DIALOG_DATA) public data: any) {
+  public uploader: FileUploader = new FileUploader({ url: URL });
+  public hasBaseDropZoneOver: boolean = false;
+  public hasAnotherDropZoneOver: boolean = false;
+  public uploadFeedback: any;
+
+  public fileOverBase(e: any): void {
+    this.hasBaseDropZoneOver = e;
+  }
+
+  public fileOverAnother(e: any): void {
+    this.hasAnotherDropZoneOver = e;
+  }
+
+  constructor(@Inject(MD_DIALOG_DATA) public data: any, private http:Http) {
     this.tmpData = JSON.parse(JSON.stringify(data.groups));
     this.tmpData.slugOriginal = this.tmpData.slug;
-    this.isNew = data.isNew
+    this.isNew = data.isNew;
+    this.uploadFeedback = {
+      full: "Bitte Datei auswählen und einfügen",
+      icon: "Bitte Datei auswählen und einfügen"
+    }
+
+    //uploader
+    
+
   }
+
+  fileChange(event, slug, size) {
+    
+    
+
+    let fileList: FileList = event.target.files;
+    if(fileList.length > 0) {
+        let file: File = fileList[0];
+        let formData:FormData = new FormData();
+        formData.append('uploadFile', file, file.name);
+        formData.append("type", "file");
+        formData.append("filename", slug);
+        formData.append("size", size);
+        let headers = new Headers();
+        /** No need to include Content-Type in Angular 4 */
+        headers.append('Content-Type', 'multipart/form-data');
+        headers.append('Accept', 'application/json');
+        // let options = new RequestOptions({ headers: headers });
+        this.http.post(URL, formData)
+            .map(res => res.json())
+            .catch(error => Observable.throw(error))
+            .subscribe(
+                (data) => {
+                  if(typeof data.error !== "undefined") {
+                    this.uploadFeedback[size] = data.error;
+                  } else {
+                    this.uploadFeedback[size] = "Logo (" + size + ") erfolgreich hochgeladen";
+                    this.tmpData.image[size] = data.fileurl + '?random=' + Date.now();
+                    console.log(this.tmpData.image[size]);
+                  }
+                  
+                  console.log('success', data);
+
+                },
+                (error) => {
+                  this.uploadFeedback[size] = error;
+                }
+            )
+    }
+}
 }

@@ -12,7 +12,7 @@ md-sidenav-container {
 }
 
 .mainframe {
-    height: calc(100% - 64px);
+    height: calc(~"100% - 64px");
     position: absolute;
     top: 64px;
     left: 0px;
@@ -32,12 +32,24 @@ header-bar {
 md-sidenav.infonav {
     width: 450px;
 }
-
+md-sidenav.mainnav {
+    width: 260px;
+}
 .stores-icon-24 {
     max-width: 24px;
     height: auto;
     max-height: 24px;
     width: 100%;
+}
+
+.iconMixIn(@size) {
+    font-size: @size;
+    height: @size;
+    width: @size;
+}
+
+.md-16 {
+    .iconMixIn(16px)
 }
 
 // Overwrite due to failed encapsulation for it because of ngx-datatable
@@ -62,4 +74,14 @@ ngx-datatable .empty-row {
 
 ngx-datatable.maintable {
     height: 100%;
+}
+.mainnav {
+    .mat-tab-label {
+        padding: 0 !important;
+        min-width: 130px !important;
+    }
+
+.mat-tab-header-pagination {
+    display: none !important;
+}
 }

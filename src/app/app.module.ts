@@ -2,6 +2,7 @@
 // AIzaSyChYDkxrB4vvRYBVUI459bTyvMhXo6oOTE
 
 
+
 // External components
 import "leaflet";
 import "leaflet.markercluster";
@@ -89,6 +90,8 @@ import { SettingsComponent, EditStoreDialog, EditStoreGroupDialog } from './sett
 import { FiltersComponent } from './filters/filters.component';
 import { SearchResultsComponent } from './search-results/search-results.component';
 import { ClientsTableListComponent } from './clients-table-list/clients-table-list.component';
+import { ClientSetStarredComponent } from './client-set-starred/client-set-starred.component';
+import { OrderbyPipe } from './orderby.pipe';
 
 
 
@@ -124,7 +127,9 @@ import { ClientsTableListComponent } from './clients-table-list/clients-table-li
     NavigatorComponent,
     FiltersComponent,
     SearchResultsComponent,
-    ClientsTableListComponent    
+    ClientsTableListComponent,
+    ClientSetStarredComponent,
+    OrderbyPipe    
     
     
 

@@ -86,12 +86,12 @@
 
                     <ngx-datatable class="material storesGroups" [columnMode]="'force'" [reorderable]="false" [headerHeight]="50" [footerHeight]="50" [rowHeight]="50" [rows]="settings.storesGroups" [trackByProp]="'updated'" [messages]="{emptyMessage: 'Es sind keine Gruppen hinterlegt. Erstelle eine neue Gruppe mit dem obenliegeneden Button.', totalMessage: 'Total Gruppen'}"
                         (activate)='editStoresGroup($event)' [selectionType]="'row'">
-                        <ngx-datatable-column name="slug" [width]="48">
+                        <ngx-datatable-column name="id" [width]="48">
                             <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
                                 &nbsp;
                             </ng-template>
                             <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                                <img src="assets/icons/stores/{{value}}_icon.svg" alt="{{value}}">
+                                <img src="{{settingsService.getStoreGroupImage(value, 'icon')}}" alt="{{value}}">
                             </ng-template>
                         </ngx-datatable-column>
                         <ngx-datatable-column name="Name">

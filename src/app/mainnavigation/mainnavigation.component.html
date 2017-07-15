@@ -1,5 +1,6 @@
 <md-toolbar color="ascent">
-    <img src="/assets/logos/{{settings.workspace.slug}}.jpg" alt="{{settings.workspace.name}}" class="logo" />
+    <!-- <img src="/assets/logos/{{settings.workspace.slug}}.jpg" alt="{{settings.workspace.name}}" class="logo" /> -->
+    <a routerLink="/" routerLinkActive="active"> <img src="/assets/logos/logo_mdmap_v1.svg" alt="MDMap" class="logo" /><span>alpha</span></a>-
 </md-toolbar>
 
 
@@ -7,14 +8,10 @@
 
 <md-nav-list>
 
-    <a md-list-item routerLink="/" routerLinkActive="active">
-        <md-icon>home</md-icon>Startseite</a>
     <a md-list-item routerLink="/map" routerLinkActive="active">
         <md-icon>map</md-icon>Karte</a>
     <a md-list-item routerLink="/clients" routerLinkActive="active">
         <md-icon>list</md-icon>Kundenliste</a>
-    <a md-list-item routerLink="/" routerLinkActive="">
-        <md-icon>star</md-icon>Favoriten</a>
     <a md-list-item routerLink="/settings" routerLinkActive="active">
         <md-icon>settings</md-icon>Einstellungen</a>
 
@@ -23,9 +20,7 @@
 
     <div class="filtercontainer" *ngIf="showFilters">
         <md-divider></md-divider>
-        <h3 md-subheader>Filtereinstellungen</h3>
         <filters></filters>
-
     </div>
 
 

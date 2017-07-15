@@ -1,33 +1,89 @@
-<p md-line class="resultsCount">
-    <b>{{filteredClientsTotal}}</b> gefunden</p>
-<button md-raised-button md-line (click)="setFilter('reset')" class="reset"><md-icon>settings_backup_restore</md-icon>Reset</button>
+<md-tab-group [disableRipple]="true">
+    <md-tab>
+        <ng-template md-tab-label>
+            <md-icon>filter_list</md-icon> Filter-Sets
+        </ng-template>
+
+        <p class="resultsCount margin">
+            <span *ngIf="inProgress"><md-icon>watch_later</md-icon> In Arbeit...</span>
+            <span *ngIf="filterstate._active && !inProgress"><b>{{counter.clientsFound}} / {{counter.clientsTotal }}</b> gefiltert</span>
+            <span *ngIf="!filterstate._active && !inProgress" class="filterNotActive">Keine Filter aktiv</span>
+        </p>
 
 
-<p class="select">
-    <md-select placeholder="Stadtbezirk" [(ngModel)]="filterstate.area.value" (change)="setFilter('area')">
-        <md-option *ngFor="let state of bezirk" [value]="state.code">{{ state.name }}</md-option>
-    </md-select>
-</p>
+        <button md-button *ngFor="let filter of settings.filters.predefined" (click)="controlFilter('predefined',filter.name,true)" class="line-button">{{ filter.label }}</button>
 
-<p class="select">
-    <md-select md-line placeholder="Kunde von Geschäft" [(ngModel)]="filterstate.defaultStore.value" (change)="setFilter('defaultStore')">
-        <md-option *ngFor="let store of settings.stores" [value]="store.slug">
-            <img src="{{settingsService.getStoreGroupImage(store.group, 'icon')}}" alt="{{ store.name }}" class="stores-icon-24" /> {{ store.name }}</md-option>
-    </md-select>
-</p>
-<p class="date">
-    <md-input-container>
-        <input mdInput [mdDatepicker]="picker" placeholder="Letzte Bestellung seit.." type="date">
-        <button mdSuffix [mdDatepickerToggle]="picker"></button>
-    </md-input-container>
-    <md-datepicker #picker></md-datepicker>
-</p>
-<p>
-    <md-checkbox (click)="setFilter('abo')" [ngClass]="{'isActive': filterstate.abo.active }" [(ngModel)]="filterstate.abo.value">Nur Abo-Kunden</md-checkbox>
-</p>
-<p>
-    <md-checkbox>Wiederkehrende Kunden</md-checkbox>
-</p>
+
+
+
+        <!--
+        <md-select [(ngModel)]="filterstate.predefined.value" (change)="controlFilter('predefined',$event.value,true)" placeholder="Vordefinierte Filter">
+            <md-option *ngFor="let filter of settings.filters.predefined" [value]="filter.name">{{ filter.label }}</md-option>
+        </md-select>
+        -->
+    </md-tab>
+    <md-tab>
+        <ng-template md-tab-label>
+            <md-icon>line_style</md-icon> Eigene Filter
+        </ng-template>
+        <div class="container">
+
+            <p class="resultsCount">
+                <span *ngIf="inProgress"><md-icon>watch_later</md-icon> In Arbeit...</span>
+                <span *ngIf="filterstate._active && !inProgress"><b>{{counter.clientsFound}} / {{counter.clientsTotal }}</b> gefiltert</span>
+                <span *ngIf="!filterstate._active && !inProgress" class="filterNotActive">Keine Filter aktiv</span>
+            </p>
+            <button md-raised-button md-line (click)="controlFilter('reset')" class="reset" [disabled]="!filterstate._active"><md-icon>settings_backup_restore</md-icon>Reset</button>
+
+            <p class="select">
+                <md-checkbox (change)="controlFilter('custom','defaultStore',$event.source._checked)" [(checked)]="filterstate.custom.defaultStore.active"></md-checkbox>
+                <md-select md-line placeholder="Kunde von Geschäft" [(ngModel)]="filterstate.custom.defaultStore.value" [disabled]="!filterstate.custom.defaultStore.active" (change)="controlFilter('custom','defaultStore',true,$event.value)">
+
+                    <md-option *ngFor="let store of settings.stores" [value]="store.slug">
+                        <img src="{{settingsService.getStoreGroupImage(store.group, 'icon')}}" alt="{{ store.name }}" class="stores-icon-24" /> {{ store.name }}</md-option>
+                </md-select>
+            </p>
+            <p class="date">
+                <md-checkbox (change)="controlFilter('custom','lastDeliveryDate',$event.source._checked)" [(checked)]="filterstate.custom.lastDeliveryDate.active"></md-checkbox>
+                <md-input-container>
+                    <input mdInput [mdDatepicker]="lastDeliveryDatePicker" placeholder="Letzte Bestellung seit.." [disabled]="!filterstate.custom.lastDeliveryDate.active" [(ngModel)]="filterstate.custom.lastDeliveryDate.value" type="date" (ngModelChange)="controlFilter('custom','lastDeliveryDate',true,filterstate.custom.lastDeliveryDate.value)"
+                        [max]="dateNow">
+                    <button mdSuffix [mdDatepickerToggle]="lastDeliveryDatePicker"></button>
+                </md-input-container>
+                <md-datepicker #lastDeliveryDatePicker (change)="controlFilter('custom','lastDeliveryDate',true,filterstate.custom.lastDeliveryDate.value)"></md-datepicker>
+
+            </p>
+            <p class="date">
+                <md-checkbox (change)="controlFilter('custom','firstOrderDate',$event.source._checked)" [(checked)]="filterstate.custom.firstOrderDate.active"></md-checkbox>
+                <md-input-container>
+                    <input mdInput [mdDatepicker]="firstOrderDate" placeholder="Kunde seit.." [disabled]="!filterstate.custom.firstOrderDate.active" [(ngModel)]="filterstate.custom.firstOrderDate.value" type="date" (ngModelChange)="controlFilter('custom','firstOrderDate',true,filterstate.custom.firstOrderDate.value)"
+                        [max]="dateNow">
+                    <button mdSuffix [mdDatepickerToggle]="firstOrderDate"></button>
+                </md-input-container>
+                <md-datepicker #firstOrderDate (change)="controlFilter('custom','firstOrderDate',true,filterstate.custom.firstOrderDate.value)"></md-datepicker>
+
+            </p>
+            <p>
+                <md-checkbox (change)="controlFilter('custom','starred',$event.source._checked)" [(checked)]="filterstate.custom.starred.active" class="single">
+                    Favoriten
+                </md-checkbox>
+                <md-slide-toggle [(checked)]="filterstate.custom.starred.value" [disabled]="!filterstate.custom.starred.active" (change)="controlFilter('custom','starred',true,$event.source._checked)"></md-slide-toggle><br />
+            </p>
+            <p>
+                <md-checkbox (change)="controlFilter('custom','abo',$event.source._checked)" [(checked)]="filterstate.custom.abo.active" class="single">
+                    Abo-Kunden
+                </md-checkbox>
+                <md-slide-toggle [(checked)]="filterstate.custom.abo.value" [disabled]="!filterstate.custom.abo.active" (change)="controlFilter('custom','abo',$event.source._checked,$event.source._checked)"></md-slide-toggle><br />
+            </p>
+        </div>
+    </md-tab>
+</md-tab-group>
+
+
+
+
+
+
 
 
 <!-- <p class="deliveryAmount">

@@ -42,6 +42,8 @@ export class OSMComponent implements OnInit {
        
 
 
+
+
         // LAYERS - no idea why i have to make a new object to get pass through L.controls.layers()     
         var baseMaps = {
             "osm": L.tileLayer("http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png", {
@@ -54,6 +56,8 @@ export class OSMComponent implements OnInit {
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
             })
         };
+
+
 
 
 
@@ -104,7 +108,7 @@ export class OSMComponent implements OnInit {
                 case "clientFromStore":
                     this.clientsService.filterstate.defaultStore.active = true;
                     this.clientsService.filterstate.defaultStore.value = p['id'];
-                    this.clientsService.setFilter(null);
+                    // this.clientsService.setFilter(null);
                     this.createClientsMarkers(0);
                 break;
 
@@ -276,7 +280,7 @@ export class OSMComponent implements OnInit {
                 }); */
     }
 
-    createClientsMarkers(id:number) {
+    createClientsMarkers(id:number, numbered?:boolean) {
 
         
         
@@ -304,6 +308,15 @@ export class OSMComponent implements OnInit {
             // Check if coordinates are set
             if(clients[i].lat != 0 && clients[i].lng != 0) {
                 
+                let myIcon;
+                if(numbered) {
+                    myIcon = L.divIcon({className: 'marker_icon', html: ""+i});
+                } else {
+                    myIcon = L.icon({
+                            iconUrl: "assets/images/marker-icon.png",
+                            shadowUrl: "assets/images/marker-shadow.png"
+                        })
+                }
                 
             var popupContent = "<section class='cleft'><p class='name'><b>#" + m.id + "</b> " + m.name + "</p>";
                 popupContent += "<p>" + m.address + "<br /> " + m.postleihzahl + " " + m.city + " </p>";
@@ -321,10 +334,7 @@ export class OSMComponent implements OnInit {
                 
                 let coords = {lat: clients[i].lat,  lng: clients[i].lng};
                 var marker = L.marker(coords,{
-                        icon: L.icon({
-                            iconUrl: "assets/images/marker-icon.png",
-                            shadowUrl: "assets/images/marker-shadow.png"
-                        }),
+                        icon: myIcon,
                         draggable: false,
                         opacity: 1,
                         riseOnHover: true

@@ -8,3 +8,10 @@ body {
     height: 100%;
     width: 100%;
 }
+
+.marker_icon {
+    background: blue;
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+}

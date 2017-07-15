@@ -6,7 +6,7 @@
       city?: string;
       deliveryCount?: number;
       defaultStore?: string;
-      storeGroup?: number;
+      storeGroup?: string;
       lastDeliveryDate?: any;
       firstOrderDate?: any;
       comments?: any;
@@ -22,6 +22,7 @@
       draggable?:  boolean; // agm
       DOMID?: any;
       isOpen?: any;
+      $$index?:any;
       
 
     }

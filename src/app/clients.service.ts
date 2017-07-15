@@ -4,79 +4,116 @@ import { CLIENTS } from './client/client.mock';
 import { LocalStorageService } from 'angular-2-local-storage';
 import { Http } from "@angular/http";
 import { Subject } from "rxjs/Subject";
+import { OrderbyPipe } from "./orderby.pipe";
 
-const FILTERSTATEORG: any = {
-    abo: { active: false, value: false},
+const FILTERSTATEORG = {
+  _active: false,
+  custom: {
+    _active: false,
+    abo: { active: false, value: true },
     area: {
       active: false,
       value: 0
-    } ,
+    },
     defaultStore: {
       active: false,
-      value: 0
+      value: ""
+    },
+    lastDeliveryDate: {
+      active: false,
+      value: ""
+    },
+    firstOrderDate: {
+      active: false,
+      value: ""
+    },
+    starred: {
+      active: false,
+      value: true
+    },
+    new: {
+      active: false,
+      value: ""
+    },
+    top: {
+      active: false,
+      value: 50
+    },
+    returning: {
+      active: false,
+      value: 10
     }
-   };
+  },
+  predefined: {
+          _active: false,
+          value: 0
+        }
+
+};
 
 @Injectable()
 export class ClientsService {
 
-  
+
   clients: any; // current working array (filtered and all...)
   clientsOriginal: any; // Full clients as saved
-  public filterstate: any = FILTERSTATEORG;
+  public filterstate: any;
+  private timestamp: any;
   
 
-  constructor( 
+  constructor(
     private localStorageService: LocalStorageService,
     private http: Http
-    ) {
-      
-
-       // Add default values if localStorage was empty
-      if(this.localStorageService.get("clients") === null) {
-        this.setDefaultStorage();
-      } else {
-        this.clients = this.localStorageService.get("clients");
-        this.clientsOriginal = this.localStorageService.get("clients");
-      }
-      
-
-      // Set the selected client to default
-      this.clientSelectedIDcache = 3;
-     
-
-};
-
-currentSelected:number = null;
-
-// Emitter for clientsUpdated
-clientsUpdated:EventEmitter<boolean> = new EventEmitter();
-
-// Emitter for clientsUpdated
-visibilityUpdated:EventEmitter<any> = new EventEmitter();
-
-// Emitter for clientSelected
-clientSelectedID:EventEmitter<number> = new EventEmitter();
-clientSelectedIDcache: number;
-
-//addClientProgress
-addClientProgress:EventEmitter<boolean> = new EventEmitter();
-mapFinishedMarkers:EventEmitter<boolean> = new EventEmitter();
+  ) {
+    
+    // For Date calculations
+    this.timestamp = Date.now();
+    this.filterstate = JSON.parse(JSON.stringify(FILTERSTATEORG));
+    // Add default values if localStorage was empty
+    if (this.localStorageService.get("clients") === null) {
+      this.setDefaultStorage();
+    } else {
+      this.clients = this.localStorageService.get("clients");
+      this.clientsOriginal = this.localStorageService.get("clients");
+    }
 
 
-private activeFilters: Array<string> = [];
+    // Set the selected client to default
+    this.clientSelectedIDcache = 3;
 
 
-  public updateStorage(input:any, isOriginalData:boolean) {
+  };
+
+  currentSelected: number = null;
+
+  // Emitter for clientsUpdated
+  clientsUpdated: EventEmitter<boolean> = new EventEmitter();
+
+  // Emitter for clientsUpdated
+  visibilityUpdated: EventEmitter<any> = new EventEmitter();
+
+  // Emitter for clientSelected
+  clientSelectedID: EventEmitter<number> = new EventEmitter();
+  clientSelectedIDcache: number;
+
+  //addClientProgress
+  addClientProgress: EventEmitter<boolean> = new EventEmitter();
+  mapFinishedMarkers: EventEmitter<boolean> = new EventEmitter();
+
+
+  private activeFilters: Array<string> = [];
+
+
+  public updateStorage(input: any, isOriginalData: boolean) {
     this.clients = input;
-    if(isOriginalData) {
+    if (isOriginalData) {
       this.clientsOriginal = input;
       this.localStorageService.set("clients", input);
     }
 
-    
+
     // return this.clientsUpdated.emit(true);
-    
+
   }
   private fetchStorage() {
     console.log("fetchStorage", this.clients);
@@ -84,7 +121,7 @@ private activeFilters: Array<string> = [];
     return this.clients;
   }
   private setDefaultStorage() {
-    this.localStorageService.set("clients",CLIENTS);
+    this.localStorageService.set("clients", CLIENTS);
     this.clients = CLIENTS;
   }
   private removeStorage() {
@@ -92,257 +129,369 @@ private activeFilters: Array<string> = [];
     this.clients = [];
     console.log("removeStorage typeof clients", typeof this.clients);
     return this.localStorageService.remove("clients");
-    
+
   }
 
-public emitUpdate() {
-  return this.clientsUpdated.emit(true);
-}
+  public emitUpdate() {
+    return this.clientsUpdated.emit(true);
+  }
 
-setFilter(filtertype:string): number {
-  
-  console.group("setfilter");
-  
-  
-
-  if(filtertype == "reset") {
-    
-    this.filterstate = {
-    abo: { active: false, value: false},
-    area: {
-      active: false,
-      value: 0
-    } ,
-    defaultStore: {
-      active: false,
-      value: 0
-    }
-   };
-    
+private resetFilter() {
+  this.filterstate = JSON.parse(JSON.stringify(FILTERSTATEORG));
     this.clients = this.clientsOriginal;
-    console.log("in setFilter", this.filterstate);
     this.updateStorage(this.clients, false);
     this.emitUpdate();
-  } else {
-  let filteredData;
-
-  // Do the actual filtering...
-    filteredData = this.clientsOriginal;
-    console.log(filteredData);
-
-    for(var element in this.filterstate) {
-      
-      if(this.filterstate[element].active) {
-        console.log("im filterung for element");
-        switch (element) {
-          
-            
-          case "abo": 
-            console.log("case abo");
-            if(!this.filterstate[element].value) {
-            filteredData = filteredData.filter(client => {
-              
-              if(typeof client.abo == "number") {
-                return client;
-              }  
-            }
-            
-            );
-            }
-            break;
-
-
-          case "area":
-            // If 0 then do all
-            if(this.filterstate[element].value != 0) {
-
-            console.log("clients filterfunction AREA CASE", this.filterstate[element].value);
-            filteredData = filteredData.filter((client) => {
-              if(client.postleihzahl == parseInt(this.filterstate[element].value)) {
-                console.log("clients filterfunction filtered area!", this.filterstate[element].value, client.postleihzahl);
-                return client;
-              } 
-
-            } );
-            }
-          break;
-
-
-          case "defaultStore":
-          console.log("defualtStore case reached")
-            
-            
-
-            
-            filteredData = filteredData.filter((client) => {
-              if(client.defaultStore == this.filterstate[element].value) {
-                console.log("OK", client.defaultStore, this.filterstate[element].value);
-                return client;
-              } else {
-                console.log("NONO", client.defaultStore, this.filterstate[element].value);
-              }
-
-            } );
-            
-          break;
-
-
-          default:
-          break;
-
-        }
-      }
-
-
-    } // end for in 
-    console.log("before updateStorage", filteredData);
-    this.clients = filteredData;
-  this.updateStorage(this.clients, false);
-  this.emitUpdate();
-  
-  }
-
-
-
-  
-
-  
-  console.groupEnd();
-  return this.clients.length;
 }
 
 
-  getClient(id:number){
-      return this.clients.filter(
-        (client) => {
-          if(client.id == id) return client
-        }
-      );    
+public controlFilter(basetype:string, name:string, status?:any, value?:any) {
+  console.log("controlFilte launched");
+  switch(basetype) {
+
+    case "reset":
+        this.resetFilter();
+    break;
+    case "custom":
+
+      // activate customfiltering
+      this.filterstate._active = true;
+      this.filterstate.custom._active = true;
+      this.filterstate.predefined._active = false;
       
+      if(name == "activate") {
+        console.log("ACTIVATE", status);
+        this.filterstate.custom._active = status;
+      } else {
+      // Update status - it can be undefinied, this is when we only want to active the checkbox
+      if(typeof name != "undefined" && name != "activate") 
+        this.filterstate.custom[name].active = status;
+
+      // Update value if given
+      if(typeof value != "undefined") 
+        this.filterstate.custom[name].value = value;
+      
+      
+      this.setFilter();
+      }
+        
+
+    break;
+    case "predefined":
+      // reset to empty custom one
+      
+      this.filterstate = JSON.parse(JSON.stringify(FILTERSTATEORG));;
+      this.filterstate._active = true;
+      this.filterstate.predefined._active = true;
+      this.filterstate.predefined.value = name;
+
+      switch(name) {
+        case "activate":
+          this.filterstate.predefined._active = status;
+        break;
+        
+        case "top": 
+            this.filterstate.custom.top.active = true;
+            this.setFilter();
+        break;
+
+        case "new": 
+          this.filterstate.custom.firstOrderDate.active = true;
+          
+          let d = new Date();
+          d.setMonth(d.getMonth() - 1);
+          console.log("TOP CASE REACHED", d);
+          this.filterstate.custom.firstOrderDate.value = d;
+          this.setFilter();
+          
+        break;
+
+        case "returning":
+          this.filterstate.custom.returning.active = true;          
+          this.setFilter();
+          
+        break;
+
+      } 
+    break;
+
+  }
+
+  // If both filters are not active, reset everyhting
+  if(!this.filterstate.custom._active && !this.filterstate.predefined._active)
+    this.resetFilter();
+
+
+  return { 
+    filterstate:  this.filterstate,
+    clientsFound: this.clients.length,
+    clientsTotal: this.clientsOriginal.length
+};
+
+}
+
+
+  setFilter(): void {
+
+    
+
+
+    
+      let filteredData;
+
+      // Do the actual filtering...
+      filteredData = this.clientsOriginal;
+ 
+
+
+
+      filteredData = filteredData.filter(client => {
+
+        let isValid = true;
+
+
+
+        // ABO
+        if (this.filterstate.custom.abo.active) {
+          
+          if(this.filterstate.custom.abo.value)  {
+            isValid = (typeof client.abo == "number") ? true : false;    
+          } else {
+            isValid = (typeof client.abo == "number") ? false : true;  
+          }
+        } 
+
+
+        // STARRED / FAVORIT
+        if (this.filterstate.custom.starred.active) {
+          console.log("filter for starred", this.filterstate.custom.starred.value);
+          if(this.filterstate.custom.starred.value)  {
+            isValid = (client.starred) ? true : false;    
+          } else {
+            if(typeof client.starred == "undefined") {
+              isValid = true;
+            } else {
+              isValid = (!client.starred) ? true : false;  
+            }
+            
+          }
+        } 
+
+        // PLZ
+        
+        if (this.filterstate.custom.area.active && this.filterstate.custom.area.value != 0 && isValid) {
+          isValid = (client.postleihzahl == parseInt(this.filterstate.custom.area.value)) ? true : false;
+        }
+
+        // LAST DELIVERY DATE
+        if (this.filterstate.custom.lastDeliveryDate.active && this.filterstate.custom.lastDeliveryDate.value != 0 && isValid) {
+            isValid = this.compareDates(client.lastDeliveryDate, this.filterstate.custom.lastDeliveryDate.value);
+        }
+
+        // FIRST ORDER DATE
+        if (this.filterstate.custom.firstOrderDate.active && this.filterstate.custom.firstOrderDate.value != 0 && isValid) {
+            isValid = this.compareDates(client.firstOrderDate, this.filterstate.custom.firstOrderDate.value);
+        }
+        
+        // DEFAULT STORE
+        if(this.filterstate.custom.defaultStore.active && this.filterstate.custom.defaultStore.value && isValid) {
+           console.log("FILTER FOR DEFAULTSOTR", client.defaultStore, this.filterstate.custom.defaultStore.value)
+           isValid =  (client.defaultStore == this.filterstate.custom.defaultStore.value) ? true : false;
+        }
+
+        // RETURNING
+        if(this.filterstate.custom.returning.active && this.filterstate.custom.returning.value && isValid) {
+           
+           isValid =  (client.deliveryCount >= this.filterstate.custom.returning.value) ? true : false;
+           console.log("tried returning", client.deliveryCount, isValid);
+        }
+        
+       
+
+        if(isValid) return client;
+
+
+      });
+
+      /********** ORDERING AND LIMITS */
+      
+       // NEW
+        if(this.filterstate.custom.top.active) {
+          console.info("filter TOP called");
+           filteredData.sort(function(a,b) {return (a.deliveryCount < b.deliveryCount) ? 1 : ((b.deliveryCount < a.deliveryCount) ? -1 : 0);} ); 
+           filteredData = filteredData.slice(0, this.filterstate.custom.top.value);
+        }
+
+           
+      console.log("before updateStorage", filteredData);
+      this.clients = filteredData;
+      this.updateStorage(this.clients, false);
+      this.emitUpdate();
+
+    
+    
   }
 
 
-  getClients(){
-        console.log("getClients() called, we delivered ", this.clients.length);
-        return this.clients      
+
+
+
+
+  getClient(id: number) {
+    return this.clients.filter(
+      (client) => {
+        if (client.id == id) return client
+      }
+    );
+
+  }
+
+
+  getClients() {
+    console.log("getClients() called, we delivered ", this.clients.length);
+    return this.clients
   }
 
   emitMapFinishedMarkers(): void {
     this.mapFinishedMarkers.emit(true);
   }
 
-  setClientStarred(id:number, starred:boolean) {
+  setClientStarred(id: number, starred: boolean): boolean {
 
     // search the index for the id
-    var index = this.clients.map(function(e) { return e.id; }).indexOf(id);
-    
+    var index = this.clients.map(function (e) { return e.id; }).indexOf(id);
+
     console.log("setClientStarred", index, starred);
-    
-    this.clients[index].starred = starred; 
+
+    this.clients[index].starred = starred;
+
+    return starred;
 
   }
 
 
-public updateClient(id, client) {
-    var index = this.clients.map(function(e) { return e.id; }).indexOf(id);
+  public updateClient(id, client) {
+    var index = this.clients.map(function (e) { return e.id; }).indexOf(id);
     this.clients[index] = client;
     this.updateStorage(this.clients, true);
-    
-}
 
-public clientSelected(id:number) {
-              
+  }
+
+  public clientSelected(id: number) {
+
 
     // search the index for the id
-    var index = this.clients.map(function(e) { return e.id; }).indexOf(id);
-    
-    console.log("selected! id: " + id, index);      
+    var index = this.clients.map(function (e) { return e.id; }).indexOf(id);
+
+    console.log("selected! id: " + id, index);
 
     // Remove old state
-    if(this.currentSelected !== null) {
-      var oldIndex = this.clients.map(function(e) { return e.id; }).indexOf(this.currentSelected);
-      
+    if (this.currentSelected !== null) {
+      var oldIndex = this.clients.map(function (e) { return e.id; }).indexOf(this.currentSelected);
+
       if ("undefined" !== typeof this.clients[oldIndex].selected)
         this.clients[oldIndex].selected = false;
     }
 
     this.currentSelected = id;
     this.clients[index].selected = true;
-    
+
     // broadcast
     this.updateStorage(this.clients, false);
     this.clientSelectedID.emit(index);
-    
-    
-    
+
+
+
   }
 
-// Set a list of clients  
-setClients(input: string) {
-    
-    return this.updateStorage(input, true);
-    
-  } 
+  // Set a list of clients  
+  setClients(input: string) {
 
-// Set a list of clients  
-changeVisible(id: number) {
+    return this.updateStorage(input, true);
+
+  }
+
+  // Set a list of clients  
+  changeVisible(id: number) {
     console.log("changeVisible()");
     // search the index for the id
-    var index = this.clients.map(function(e) { return e.id; }).indexOf(id);
+    var index = this.clients.map(function (e) { return e.id; }).indexOf(id);
     var state = (this.clients[index].visible) ? false : true;
-    
-    
+
+
     this.clients[index].visible = state;
 
-    this.visibilityUpdated.emit({id:id,visible:state});
+    this.visibilityUpdated.emit({ id: id, visible: state });
     //return this.updateStorage(this.clients);
 
-    
-  } 
+
+  }
 
 
-removeClients() {
+  removeClients() {
     this.removeStorage();
   }
-  
 
 
 
 
-private getCoordinates(address) {
-    
+
+  private getCoordinates(address) {
+
 
     var combinedAndEncodedSearchString = encodeURIComponent(address);
     const url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + combinedAndEncodedSearchString + '&key=AIzaSyChYDkxrB4vvRYBVUI459bTyvMhXo6oOTE';
-    
+
     return this.http.get(url).map(
-      res =>{
+      res => {
         const response = res.json();
         let filtered;
         // Just get the locations, containing 2 properties lng and lat 
-        if("undefined" !== typeof response.results[0]) {
+        if ("undefined" !== typeof response.results[0]) {
           filtered = response.results[0].geometry.location;
         } else {
-          filtered = {lng:0, lat: 0}
+          filtered = { lng: 0, lat: 0 }
         }
-        
+
         console.log(filtered);
 
 
-        
+
         return filtered;
       }
     )
   }
 
 
-/*
+  /*
+    
+    getClients(): 
+    Client[] {
+      return CLIENTS;
+    }
   
-  getClients(): 
-  Client[] {
-    return CLIENTS;
-  }
+  */
+private compareDates(clientDate, inputDate) {
+            //Check if property exists
+            if(typeof clientDate !== "undefined") {
+              
+              // calculate clientMS
+              clientDate = new Date(clientDate); // some mock date
+              let clientMS = clientDate.getTime();
 
-*/
+              // calculate InputMS
+              inputDate = new Date(inputDate);
+              let inputMS = inputDate.getTime();
+              
+              
 
+              //Calculate how many days
+              let daysSinceLastDelivery = Math.round((inputMS - clientMS) / (1000 * 60 * 60 * 24));
+              console.log("LDD", clientMS, inputMS, (inputMS - clientMS) / (1000 * 60 * 60 * 24));
+              return ((clientMS - inputMS) >= 1) ? true : false;
+            } else {
+              //client has no date so fail
+              return false;
+            }
+          }
+          
 }

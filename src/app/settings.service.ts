@@ -33,37 +33,55 @@ export class SettingsService {
       id: 0,
       slug: "diverses",
       name: "Diverses",
-      icon: "stores_diverses.svg"
+      image: {
+        full: "assets/icons/stores/diverses_full.svg",
+        icon: "assets/icons/stores/diverses_icon.svg"
+      }
     },
     {
       id: 1,
       slug: "migros",
       name: "Migros Genossenschaft",
-      icon: "stores_migros.svg"
+      image: {
+        full: "assets/icons/stores/migros_full.svg",
+        icon: "assets/icons/stores/migros_icon.svg"
+      }
     },
     {
       id: 2,
       slug: "coop",
       name: "Coop",
-      icon: "stores_coop.svg"
+      image: {
+        full: "assets/icons/stores/coop_full.svg",
+        icon: "assets/icons/stores/coop_icon.svg"
+      }
     },
     {
       id: 3,
       slug: "apotheken",
       name: "Apotheken",
-      icon: "stores_apotheke.svg"
+      image: {
+        full: "assets/icons/stores/apotheken_full.svg",
+        icon: "assets/icons/stores/apotheken_icon.svg"
+      }
     },
     {
       id: 4,
       slug: "blumen",
       name: "Blumenladen",
-      icon: "stores_blumen.svg"
+      image: {
+        full: "assets/icons/stores/blumen_full.svg",
+        icon: "assets/icons/stores/blumen_icon.svg"
+      }
     },
     {
       id: 5,
       slug: "denner",
       name: "Denner",
-      icon: "stores_denner.svg"
+      image: {
+        full: "assets/icons/stores/denner_full.svg",
+        icon: "assets/icons/stores/denner_icon.svg"
+      }
     }
 
     /*
@@ -363,7 +381,7 @@ export class SettingsService {
     if ("undefined" === typeof this.settings.storesGroups[index]) {
       return "assets/icons/stores/undefined_" + suffix + ".svg";
     } else {
-      return "assets/icons/stores/" + this.settings.storesGroups[index].slug + "_" + suffix + ".svg";
+      return this.settings.storesGroups[index].image[type];
     }
 
   }
@@ -372,7 +390,25 @@ export class SettingsService {
     this.settings = {
       filters: {
         noOrdersSinceDays: 100,
-        amountForReturningClients: 2
+        amountForReturningClients: 5,
+        predefined: [
+          {
+            name: "top",
+            label: "Top Kunden"
+          },
+          {
+            name: "new",
+            label: "Neuste Kunden"
+          },
+          {
+            name: "returning",
+            label: "Wiederkehrende Kunden"
+          },
+          {
+            name: "loworders",
+            label: "Wenig bestellungen"
+          },
+        ]
       },
       workspace: {
         name: "1-2-Domicile",
@@ -445,5 +481,8 @@ export interface StoreGroup {
   id: number;
   name: string;
   slug?: string;
-  icon: string;
+  image: {
+    full: string,
+    icon: string
+  }
 }
