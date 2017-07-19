@@ -7,7 +7,7 @@ import { FileUploader } from "ng2-file-upload";
 import {Observable, Subject, Subscription} from "rxjs";
 import {Http} from "@angular/http";
 
-const URL = 'http://localhost/dist/php-interface.php';
+import * as myGlobals from "../globals";
 
 @Component({
   selector: 'app-settings',
@@ -228,7 +228,7 @@ export class EditStoreDialog {
 export class EditStoreGroupDialog {
   tmpData: any;
   isNew: boolean;
-  public uploader: FileUploader = new FileUploader({ url: URL });
+  public uploader: FileUploader = new FileUploader({ url: myGlobals.hostURL });
   public hasBaseDropZoneOver: boolean = false;
   public hasAnotherDropZoneOver: boolean = false;
   public uploadFeedback: any;
@@ -272,7 +272,7 @@ export class EditStoreGroupDialog {
         headers.append('Content-Type', 'multipart/form-data');
         headers.append('Accept', 'application/json');
         // let options = new RequestOptions({ headers: headers });
-        this.http.post(URL, formData)
+        this.http.post(myGlobals.hostURL, formData)
             .map(res => res.json())
             .catch(error => Observable.throw(error))
             .subscribe(

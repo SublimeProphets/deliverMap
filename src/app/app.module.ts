@@ -79,7 +79,7 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { StorenavigationComponent } from './storenavigation/storenavigation.component';
 import { DataTableViewComponent } from './data-table-view/data-table-view.component';
 import { ClientEditDialog, clientEditDialogForm } from "./client-edit-dialog/client-edit-dialog.component";
-
+import { LocationPickerComponent, LocationPickerDialog } from "./location-picker/location-picker.component";
 
 
 // OSM
@@ -119,6 +119,8 @@ import { OrderbyPipe } from './orderby.pipe';
     EditStoreDialog,
     EditStoreGroupDialog,
     SettingsComponent,
+    LocationPickerComponent,
+    LocationPickerDialog,
     
 
 
@@ -183,7 +185,7 @@ import { OrderbyPipe } from './orderby.pipe';
     { provide: LOCALE_ID, useValue: "de-CH" }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [EditStoreDialog, EditStoreGroupDialog, clientEditDialogForm]
+  entryComponents: [EditStoreDialog, EditStoreGroupDialog, clientEditDialogForm, LocationPickerDialog]
 })
 export class AppModule { 
   constructor(){}

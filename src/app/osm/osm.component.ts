@@ -1,6 +1,5 @@
 import {Component, ViewChild, OnInit, OnDestroy, NgZone} from "@angular/core";
 import {NavigatorComponent} from "../navigator/navigator.component";
-import {ToolbarComponent} from "../toolbar/toolbar.component";
 import {ClientsService } from '../clients.service';
 
 import {MapService} from "../map.service";
@@ -18,7 +17,7 @@ import {MdSnackBar} from '@angular/material';
 })
 export class OSMComponent implements OnInit {
 
-    @ViewChild(ToolbarComponent) toolbarComponent: ToolbarComponent;
+    
     
     
     map: any;

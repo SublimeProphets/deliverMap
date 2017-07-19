@@ -3,8 +3,7 @@ import {FileUploader} from "ng2-file-upload/ng2-file-upload";
 import {read, IWorkBook} from "ts-xlsx";
 import {IWorkSheet} from "xlsx";
 import {Observable, Subject, Subscription} from "rxjs";
-
-const URL = 'http://localhost:4200';
+import * as myGlobals from "../globals";
 
 export interface UploadResult {
   result: "failure" | "success";
@@ -18,7 +17,7 @@ export interface UploadResult {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class XlsxFileUploadComponent implements OnInit, OnDestroy {
-  public uploader: FileUploader = new FileUploader({url: URL});
+  public uploader: FileUploader = new FileUploader({url: myGlobals.hostURL});
   public hasBaseDropZoneOver: boolean = false;
   public hasAnotherDropZoneOver: boolean = false;
   private subscription: Subscription;
