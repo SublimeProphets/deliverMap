@@ -5,6 +5,7 @@ import { LocalStorageService } from 'angular-2-local-storage';
 import { Http } from "@angular/http";
 import { Subject } from "rxjs/Subject";
 import { OrderbyPipe } from "./orderby.pipe";
+import { SettingsService } from "./settings.service";
 
 const FILTERSTATEORG = {
   _active: false,
@@ -42,6 +43,14 @@ const FILTERSTATEORG = {
     returning: {
       active: false,
       value: 10
+    },
+    loworders: {
+      active: false,
+      value: 3
+    },
+    longago: {
+      active: false,
+      value: 100
     }
   },
   predefined: {
@@ -63,7 +72,8 @@ export class ClientsService {
 
   constructor(
     private localStorageService: LocalStorageService,
-    private http: Http
+    private settingsService:SettingsService,
+    private http:Http
   ) {
     
     // For Date calculations
@@ -185,6 +195,7 @@ public controlFilter(basetype:string, name:string, status?:any, value?:any) {
       this.filterstate.predefined.value = name;
 
       switch(name) {
+
         case "activate":
           this.filterstate.predefined._active = status;
         break;
@@ -197,8 +208,19 @@ public controlFilter(basetype:string, name:string, status?:any, value?:any) {
         case "new": 
           this.filterstate.custom.firstOrderDate.active = true;
           
-          let d = new Date();
+          var d = new Date();
           d.setMonth(d.getMonth() - 1);
+          console.log("TOP CASE REACHED", d);
+          this.filterstate.custom.firstOrderDate.value = d;
+          this.setFilter();
+          
+        break;
+
+        case "longago": 
+          this.filterstate.custom.firstOrderDate.active = true;
+          let noOrdersSinceDays = this.settingsService.settings.filters.noOrdersSinceDays;
+          var d = new Date();
+          d.setMonth(d.getDate() - noOrdersSinceDays);
           console.log("TOP CASE REACHED", d);
           this.filterstate.custom.firstOrderDate.value = d;
           this.setFilter();
@@ -207,6 +229,11 @@ public controlFilter(basetype:string, name:string, status?:any, value?:any) {
 
         case "returning":
           this.filterstate.custom.returning.active = true;          
+          this.setFilter();
+          
+        break;
+        case "loworders":
+          this.filterstate.custom.loworders.active = true;          
           this.setFilter();
           
         break;
@@ -231,10 +258,6 @@ public controlFilter(basetype:string, name:string, status?:any, value?:any) {
 
 
   setFilter(): void {
-
-    
-
-
     
       let filteredData;
 
@@ -284,12 +307,16 @@ public controlFilter(basetype:string, name:string, status?:any, value?:any) {
 
         // LAST DELIVERY DATE
         if (this.filterstate.custom.lastDeliveryDate.active && this.filterstate.custom.lastDeliveryDate.value != 0 && isValid) {
-            isValid = this.compareDates(client.lastDeliveryDate, this.filterstate.custom.lastDeliveryDate.value);
+            isValid = this.compareDates(client.lastDeliveryDate, this.filterstate.custom.lastDeliveryDate.value, "validFromDate");
         }
 
         // FIRST ORDER DATE
         if (this.filterstate.custom.firstOrderDate.active && this.filterstate.custom.firstOrderDate.value != 0 && isValid) {
-            isValid = this.compareDates(client.firstOrderDate, this.filterstate.custom.firstOrderDate.value);
+            isValid = this.compareDates(client.firstOrderDate, this.filterstate.custom.firstOrderDate.value, "validFromDate",);
+        }
+         // LONG AGO
+        if (this.filterstate.custom.longago.active && this.filterstate.custom.longao.value != 0 && isValid) {
+             isValid = this.compareDates(client.lastDeliveryDate, this.filterstate.custom.longago.value, "validToDate");
         }
         
         // DEFAULT STORE
@@ -300,11 +327,13 @@ public controlFilter(basetype:string, name:string, status?:any, value?:any) {
 
         // RETURNING
         if(this.filterstate.custom.returning.active && this.filterstate.custom.returning.value && isValid) {
-           
            isValid =  (client.deliveryCount >= this.filterstate.custom.returning.value) ? true : false;
-           console.log("tried returning", client.deliveryCount, isValid);
         }
-        
+
+        // LOW ORDERS
+        if(this.filterstate.custom.loworders.active && this.filterstate.custom.loworders.value && isValid) {
+           isValid =  (client.deliveryCount <= this.filterstate.custom.loworders.value) ? true : false;
+        }
        
 
         if(isValid) return client;
@@ -470,7 +499,7 @@ public controlFilter(basetype:string, name:string, status?:any, value?:any) {
     }
   
   */
-private compareDates(clientDate, inputDate) {
+private compareDates(clientDate, inputDate, mode) {
             //Check if property exists
             if(typeof clientDate !== "undefined") {
               
@@ -481,13 +510,28 @@ private compareDates(clientDate, inputDate) {
               // calculate InputMS
               inputDate = new Date(inputDate);
               let inputMS = inputDate.getTime();
+
+              let isValid:any;
+
+              switch(mode) {
               
+              // normale methode
+              case "validFromDate":
+                
+                isValid =  ((clientMS - inputMS) >= 1) ? true : false;
+              break;
+
+              case "validUntilDate":
+                isValid =  ((inputMS - clientMS) >= 1) ? true : false;
+              break;
+              
+            }
               
 
               //Calculate how many days
-              let daysSinceLastDelivery = Math.round((inputMS - clientMS) / (1000 * 60 * 60 * 24));
+              
               console.log("LDD", clientMS, inputMS, (inputMS - clientMS) / (1000 * 60 * 60 * 24));
-              return ((clientMS - inputMS) >= 1) ? true : false;
+              return isValid;
             } else {
               //client has no date so fail
               return false;

@@ -408,6 +408,10 @@ export class SettingsService {
             name: "loworders",
             label: "Wenig bestellungen"
           },
+          {
+            name: "longago",
+            label: "Lange keine Bestellungen"
+          }
         ]
       },
       workspace: {
@@ -454,7 +458,7 @@ export class SettingsService {
 }
 
 export interface Settings {
-  filters: Object;
+  filters: any;
   workspace: Object;
   stores: Array<Store>;
   storesGroups: Array<StoreGroup>;
