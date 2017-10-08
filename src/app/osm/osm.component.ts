@@ -8,7 +8,7 @@ import {Location} from "../core/location.class";
 import { SettingsService } from "../settings.service";
 import { ActivatedRoute } from '@angular/router';
 import {MdSnackBar} from '@angular/material';
-
+import { DatePipe } from '@angular/common';
 @Component({
     selector: "osm",
     templateUrl: './osm.component.html',
@@ -33,7 +33,8 @@ export class OSMComponent implements OnInit {
         private clientsService:ClientsService,
         private settingsService:SettingsService,
         private route: ActivatedRoute,
-        public snackBar: MdSnackBar
+        public snackBar: MdSnackBar,
+        private datePipe: DatePipe
     ) {}            
 
     ngOnInit() {
@@ -177,8 +178,11 @@ export class OSMComponent implements OnInit {
                 // L.control.layers(markerLayerGroups).
                 // initialClientsLayerGroup.clearLayers();
                 // First clear old layer
+                // console.log("TYPEOF SOSOOSOSO", typeof this.clientsLayerGroup, this.map.hasLayer(this.clientsLayerGroup));
                 
-                this.map.removeLayer(this.clientsLayerGroup);
+                if(this.map.hasLayer(this.clientsLayerGroup)) this.clientsLayerGroup.clearLayers();
+
+                // this.map.removeLayer(this.clientsLayerGroup);
                 this.createClientsMarkers(0);
                 
                 
@@ -297,7 +301,8 @@ export class OSMComponent implements OnInit {
         // this.clientsLayerGroup = new L.FeatureGroup(null);
         this.clientsLayerGroup =  L.markerClusterGroup({
             spiderfyDistanceMultiplier: 3,
-            zoomToBoundsOnClick: true
+            zoomToBoundsOnClick: true,
+            disableClusteringAtZoom: 16
         });
         
         // iterate all stores
@@ -316,15 +321,19 @@ export class OSMComponent implements OnInit {
                             shadowUrl: "assets/images/marker-shadow.png"
                         })
                 }
+
+
+                // <img src=" + this.settingsService.getStoreGroupImage(m.storeGroup, "icon") + "' alt='" + m.defaultStore + "'>
+
                 
             var popupContent = "<section class='cleft'><p class='name'><b>#" + m.id + "</b> " + m.name + "</p>";
                 popupContent += "<p>" + m.address + "<br /> " + m.postleihzahl + " " + m.city + " </p>";
                 if(typeof m.tel !== "undefined") popupContent += "<p><span *ngIf='m.tel'>" + m.tel + "</span>";
                 if(typeof m.email !== "undefined") popupContent += "<span *ngIf='m.email'> | " + m.email + "</span> </p>";
-                if(m.group != "unkknown") popupContent += "<div class='defaultStore'>Kunde aus <img src='./assets/icons/stores_" + m.storeGroup + ".svg' alt='" + m.defaultStore + "'><span>" + m.defaultStore + "</span></div>";
+                if(m.group != "unkknown") popupContent += "<div class='defaultStore'>Kunde aus <span>" + m.defaultStore + "</span></div>";
                 popupContent += "</section><section class='cright'>";
                 popupContent += "<div class='deliveryCount'><span class='number'>" + m.deliveryCount + "</span><span class='name'>Lieferungen</span></div>";
-                
+                popupContent += "<div class='lastDeliveryDate'>" +  this.datePipe.transform(m.lastDeliveryDate, 'd.M.yy') + " " + this.daysSinceDate(m.lastDeliveryDate) + "</div>";
                 if(typeof m.abo !== "undefined") popupContent += "<p *ngIf='m.abo' class='number'>Abo-Nr. " + m.abo + "</p>";
                 
                 popupContent += "</section><section class='cclear'></section>";
@@ -425,5 +434,16 @@ export class OSMComponent implements OnInit {
         // 
         L.control.layers(this.storesLayerGroups).addTo(this.map);
     }
+    daysSinceDate(date) {
+  if(typeof date !== "string") {
+    return "Keine"
+  } else {
+    let now = Date.now();
+  let tmpDate = new Date(date); // some mock date
+  var milliseconds = tmpDate.getTime(); 
+  return Math.round((now-milliseconds)/(1000*60*60*24))
+  }
+  
+}
      
 }

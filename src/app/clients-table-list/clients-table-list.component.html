@@ -1,4 +1,4 @@
-<div [ngClass]="{'quisearch-enabled':quicksearchEnabled}" class="quicksearch" *ngIf="quicksearchEnabled == true">
+<div class="quicksearch">
     <md-input-container>
         <input mdInput type='text' placeholder='Schnellsuche nach Namen..' (keyup)='updateFilter($event)' value="" />
         <button md-icon-button mdSuffix><md-icon>search</md-icon></button>
@@ -27,8 +27,8 @@
                     </section>
                     <section class="infos2">
                         <div><img src="{{settingsService.getStoreGroupImage(row.defaultStore, 'icon')}}" alt="{{row.defaultStore}}" class="stores-icon-24" /> {{row.storeGroup}} {{ row.defaultStore }}</div>
-                        <div>{{row.lastDeliveryDate | date:'d.M.yy' }} {{daysSinceDate(row.lastDeliveryDate)}}</div>
-                        <div></div>
+                        <div *ngIf="row.lastDeliveryDate"><span>{{daysSinceDate(row.lastDeliveryDate)}}</span> Tage seit Lieferung ({{row.lastDeliveryDate | date:'d.M.yy' }})</div>
+                        <div *ngIf="row.firstOrderDate">Kunde seit <span>{{daysSinceDate(row.firstOrderDate)}}</span> Tagen ({{row.firstOrderDate | date:'d.M.yy' }})</div>
                     </section>
                 </div>
                 <div class="row-actions">

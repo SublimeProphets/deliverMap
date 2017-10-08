@@ -35,9 +35,7 @@ switch($_POST['type']) {
             }
         }
     break;
-    case "storage":
-
-    break;
+    
     default:
     	echo '{"error": "Type nicht erkannt"}';
     break;

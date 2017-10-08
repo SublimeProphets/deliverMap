@@ -20,15 +20,15 @@ export class ClientSetStarredComponent implements OnInit {
  }
 
   ngOnInit() {
-    console.log(this.starstate);
+    
     if(typeof this.starstate == "undefined") this.starstate = false;
     this.starstatename = (this.starstate) ? "star" : "star_border";
   }
 
   public setStarred():void {
-    console.log(this.starstate);
+    
     this.starstate = this.clientsService.setClientStarred(this.id, this.starstate);
-    console.log(this.starstate);
+    
     
   }
 

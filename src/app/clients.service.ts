@@ -80,13 +80,15 @@ export class ClientsService {
     this.timestamp = Date.now();
     this.filterstate = JSON.parse(JSON.stringify(FILTERSTATEORG));
     // Add default values if localStorage was empty
-    if (this.localStorageService.get("clients") === null) {
-      this.setDefaultStorage();
-    } else {
-      this.clients = this.localStorageService.get("clients");
-      this.clientsOriginal = this.localStorageService.get("clients");
-    }
-
+    
+    this.clients = this.settingsService.getClients();
+    this.clientsOriginal = this.clients;
+    
+    console.log(this.clients);
+    this.settingsService.seetingsHasBeenUpdated.subscribe(() => {
+      this.clients = this.settingsService.getClients();
+      this.clientsOriginal = this.settingsService.getClients();
+    })
 
     // Set the selected client to default
     this.clientSelectedIDcache = 3;
@@ -118,11 +120,11 @@ export class ClientsService {
     this.clients = input;
     if (isOriginalData) {
       this.clientsOriginal = input;
-      this.localStorageService.set("clients", input);
+      this.settingsService.setClients(this.clientsOriginal);
+      
     }
 
 
-    // return this.clientsUpdated.emit(true);
 
   }
   private fetchStorage() {
@@ -130,10 +132,10 @@ export class ClientsService {
     //return this.localStorageService.get("clients");
     return this.clients;
   }
-  private setDefaultStorage() {
+  /* private setDefaultStorage() {
     this.localStorageService.set("clients", CLIENTS);
     this.clients = CLIENTS;
-  }
+  } */
   private removeStorage() {
     this.clientsUpdated.emit(true);
     this.clients = [];
@@ -210,8 +212,9 @@ public controlFilter(basetype:string, name:string, status?:any, value?:any) {
           
           var d = new Date();
           d.setMonth(d.getMonth() - 1);
-          console.log("TOP CASE REACHED", d);
+          
           this.filterstate.custom.firstOrderDate.value = d;
+          console.log("NEW CASE REACHED", d);
           this.setFilter();
           
         break;
@@ -221,7 +224,7 @@ public controlFilter(basetype:string, name:string, status?:any, value?:any) {
           let noOrdersSinceDays = this.settingsService.settings.filters.noOrdersSinceDays;
           var d = new Date();
           d.setMonth(d.getDate() - noOrdersSinceDays);
-          console.log("TOP CASE REACHED", d);
+          console.log("LONG CASE REACHED", d);
           this.filterstate.custom.firstOrderDate.value = d;
           this.setFilter();
           
@@ -263,14 +266,14 @@ public controlFilter(basetype:string, name:string, status?:any, value?:any) {
 
       // Do the actual filtering...
       filteredData = this.clientsOriginal;
- 
+      
 
-
+      console.log(filteredData);
 
       filteredData = filteredData.filter(client => {
 
         let isValid = true;
-
+        
 
 
         // ABO

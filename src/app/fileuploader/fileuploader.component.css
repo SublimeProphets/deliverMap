@@ -15,3 +15,8 @@ location-picker {
     width: 300px;
     height: 300px;
 }
+
+.import,
+.export {
+    width: 46%;
+}

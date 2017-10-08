@@ -20,8 +20,6 @@ export class ClientEditDialog implements OnInit {
   
 
   ngOnInit() {
-    console.log(this.client);
-    
   }
   public openDialog():void {
                   

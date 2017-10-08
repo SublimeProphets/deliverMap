@@ -1,66 +1,27 @@
-<!-- <h1>Kundenliste ({{clients.length}} Einträge)</h1>
-  <table>
-  <thead>
-    <tr>
-      <td>ID</td>
-      <td>Name</td>
-      <td>Adresse</td>
-      <td>PLZ</td>
-      <td>Ort</td>
-      <td>Telefon</td>
-      <td>eMail</td>
-      <td>Abo-ID</td>
-      <td>Anzahl Lieferungen</td>
-      <td>Letzter Store</td>
-      <td>Letzter Einkauf</td>
-      <td>Latitude</td>
-      <td>Longitude</td>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let row of clients">
-      <td>{{row.id}}</td>
-      <td>{{row.name}}</td>
-      <td>{{row.address}}</td>
-      <td>{{row.postleihzahl}}</td>
-      <td>{{row.city}}</td>
-      <td>{{row.tel}}</td>
-      <td>{{row.email}}</td>
-      <td>{{row.abo}}</td>
-      <td>{{row.deliveryCount}}</td>
-      <td>{{row.defaultStore}}</td>
-      <td>{{row.lastDeliveryDate}}</td>
-      <td>{{row.lat}}</td>
-      <td>{{row.lng}}</td>
-    </tr>
-  </tbody>
-</table>
-
-      
-      <select name="ipp" id="ipp" (change)="pageLimit(itemsPerPage.value)"  [(ngModel)]="itemsPerPage">
-               <option [value]="100">Items per page</option>
-               <option [value]="10">10</option>
-               <option [value]="25">25</option>
-               <option [value]="50">50</option>
-               <option [value]="100">100</option>
-               <option [value]="200">200</option>
-             </select>
-             -->
 <ngx-datatable class="material maintable" [columnMode]="'fixed'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="50" [limit]="50" [scrollbarV]="true" [scrollbarH]="true" [rows]="clients">
-    <ngx-datatable-column name="id" width="auto" [resizeable]="false" [sortable]="false" [draggable]="false" [canAutoResize]="false">
+    <ngx-datatable-column name="" width="auto" [resizeable]="false" [sortable]="false" [draggable]="false" [canAutoResize]="false" [width]="150">
         <ng-template let-row="row" ngx-datatable-cell-template>
+            <a md-icon-button routerLink="/map/client/{{row.id}}">
+                <md-icon>remove_red_eye</md-icon>
+            </a>
             <client-edit-dialog (onChange)="updateClient(row.id, $event)" [client]="row">
             </client-edit-dialog>
             <client-set-starred [id]="row.id" [state]="row.starred" [label]="false"></client-set-starred>
         </ng-template>
     </ngx-datatable-column>
     <ngx-datatable-column name="Name" [width]="250"></ngx-datatable-column>
-    <ngx-datatable-column name="Adresse" prop="address"></ngx-datatable-column>
+    <ngx-datatable-column name="Adresse" prop="address" [width]="250"></ngx-datatable-column>
     <ngx-datatable-column name="PLZ" prop="postleihzahl" [width]="60"></ngx-datatable-column>
     <ngx-datatable-column name="City" [width]="100" prop="city"></ngx-datatable-column>
-    <ngx-datatable-column name="eMail" prop="email"></ngx-datatable-column>
+    <ngx-datatable-column name="eMail" prop="email" *ngIf="workspace == 'domicile'"></ngx-datatable-column>
     <ngx-datatable-column name="tel" prop="tel"></ngx-datatable-column>
-    <ngx-datatable-column name="Abo" prop="abo" [width]="30"></ngx-datatable-column>
+    <ngx-datatable-column name="Abo" prop="abo" *ngIf="workspace == 'domicile'" [width]="30"></ngx-datatable-column>
+    <ngx-datatable-column name="service-Typ" prop="serviceType" *ngIf="workspace == 'wili'"></ngx-datatable-column>
+    <ngx-datatable-column name="service-Zeit" prop="serviceTime" *ngIf="workspace == 'wili'">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+            {{row.serviceTime}}:00
+        </ng-template>
+    </ngx-datatable-column>
     <ngx-datatable-column name="Lieferungen" prop="deliveryCount" [width]="30"></ngx-datatable-column>
     <ngx-datatable-column name="Geschäft" prop="defaultStore" [width]=""></ngx-datatable-column>
     <ngx-datatable-column name="Letzte Lieferung" prop="lastDeliveryDate" [width]="">

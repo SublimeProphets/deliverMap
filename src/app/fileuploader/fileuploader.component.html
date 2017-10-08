@@ -1,22 +1,33 @@
 <div class="fileuploader">
-    <md-card>
+    <md-card class="import">
         <md-card-title>1. Dateiupload</md-card-title>
         <md-card-content>
-            <p>Letzter Import:<b>{{settings.importAssistant.lastImportDate | date:'EEEE, d.MMMM y hh:mm'}}</b></p>
+            <p>Letzter Import: <b>{{settings.importAssistant.lastImportDate | date:'EEEE, d.MMMM y hh:mm'}}</b></p>
             <p>Daten für
-                <md-radio-group [(ngModel)]="settings.importAssistant.workspace">
-                    <md-radio-button value="12d">1-2-Domicile</md-radio-button>
-                    <md-radio-button value="wili">Wili</md-radio-button>
+                <md-radio-group>
+                    <md-radio-button value="domicile" [checked]="workspace.slug == 'domicile'" (change)="workspaceChanged('domicile')">1-2-Domicile</md-radio-button>
+                    <md-radio-button value="wili" [checked]="workspace.slug == 'wili'" (change)="workspaceChanged('wili')">Wili</md-radio-button>
                 </md-radio-group>
             </p>
 
-            <md-checkbox [checked]="settings.importAssistant.fileHasHeader"> Datei enthält Spaltenüberschriften
-            </md-checkbox>
+            <!-- <md-checkbox [checked]="settings.importAssistant.fileHasHeader"> Datei enthält Spaltenüberschriften 
+            </md-checkbox> -->
 
 
 
             <xlsx-file-upload (uploadedXls)="xlsxUploaded($event)"> {{ uploaderContent | async }} </xlsx-file-upload>
 
+        </md-card-content>
+
+
+
+    </md-card>
+    <md-card class="export">
+        <md-card-title>Kundendaten exportieren</md-card-title>
+        <md-card-subtitle>Das exportierte CSV-File kann direkt in die Excel-Statistik importiert werden.</md-card-subtitle>
+        <md-card-content>
+
+            <clients-export></clients-export>
         </md-card-content>
 
 
@@ -31,7 +42,7 @@
         <md-progress-bar class="example-margin" [color]="accent" [mode]="determinate" [value]="progress.finishedPercent" [bufferValue]="progress.bufferPercent">
         </md-progress-bar>
         <md-card-content>
-            <div *ngIf="progress.finishedPercent <= 100">
+            <div *ngIf="progress.finishedPercent < 100">
 
                 <div class="percent">{{progress.finished}} von {{totalRows}} verarbeitet</div>
                 <div class="subline">Wi bitten um Geduld, es kann einige Zeit dauern.</div>
@@ -52,51 +63,25 @@
                 <md-checkbox [checked]="settings.importAssistant.showSkipped"> Übersprungene</md-checkbox> -->
             <h2>Erfolgreich</h2>
             <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="50" [limit]="50" [scrollbarV]="true" [scrollbarH]="true" [rows]="importResults.success">
-                <ngx-datatable-column name="Id" [width]="50"></ngx-datatable-column>
-                <ngx-datatable-column name="Name" [width]="250"></ngx-datatable-column>
-                <ngx-datatable-column name="Adresse" prop="address"></ngx-datatable-column>
-                <ngx-datatable-column name="PLZ" prop="postleihzahl" [width]="60"></ngx-datatable-column>
-                <ngx-datatable-column name="City" [width]="100" prop="city"></ngx-datatable-column>
-
-                <ngx-datatable-column name="eMail" prop="email"></ngx-datatable-column>
-                <ngx-datatable-column name="tel" prop="tel"></ngx-datatable-column>
-                <ngx-datatable-column name="Abo" prop="abo" [width]="30"></ngx-datatable-column>
-                <ngx-datatable-column name="Lieferungen" prop="deliveryCount" [width]="30"></ngx-datatable-column>
-                <ngx-datatable-column name="Geschäft" prop="defaultStore" [width]=""></ngx-datatable-column>
-                <ngx-datatable-column name="Letzte Lieferung" prop="lastDeliveryDate" [width]=""></ngx-datatable-column>
-                <ngx-datatable-column name="Breitengraden" prop="lat" [width]="60"></ngx-datatable-column>
-                <ngx-datatable-column name="Längengraden" prop="lng" [width]=""></ngx-datatable-column>
+                <ngx-datatable-column name="{{column.name}}" prop="{{column.slug}}" [width]="30" *ngFor="let column of workspace.exportColumns"></ngx-datatable-column>
 
             </ngx-datatable>
             <h2>Überprüfung notwendig</h2>
             <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="50" [limit]="50" [scrollbarV]="true" [scrollbarH]="true" [rows]="importResults.missingCoordinates">
-                <ngx-datatable-column name="name" width="auto" [resizeable]="false" [sortable]="false" [draggable]="false" [canAutoResize]="true" (click)="toggleExpandRow(row)">
-                    <ng-template let-row="row" ngx-datatable-cell-template>
-                        <client-edit-dialog (onChange)="updateRow(row.id, $event)" [client]="row" style="width: 300px; height: 200px">x
+                <ngx-datatable-column name="" width="auto " [resizeable]="false " [sortable]="false " [draggable]="false " [canAutoResize]="true " (click)="toggleExpandRow(row) ">
+                    <ng-template let-row="row " ngx-datatable-cell-template>
+                        <client-edit-dialog (onChange)="updateRow(row.id, $event) " [client]="row " style="width: 300px; height: 200px ">x
                         </client-edit-dialog>
                     </ng-template>
                 </ngx-datatable-column>
-                <ngx-datatable-column name="Id" [width]="50"></ngx-datatable-column>
-                <ngx-datatable-column name="Name" [width]="250"></ngx-datatable-column>
-                <ngx-datatable-column name="Adresse" prop="address"></ngx-datatable-column>
-                <ngx-datatable-column name="PLZ" prop="postleihzahl" [width]="60"></ngx-datatable-column>
-                <ngx-datatable-column name="City" [width]="100" prop="city"></ngx-datatable-column>
-
-                <ngx-datatable-column name="eMail" prop="email"></ngx-datatable-column>
-                <ngx-datatable-column name="tel" prop="tel"></ngx-datatable-column>
-                <ngx-datatable-column name="Abo" prop="abo" [width]="30"></ngx-datatable-column>
-                <ngx-datatable-column name="Lieferungen" prop="deliveryCount" [width]="30"></ngx-datatable-column>
-                <ngx-datatable-column name="Geschäft" prop="defaultStore" [width]=""></ngx-datatable-column>
-                <ngx-datatable-column name="Letzte Lieferung" prop="lastDeliveryDate" [width]=""></ngx-datatable-column>
-                <ngx-datatable-column name="Breitengraden" prop="lat" [width]="60"></ngx-datatable-column>
-                <ngx-datatable-column name="Längengraden" prop="lng" [width]=""></ngx-datatable-column>
+                <ngx-datatable-column name="{{column.name}}" prop="{{column.slug}}" [width]="30" *ngFor="let column of workspace.exportColumns"></ngx-datatable-column>
 
             </ngx-datatable>
-
+            <p *ngFor="let column of workspace.exportColumns">{{column}}</p>
 
         </md-card-content>
     </md-card>
-    <md-card *ngIf="userProgress >= 3">
+    <md-card *ngIf="userProgress>= 3">
         <md-card-title>4. Import fertigstellen</md-card-title>
         <md-card-subtitle>Stelle zuvor sicher, dass alle Daten korrekt sind. Nur Datensätze in der Liste "Erfolgreich" werden übernommen, alle anderen werden warnungslos verworfen.</md-card-subtitle>
         <md-card-content>

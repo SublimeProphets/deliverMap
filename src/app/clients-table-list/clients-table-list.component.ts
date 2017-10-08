@@ -96,9 +96,17 @@ getOverlayStyle() {
 
       // filter our data
       let temp = this.temp.filter(function (d) {
+        let isValid:boolean = false;
         console.log(d);
-        return d.name.toLowerCase().indexOf(val) !== -1 || !val;
+        isValid = (d.address.toLowerCase().indexOf(val) !== -1 || !val) ? true : false;
+        if(!isValid) {
+          isValid = (d.name.toLowerCase().indexOf(val) !== -1 || !val) ? true : false;
+        }
+        
+
+        return isValid
       });
+
 
       // update the rows
       this.data = temp;

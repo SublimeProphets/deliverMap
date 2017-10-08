@@ -35,6 +35,11 @@ export class SettingsComponent {
       }
       return element;
     });
+
+    this.settingsService.seetingsHasBeenUpdated.subscribe(() => {
+      this.settings = this.settingsService.settings;
+    })
+
     
   }
   settings: any;
@@ -47,36 +52,38 @@ export class SettingsComponent {
 
 
   public saveSettings() {
-    this.settingsService.saveSettingsToLocalStorage(this.settings);
+    this.settingsService.saveSettings(this.settings);
   }
   public loadDefaults() {
-    this.settings = this.settingsService.loadDefaults();
+    let doIt = confirm("Achtung: Alle bestehenen Änderungen werden somit verworfen.\n\n Wirklich Zurücksetzten?");
+    if(doIt) this.settings = this.settingsService.loadDefaults();
   }
 
-  public workspaceChanged() {
+  public workspaceChanged(slug) {
     let workspaceObj: Object;
 
-    switch(this.workspaceSlug) {
-      case "12d":
-        workspaceObj = {
-          slug: "12d",
-          name: "1-2-Domicile"
-        }
+    switch(slug) {
+      case "domicile":
+        workspaceObj = myGlobals.DEFAULT_WORKSPACES.domicile;
       break;
 
       case "wili":
-        workspaceObj = {
-          slug: "wili",
-          name: "Service Wili"
-        }
+        workspaceObj = myGlobals.DEFAULT_WORKSPACES.wili;
       break;
     }
 
     // Add to the settings-Obj
     this.settings.workspace = workspaceObj;
+    
 
 
   }
+
+  public datastorageChanged(slug) {
+    this.settingsService.changeDatastorage(slug);
+
+  }
+
 
 
 
@@ -152,14 +159,6 @@ export class SettingsComponent {
           }
         break;
       }
-      
-      // Save store to the localStorage
-      
-      // this.settings = this.settingsService.settings;
-      
-      
-      //this.settings = this.settingsService.settings;
-console.log("my groups after working", this.settings.storesGroups);
 
 
   }

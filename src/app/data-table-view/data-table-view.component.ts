@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Client } from '../client/client.component';
 import { ClientsService } from '../clients.service';
+import { SettingsService } from "../settings.service";
 
 @Component({
   selector: 'data-table-view',
@@ -13,8 +14,12 @@ import { ClientsService } from '../clients.service';
 export class DataTableViewComponent implements OnInit {
 
   // Get the clients
-  constructor(private clientsService: ClientsService) { }
-
+  constructor(
+    private clientsService: ClientsService,
+    private settingsService: SettingsService) { 
+      this.workspace = this.settingsService.settings.workspace.slug;
+    }
+  workspace:string ;
   clients: any;
   offset: number;
   ipp: number = 100;

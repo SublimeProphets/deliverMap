@@ -21,6 +21,7 @@ import {FileUploadModule} from "ng2-file-upload";
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { RouterModule, Routes } from '@angular/router';
 import { LOCALE_ID } from '@angular/core';
+import { DatePipe } from "@angular/common";
 // import { AgmCoreModule } from '@agm/core';
 // import { Ng2CompleterModule } from "ng2-completer";
 // import { CompleterCmp } from "./completer-cmp/completer-cmp";
@@ -92,6 +93,7 @@ import { SearchResultsComponent } from './search-results/search-results.componen
 import { ClientsTableListComponent } from './clients-table-list/clients-table-list.component';
 import { ClientSetStarredComponent } from './client-set-starred/client-set-starred.component';
 import { OrderbyPipe } from './orderby.pipe';
+import { ClientsExport } from './clients-export/clients-export.component';
 
 
 
@@ -131,7 +133,8 @@ import { OrderbyPipe } from './orderby.pipe';
     SearchResultsComponent,
     ClientsTableListComponent,
     ClientSetStarredComponent,
-    OrderbyPipe    
+    OrderbyPipe,
+    ClientsExport   
     
     
 
@@ -182,6 +185,7 @@ import { OrderbyPipe } from './orderby.pipe';
     MapService,
     SettingsService,
     SearchService,
+    DatePipe,
     { provide: LOCALE_ID, useValue: "de-CH" }
   ],
   bootstrap: [AppComponent],

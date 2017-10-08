@@ -7,13 +7,14 @@
                 <md-card-subtitle>Hier kannst Du zwischen verschiedenen Workspaces wählen. Beachte, dass für jeden Arbeitsmodus ein eigener Datenspeicher besteht.</md-card-subtitle>
                 <md-card-content>
 
-                    <md-radio-group (change)="workspaceChanged()" [(ngModel)]="workspaceSlug">
-                        <md-list-item>
-                            <md-radio-button value="12d" checked>1-2-Domicile</md-radio-button>
-                        </md-list-item>
-                        <md-list-item>
-                            <md-radio-button value="wili">Wili</md-radio-button>
-                        </md-list-item>
+                    <md-radio-group>
+
+                        <p>
+                            <md-radio-button value="domicile" [checked]="settings.workspace.slug == 'domicile'" (change)="workspaceChanged('domicile')">1-2-Domicile</md-radio-button>
+                        </p>
+                        <p>
+                            <md-radio-button value="wili" [checked]="settings.workspace.slug == 'wili'" (change)="workspaceChanged('wili')">Wili</md-radio-button>
+                        </p>
                     </md-radio-group>
 
                 </md-card-content>
@@ -56,12 +57,28 @@
                 </md-card-content>
             </md-card>
 
+            <md-card>
+                <md-card-title>Datenspeicheung</md-card-title>
+                <md-card-subtitle>Steuert, wie die Daten gespeichert werden (und somit auch, ob ein Computerübegreifendes Arbeiten möglich ist).</md-card-subtitle>
+                <md-card-content>
+                    <md-radio-group>
+                        <p>
+                            <md-radio-button value="local" [checked]="settings.datastorage === 'local'" (change)="datastorageChanged('local')">LocalStorage (jeder Computer hat eigener Zustand)</md-radio-button>
+                        </p>
+                        <p>
+                            <md-radio-button value="php" [checked]="settings.datastorage === 'php'" (change)="datastorageChanged('php')">PHP (Computerübergreifende Einstellungen)</md-radio-button>
+                        </p>
+                    </md-radio-group>
+
+                </md-card-content>
+            </md-card>
+
 
 
 
         </md-tab>
         <md-tab label="Geschäfte verwalten">
-            <div class="flex-container">
+            <div class="flex-container stores">
                 <div class="flex-item">
                     <h2>{{settings.stores.length}} Geschäfte <button md-raised-button (click)="editStore('new')"><md-icon>add</md-icon> Geschäft</button></h2>
                     <div class="stores-container">
@@ -110,7 +127,7 @@
                 </div>
             </div>
         </md-tab>
-        <md-tab label="Daten importieren">
+        <md-tab label="Kundenverwaltung">
             <h1>Import-Assistent</h1>
             <fileuploader></fileuploader>
 
@@ -123,6 +140,6 @@
 
 <div class="controls">
 
-    <button md-button (click)="saveSettings()"><md-icon>save</md-icon> Einstellungen Speichern</button>
-    <button md-button (click)="loadDefaults()"><md-icon>settings_backup_restore</md-icon>Auf Standard zurücksetzten</button>
+    <button md-button (click)="saveSettings()"><md-icon>save</md-icon> Speichern</button>
+    <button md-button (click)="loadDefaults()"><md-icon>settings_backup_restore</md-icon>Zurücksetzten</button>
 </div>

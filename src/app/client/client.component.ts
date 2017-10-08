@@ -6,7 +6,7 @@
       city?: string;
       deliveryCount?: number;
       defaultStore?: string;
-      storeGroup?: string;
+      storeGroup?: number;
       lastDeliveryDate?: any;
       firstOrderDate?: any;
       comments?: any;
@@ -24,5 +24,8 @@
       isOpen?: any;
       $$index?:any;
       
+      // wili
+      serviceType?: string;
+      serviceTime?: string;
 
     }

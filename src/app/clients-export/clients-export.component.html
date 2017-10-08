@@ -1,0 +1,7 @@
+<p>
+    <md-radio-group>
+        <md-radio-button value="domicile" [checked]="workspace == 'domicile'" (change)="workspaceChanged('domicile')">1-2-Domicile</md-radio-button>
+        <md-radio-button value="wili" [checked]="workspace == 'wili'" (change)="workspaceChanged('wili')">Wili</md-radio-button>
+    </md-radio-group>
+</p>
+<p> <button (click)="exportAsCSV()" md-raised-button><md-icon>exit_to_app</md-icon> Als CSV exportieren</button></p>

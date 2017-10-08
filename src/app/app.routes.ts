@@ -16,6 +16,7 @@ export const appRoutes: Routes = [
     component: DataTableViewComponent,
     data: { title: 'Kundentabelle' } 
   },
+
   { path: 'osm', 
     component: OSMComponent,
     data: { title: 'OSM' } 

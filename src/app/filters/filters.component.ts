@@ -97,19 +97,19 @@ public controlFilter(basetype:string, name?:string, status?:any, value?:any) {
   if (typeof status !== "undefined") this.inProgress = true;
   setTimeout(() => {
     let result = this.clientsService.controlFilter(basetype, name, status, value);
+  
     this.counter = {
       clientsFound: result.clientsFound,
       clientsTotal: result.clientsTotal
     }
     this.filterstate = result.filterstate;
     this.inProgress = false;
-    console.log("filtercomponent got new filterstates", this.filterstate);
+  //   console.log("filtercomponent got new filterstates", this.filterstate);
 
   }, 50)
-  console.log(name, value);
+  
   
 }
-
 
   
   
