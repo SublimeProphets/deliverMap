@@ -266,6 +266,7 @@ public workspaceChanged(workspace) {
 
           // Addresse
           case "G":
+<<<<<<< Updated upstream
             switch(this.workspace) {
               case "domicile":
                 this.tmpClient[previousRow].email = res[key].v;
@@ -292,6 +293,15 @@ public workspaceChanged(workspace) {
               break;
             }
             
+=======
+            this.tmpClient[previousRow].email = res[key].v;
+            
+            break;
+
+          // Addresse
+          case "F":
+            this.tmpClient[previousRow].abo = res[key].v;
+>>>>>>> Stashed changes
             
             break;
 
@@ -303,19 +313,37 @@ public workspaceChanged(workspace) {
           // defaultStore
           case "I":
             this.tmpClient[previousRow].defaultStore = res[key].v;
+<<<<<<< Updated upstream
             this.tmpClient[previousRow].storeGroup = this.settingsService.getStoreGroupIdBySlug(this.tmpClient[previousRow].defaultStore);
+=======
+>>>>>>> Stashed changes
             
-            // //if(storeObj) this.tmpClient[previousRow].storeGroup = storeObj.group;
+            // get StoreGroup
+            let index = this.settingsService.settings.stores.map(function (e) { return e.slug; }).indexOf(res[key].v);
+            
+            // if not found set 0 
+            let storeGroup = (index == -1) ? 0 : this.settingsService.settings.stores[index].group;
+            
+            // set as property
+            this.tmpClient[previousRow].storeGroup = storeGroup;
+
             break;
 
           // lastDeliveryDate
           case "J":
+<<<<<<< Updated upstream
             this.tmpClient[previousRow].lastDeliveryDate = new Date((parseInt(res[key].v) - (25567 + 1)) * 86400 * 1000);
+=======
+
+            //this.tmpClient[previousRow].lastDeliveryDate = new Date((parseInt(res[key].v) - (25567 + 1)) * 86400 * 1000);
+            this.tmpClient[previousRow].lastDeliveryDate = res[key].v;
+>>>>>>> Stashed changes
             break;
 
           //FirstOrderDate
           case "K":
-            this.tmpClient[previousRow].firstOrderDate = new Date((parseInt(res[key].v) - (25567 + 1)) * 86400 * 1000);
+            this.tmpClient[previousRow].firstOrderDate = res[key].v;
+            //this.tmpClient[previousRow].firstOrderDate = new Date((parseInt(res[key].v) - (25567 + 1)) * 86400 * 1000);
           break;
 
           // Starred
@@ -330,18 +358,30 @@ public workspaceChanged(workspace) {
 
           // Latitude
           case "N":
+<<<<<<< Updated upstream
             if (res[key].v !== "") {
               this.tmpClient[previousRow].lng = res[key].v;
+=======
+            
+
+            if (res[key].v !== "" && typeof res[key].v == "number") {
+              this.tmpClient[previousRow].lat = res[key].v;
+>>>>>>> Stashed changes
             }
-            break;
+          break;
 
           //Longitude
           case "O":
 
+<<<<<<< Updated upstream
             if (res[key].v !== "") {
               this.tmpClient[previousRow].lat = res[key].v;
+=======
+            if (res[key].v !== "" && typeof res[key].v == "number") {
+              this.tmpClient[previousRow].lng = res[key].v;
+>>>>>>> Stashed changes
             }
-            break;
+          break;
 
         }
         // this.tmpClient = {name:res[key]};
@@ -362,9 +402,14 @@ public workspaceChanged(workspace) {
 
             //Lookup group membership
 
+<<<<<<< Updated upstream
             //this.tmpClient[previousRow].storeGroup = this.lookupStoreGroup(this.tmpClient[previousRow].defaultStore);
             
             
+=======
+            
+           
+>>>>>>> Stashed changes
 
 
 
@@ -418,7 +463,7 @@ public workspaceChanged(workspace) {
             isOpen: false,
             draggable: false,
             label: "A",
-            DOMID: "client-id-" + previousRow
+            DOMID: "client-id-" + previousRow,
           };
 
           // Yes, we executed it at least once
@@ -429,6 +474,10 @@ public workspaceChanged(workspace) {
           if (this.totalRows <= i) {
             console.error("ALL IMPORTED");
             console.log(this.importResults);
+            
+
+
+
             //Do something if the end of the loop
             // this.clientsService.emitUpdate();
           }
@@ -588,7 +637,33 @@ this.importResults.missingCoordinates.splice(index, 1);
   
 }
 public saveImportedData():void {
+<<<<<<< Updated upstream
     this.settingsService.setClients(this.importResults.success, this.workspace.slug);
-}
+=======
 
+            // Calculate topusers
+
+            // first sort string
+            this.importResults.success.sort(this.predicateBy("deliveryCount")).reverse();
+
+            // then add ranking as property
+            for(let i = 0; i < this.importResults.success.length; i++) {
+              this.importResults.success[i].ranking = i + 1;
+            } 
+
+
+
+    this.clientsService.updateStorage(this.importResults.success, true);
+>>>>>>> Stashed changes
+}
+private predicateBy(prop){
+   return function(a,b){
+      if( a[prop] > b[prop]){
+          return 1;
+      }else if( a[prop] < b[prop] ){
+          return -1;
+      }
+      return 0;
+   }
+}
 }

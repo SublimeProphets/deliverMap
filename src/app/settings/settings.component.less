@@ -18,7 +18,7 @@ md-input-container {
 }
 .container {
     height: 100%;
-    overflow: scroll;
+    
 }
 .controls {
     position: absolute;
@@ -172,4 +172,19 @@ h2 {
     display: block;
     font-weight: 0.85em;
     color: darkgray;
+}
+
+.map {
+    md-slider {
+        width: calc(~"100% - 110px");
+    }
+    p > span {
+        width: 110px;
+        display: inline-block;
+        text-align: right;
+
+    }
+    button {
+        margin-bottom: 32px
+    }
 }

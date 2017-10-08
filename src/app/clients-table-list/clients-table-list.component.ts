@@ -21,7 +21,7 @@ export class ClientsTableListComponent implements OnInit {
   public stores:any;
   public deliveryCountRadius: number = 50;
   constructor(
-    private clientsService:ClientsService,
+    public clientsService:ClientsService,
     private settingsService:SettingsService
   ) {
 
@@ -48,17 +48,6 @@ export class ClientsTableListComponent implements OnInit {
     console.log(Math.round((now-milliseconds)/(1000*60*60*24)));
   }
   
-daysSinceDate(date) {
-  if(typeof date !== "string") {
-    return "Keine"
-  } else {
-    let now = Date.now();
-  let tmpDate = new Date(date); // some mock date
-  var milliseconds = tmpDate.getTime(); 
-  return Math.round((now-milliseconds)/(1000*60*60*24))
-  }
-  
-}
 
 getOverlayStyle() {
     

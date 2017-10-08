@@ -19,6 +19,69 @@
 
                 </md-card-content>
             </md-card>
+            <md-card class="map">
+                <md-card-title>Karten-Optionen</md-card-title>
+                <md-card-subtitle>Alle Einstellungen zu der Karte.</md-card-subtitle>
+                <md-card-content>
+                    <h3>Kartenzentrum</h3>
+                    <table cellspacing="0" class="example-full-width">
+                        
+                        <tr>
+                            <td>
+                                <md-input-container>
+                                    <input mdInput placeholder="Breitengraden" [(ngModel)]="settings.map.center.lat" type="number">
+                                    <md-hint align="end"></md-hint>
+                                </md-input-container>
+                            </td>
+                            <td>
+                                <md-input-container>
+                                    <input mdInput placeholder="Längengraden" [(ngModel)]="settings.map.center.lng" type="number">
+                                    <md-hint align="end"></md-hint>
+                                </md-input-container>
+                            </td>
+                            <td>
+                                <location-picker (onChange)="mapCenterChanged($event)" [lat]="settings.map.center.lat" [lng]="settings.map.center.lng"></location-picker>
+                            </td>
+                        </tr>
+
+                    </table>
+
+
+                    
+
+                    <h3>Zoom-Levels</h3>
+                    <p><span>Standardzoom</span><md-slider
+
+        
+                        
+                        [max]="settings.map.maxZoom"
+                        [min]="settings.map.minZoom"
+                        step="1"
+                        thumb-label="true"
+                        [(ngModel)]="settings.map.zoom">
+                    </md-slider></p>
+                    <p><span>Minimum</span><md-slider
+
+                        [max]="settings.map.maxZoom"
+                        min="1"
+                        step="1"
+                        thumb-label="true"
+                        [(ngModel)]="settings.map.minZoom">
+                    </md-slider></p>
+                    <p><span>Maximum</span><md-slider
+
+                        max="19"
+                        [min]="settings.map.minZoom"
+                        step="1"
+                        thumb-label="true"
+                        [(ngModel)]="settings.map.maxZoom">
+                    </md-slider></p>
+                    <p><a href="http://wiki.openstreetmap.org/wiki/Zoom_levels" target="_blank" md-button><md-icon>exit_to_app</md-icon> Erklärung der Zoom-Stufen</a></p>
+                    
+
+
+                </md-card-content>
+            </md-card>
 
             <md-card>
                 <md-card-title>Filteroptionen</md-card-title>

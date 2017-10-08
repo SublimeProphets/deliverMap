@@ -21,10 +21,18 @@
     cursor: help !important;
     font-family: "Dosis", sans-serif;
 }
-
+.leaflet-container .leaflet-popup-content .img {
+    height: 46px;
+    line-height: 46px;
+    display: block;
+    float: left;
+    padding: 8px 4px 0 0;
+}
 .leaflet-container .leaflet-popup-content img {
     max-height: 24px;
     width: auto;
+    
+ 
 }
 
 .leaflet-container .left {
@@ -35,7 +43,7 @@
 
 .leaflet-container .right {
     float: right;
-    width: 200px;
+    width: 36.8%;
 }
 
 .leaflet-container .name {
@@ -44,22 +52,22 @@
 }
 
 .leaflet-container section.cleft {
-    width: 309px;
-    height: 220px;
+    width: 56%;
+    height: 250px;
     float: left;
-    padding: 1em;
+    padding: 0.6em;
     box-sizing: border-box;
 }
 
 .leaflet-container section.cright {
-    width: 158px;
+    width: 43%;
     float: right;
-    padding: 0.8em;
+    font-size: 14px;
     box-sizing: border-box;
-    background: #ddd;
-    border-left: 1px solid #999;
-    height: 220px;
-    text-align: center;
+    /*background: #eee;
+    border-left: 1px solid #999; */
+    height: 250px;
+    text-align: left;
 }
 
 .leaflet-container section.cclear {
@@ -68,17 +76,82 @@
 }
 
 .leaflet-popup-content .number {
-    font-size: 2.5em;
+    font-size: 2em;
     display: block;
+    float: left;
+    padding-right: 0.2em;
+    height: 46px;
+    line-height: 46px;
+}
+.leaflet-popup-content .fillcontainer {
+    position: relative;
+    height: 46px;
+    margin: 0.5em;
+    background: #eee;
+    border: 4px solid  #ddd;
+    overflow: hidden;
+    border-radius: 4px;
 }
 
+.leaflet-popup-content .fillcontainer > div {
+
+    position: absolute;
+    height: 46px;
+    top: 0;
+    left: 1em;
+    
+}
 .leaflet-popup-content .name {
-    font-size: 1.15em;
+    font-size: 1.1em;
     color: #333;
+    height: 46px;
+    line-height: 46px;
+    display: inline-block;
+}
+.leaflet-popup-content .fill {
+    position: absolute;
+    top: 10%;
+    left: 0px !important;
+    background: #ddd;
+    height: 80%;
+    transition: 1s all;
+  
 }
 
 .leaflet-popup-content {
     margin: 0;
     overflow: hidden;
     font-size: 16px;
+}
+
+
+.leaflet-popup-content .contact {
+    font-size: 14px;
+    padding-bottom: 5px;
+}
+.leaflet-popup-content .contact span {
+    display: inline-block;
+    width: 50px;
+    font-size: 0.85em;
+    color: #999;
+}
+
+.leaflet-popup-content .contact a {
+    border: 1px solid #999;
+    color: #333;
+    border-radius: 4px;
+    padding: 0.5em 0.66em;
+    display: inline-block;
+    text-decoration: none;
+}
+.leaflet-popup-content p {
+    margin-top: 0;
+}
+
+.leaflet-popup-content .leftsideinfo {
+    font-size: 0.75em;
+}
+.leaflet-popup-content .leftsideinfo > span {
+    height: 30px;
+
 }

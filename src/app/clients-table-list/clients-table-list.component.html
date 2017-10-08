@@ -27,8 +27,8 @@
                     </section>
                     <section class="infos2">
                         <div><img src="{{settingsService.getStoreGroupImage(row.defaultStore, 'icon')}}" alt="{{row.defaultStore}}" class="stores-icon-24" /> {{row.storeGroup}} {{ row.defaultStore }}</div>
-                        <div *ngIf="row.lastDeliveryDate"><span>{{daysSinceDate(row.lastDeliveryDate)}}</span> Tage seit Lieferung ({{row.lastDeliveryDate | date:'d.M.yy' }})</div>
-                        <div *ngIf="row.firstOrderDate">Kunde seit <span>{{daysSinceDate(row.firstOrderDate)}}</span> Tagen ({{row.firstOrderDate | date:'d.M.yy' }})</div>
+                        <div *ngIf="row.lastDeliveryDate"><span>{{clientsService.daysSinceDate(row.lastDeliveryDate)}}</span> Tage seit Lieferung ({{row.lastDeliveryDate | date:'d.M.yy' }})</div>
+                        <div *ngIf="row.firstOrderDate">Kunde seit <span>{{clientsService.daysSinceDate(row.firstOrderDate)}}</span> Tagen ({{row.firstOrderDate | date:'d.M.yy' }})</div>
                     </section>
                 </div>
                 <div class="row-actions">

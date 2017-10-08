@@ -62,8 +62,6 @@ export class LocationPickerDialog implements OnInit {
   }
 
   ngOnInit() {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
     
     this.data.lat = (typeof this.data.lat == "undefined") ? 47.1367785 : this.data.lat;
     this.data.lng = (typeof this.data.lng == "undefined") ? 7.2467909 : this.data.lng;
@@ -77,16 +75,16 @@ export class LocationPickerDialog implements OnInit {
     this.map = L.map("locationPickerMap", {
             zoomControl: true,
             center: centerLocation,
-            zoom: 15,
-            minZoom: 11,
-            maxZoom: 18,
+            zoom: 13,
+            minZoom: 1,
+            maxZoom: 19,
             layers: [L.tileLayer("http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png", {
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'
             })]
         });
 
         // Add Controls
-        L.control.zoom({ position: "topright" }).addTo(this.map);
+        // L.control.zoom({ position: "topright" }).addTo(this.map);
         L.control.scale().addTo(this.map);
 
 

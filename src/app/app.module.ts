@@ -2,33 +2,22 @@
 // AIzaSyChYDkxrB4vvRYBVUI459bTyvMhXo6oOTE
 
 
-
 // External components
 import "leaflet";
 import "leaflet.markercluster";
 import "hammerjs";
 
-// import "leaflet.vectorgrid";
-// import "zone.js/dist/zone";
-// import "zone.js/dist/long-stack-trace-zone";
-// import "reflect-metadata";
 
+// CORE MODULES
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, NgZone } from '@angular/core';
 import { FormsModule }   from '@angular/forms';
-import {HttpModule} from "@angular/http";
-import {FileUploadModule} from "ng2-file-upload";
-import { LocalStorageModule } from 'angular-2-local-storage';
+import { HttpModule} from "@angular/http";
 import { RouterModule, Routes } from '@angular/router';
 import { LOCALE_ID } from '@angular/core';
-import { DatePipe } from "@angular/common";
-// import { AgmCoreModule } from '@agm/core';
-// import { Ng2CompleterModule } from "ng2-completer";
-// import { CompleterCmp } from "./completer-cmp/completer-cmp";
-// import { CompleterCmpMd } from "./completer-cmp-md/completer-cmp-md";
 
 
-// Material and Design
+// Material and Design and external Components
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';    
 import {MdToolbarModule,
   MdSnackBarModule ,
@@ -48,27 +37,26 @@ import {MdToolbarModule,
   MdProgressBarModule,
   MdDialogModule,
   MdSidenavModule,
-  MdGridListModule
+  MdGridListModule,
+  MdSliderModule
 } from '@angular/material';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import {RoundProgressModule} from 'angular-svg-round-progressbar';
+import { RoundProgressModule } from 'angular-svg-round-progressbar';
+import { FileUploadModule} from "ng2-file-upload";
+import { LocalStorageModule } from 'angular-2-local-storage';
 
 
-
-
-
-// Services
+// SERVICES
 import { ClientsService} from './clients.service';
-// import { GmcoordinatesService} from './gmcoordinates.service';
 import { MapService } from './map.service';
 import { GeocodingService } from './geocoding.service';
 import { SettingsService } from "./settings.service";
 import { SearchService } from "./search.service";
 
 
-// App
+// APP COMPONENTS
 import { AppComponent }        from './app.component';
-import {appRoutes} from './app.routes';
+import { appRoutes } from './app.routes';
 import { HeroDetailComponent } from './hero-detail/hero-detail.component';
 import { HeaderBar } from './headerbar/headerbar.component';
 import { MainnavigationComponent } from './mainnavigation/mainnavigation.component';
@@ -81,12 +69,8 @@ import { StorenavigationComponent } from './storenavigation/storenavigation.comp
 import { DataTableViewComponent } from './data-table-view/data-table-view.component';
 import { ClientEditDialog, clientEditDialogForm } from "./client-edit-dialog/client-edit-dialog.component";
 import { LocationPickerComponent, LocationPickerDialog } from "./location-picker/location-picker.component";
-
-
-// OSM
 import { OSMComponent} from './osm/osm.component';
-import {NavigatorComponent} from "./navigator/navigator.component";
-
+import { NavigatorComponent} from "./navigator/navigator.component";
 import { SettingsComponent, EditStoreDialog, EditStoreGroupDialog } from './settings/settings.component';
 import { FiltersComponent } from './filters/filters.component';
 import { SearchResultsComponent } from './search-results/search-results.component';
@@ -110,42 +94,27 @@ import { ClientsExport } from './clients-export/clients-export.component';
     PageNotFoundComponent,
     HomepageComponent,
     StorenavigationComponent,
-    
-
-    // CLIENTS
     clientEditDialogForm,
     ClientEditDialog,
     DataTableViewComponent,
-
-    // SETTINGS
     EditStoreDialog,
     EditStoreGroupDialog,
     SettingsComponent,
     LocationPickerComponent,
     LocationPickerDialog,
-    
-
-
-    // OSM
     OSMComponent,
     NavigatorComponent,
     FiltersComponent,
     SearchResultsComponent,
     ClientsTableListComponent,
     ClientSetStarredComponent,
-    OrderbyPipe,
-    ClientsExport   
-    
-    
-
-    
+    OrderbyPipe    
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
     HttpModule,
     BrowserModule,
     BrowserAnimationsModule,
-    // Ng2CompleterModule,
     FormsModule,
     MdToolbarModule,
     MdSidenavModule,
@@ -166,6 +135,7 @@ import { ClientsExport } from './clients-export/clients-export.component';
     MdProgressBarModule,
     MdDialogModule,
     MdGridListModule,
+    MdSliderModule,
     FileUploadModule,
     RoundProgressModule,
     NgxDatatableModule,
@@ -173,11 +143,6 @@ import { ClientsExport } from './clients-export/clients-export.component';
             prefix: 'my-app',
             storageType: 'localStorage'
         })
-        /*,
-    AgmCoreModule.forRoot({
-      // apiKey: 'AIzaSyChYDkxrB4vvRYBVUI459bTyvMhXo6oOTE'
-    })
-    */
   ],
   providers: [
     ClientsService,
@@ -185,7 +150,6 @@ import { ClientsExport } from './clients-export/clients-export.component';
     MapService,
     SettingsService,
     SearchService,
-    DatePipe,
     { provide: LOCALE_ID, useValue: "de-CH" }
   ],
   bootstrap: [AppComponent],

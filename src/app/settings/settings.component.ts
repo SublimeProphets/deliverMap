@@ -47,7 +47,11 @@ export class SettingsComponent {
   
   
 
-  
+  public mapCenterChanged(vals) {
+    this.settings.map.center.lat = vals.lat;
+    this.settings.map.center.lng = vals.lng;
+    console.log("called", vals);
+  }
 
 
 

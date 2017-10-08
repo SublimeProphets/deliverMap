@@ -7,6 +7,8 @@ import { Subject } from "rxjs/Subject";
 import { OrderbyPipe } from "./orderby.pipe";
 import { SettingsService } from "./settings.service";
 
+
+// Empty Filterset to restore if reset called
 const FILTERSTATEORG = {
   _active: false,
   custom: {
@@ -79,6 +81,7 @@ export class ClientsService {
     // For Date calculations
     this.timestamp = Date.now();
     this.filterstate = JSON.parse(JSON.stringify(FILTERSTATEORG));
+
     // Add default values if localStorage was empty
     
     this.clients = this.settingsService.getClients();
@@ -91,7 +94,7 @@ export class ClientsService {
     })
 
     // Set the selected client to default
-    this.clientSelectedIDcache = 3;
+    this.clientSelectedIDcache = 0;
 
 
   };
@@ -441,6 +444,20 @@ public controlFilter(basetype:string, name:string, status?:any, value?:any) {
     return this.updateStorage(input, true);
 
   }
+
+  // compares the entered days with today and calculates how many days are between.
+  public daysSinceDate(date):any {
+    if(typeof date !== "string") {
+      return "Keine"
+    } else {
+      let now = Date.now();
+    let tmpDate = new Date(date); // some mock date
+    var milliseconds = tmpDate.getTime(); 
+    return Math.round((now-milliseconds)/(1000*60*60*24))
+  }
+  
+}
+
 
   // Set a list of clients  
   changeVisible(id: number) {

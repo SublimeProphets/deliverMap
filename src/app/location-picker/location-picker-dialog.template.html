@@ -1,38 +1,6 @@
-<h2>Bearbeite {{data.name}}</h2>
-<h3>Grundangaben</h3>
-<md-input-container>
-    <input mdInput type="string" placeholder="Name Vorname" value="data.name" />
-</md-input-container>
-<md-input-container aria-label="Falls kein Abo-Kunde einfach leer lassen">
-    <span md-prefix>
-        Abo-Nr.
-    </span>
-    <input mdInput type="string" placeholder="1234" value="data.abo" />
-
-</md-input-container>
-
-<md-slide-toggle [(checked)]="data.visible">Sichtbar</md-slide-toggle><br />
-<md-slide-toggle [(checked)]="data.starred">Favorit</md-slide-toggle><br />
-<h3>Adresse und Positionierung
-
-    <md-input-container class="example-full-width">
-        <input mdInput placeholder="Adresse" [(ngModel)]="data.address">
-    </md-input-container>
 
     <table cellspacing="0" class="example-full-width">
-        <tr>
-            <td style="width: 30%">
-                <md-input-container>
-                    <input mdInput #postalCode maxlength="4" placeholder="Postleihzahl" [(ngModel)]="data.plz">
-                    <md-hint align="end">{{postalCode.value.length}} / 4</md-hint>
-                </md-input-container>
-            </td>
-            <td>
-                <md-input-container>
-                    <input mdInput placeholder="Stadt" [(ngModel)]="data.city">
-                </md-input-container>
-            </td>
-        </tr>
+        
         <tr>
             <td>
                 <md-input-container>

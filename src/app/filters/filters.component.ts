@@ -77,16 +77,6 @@ export class FiltersComponent implements OnInit {
   settings: Settings = this.settingsService.settings;
  
   
-  bezirk:Array<Object> = [
-    {code: 1, name: "ALLE ANZEIGEN"},
-    {code: 2500, name: "2500 Stadtzentrum"},
-    {code: 2501, name: "2501 Altstadt"},
-    {code: 2502, name: "2502 Mett"},
-    {code: 2503, name: "2503 Bözingen"},
-    {code: 2504, name: "2504 Port"},
-    {code: 2506, name: "2506 Vingelz"},
-    {code: 2560, name: "2560 Nidau"}
-  ];
 
 ngOnInit() {
   

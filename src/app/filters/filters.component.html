@@ -9,7 +9,7 @@
             <span *ngIf="filterstate._active && !inProgress"><b>{{counter.clientsFound}} / {{counter.clientsTotal }}</b> gefiltert</span>
             <span *ngIf="!filterstate._active && !inProgress" class="filterNotActive">Keine Filter aktiv</span>
         </p>
-
+        <button md-raised-button md-line (click)="controlFilter('reset')" class="reset" [disabled]="!filterstate._active"><md-icon>settings_backup_restore</md-icon>Reset</button>
 
         <button md-button *ngFor="let filter of settings.filters.predefined" (click)="controlFilter('predefined',filter.name,true)" class="line-button">{{ filter.label }}</button>
 

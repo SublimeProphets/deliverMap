@@ -1,51 +1,45 @@
-import {Component, ViewChild, OnInit, OnDestroy, NgZone} from "@angular/core";
-import {NavigatorComponent} from "../navigator/navigator.component";
-import {ClientsService } from '../clients.service';
+import { Component, ViewChild, OnInit, OnDestroy, NgZone } from "@angular/core";
+import { NavigatorComponent } from "../navigator/navigator.component";
+import { ClientsService } from '../clients.service';
 
-import {MapService} from "../map.service";
-import {GeocodingService} from "../geocoding.service";
-import {Location} from "../core/location.class";
+import { MapService } from "../map.service";
+import { GeocodingService } from "../geocoding.service";
+import { Location } from "../core/location.class";
 import { SettingsService } from "../settings.service";
 import { ActivatedRoute } from '@angular/router';
-import {MdSnackBar} from '@angular/material';
-import { DatePipe } from '@angular/common';
+import { MdSnackBar } from '@angular/material';
+
 @Component({
     selector: "osm",
     templateUrl: './osm.component.html',
-    styleUrls: ['./osm.component.css'],
+    styleUrls: ['./osm.component.less'],
     providers: []
 })
 export class OSMComponent implements OnInit {
 
-    
-    
-    
+
+
+
     map: any;
     firstRun: boolean = true;
     clientsMarkers: Array<any> = [];
     clientsLayerGroup: any = L.markerClusterGroup();
     storesMarkers: Array<any> = [];
-    storesLayerGroup:any;
-    storesLayerGroups:any;
+    storesLayerGroup: any;
+    storesLayerGroups: any;
     constructor(
-        private mapService: MapService, 
+        private mapService: MapService,
         private geocoder: GeocodingService,
-        private clientsService:ClientsService,
-        private settingsService:SettingsService,
+        private clientsService: ClientsService,
+        private settingsService: SettingsService,
         private route: ActivatedRoute,
-        public snackBar: MdSnackBar,
-        private datePipe: DatePipe
-    ) {}            
+        public snackBar: MdSnackBar
+    ) { }
 
     ngOnInit() {
-        
-       
 
-
-
-
-        // LAYERS - no idea why i have to make a new object to get pass through L.controls.layers()     
-        var baseMaps = {
+        // GROUND LAYERS
+        let baseMaps = {
             "osm": L.tileLayer("http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png", {
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'
             }),
@@ -57,123 +51,105 @@ export class OSMComponent implements OnInit {
             })
         };
 
-
-
-
-
-        
-        
-        
-
+        // defines the map
         this.map = L.map("map", {
             zoomControl: false,
-            center: L.latLng(47.1367785, 7.2467909),
-            zoom: 14,
-            minZoom: 11,
-            maxZoom: 18,
+            center: L.latLng(this.settingsService.settings.map.center.lat, this.settingsService.settings.map.center.lng),
+            zoom: this.settingsService.settings.map.zoom,
+            minZoom: this.settingsService.settings.map.minZoom,
+            maxZoom: this.settingsService.settings.map.maxZoom,
             layers: [baseMaps.osm]
         });
 
         // Add Controls
         L.control.zoom({ position: "topright" }).addTo(this.map);
         L.control.scale().addTo(this.map);
-    
-        
+
+
         // Bind the created map to the service
         this.mapService.map = this.map;
 
+        // Call the functions to create the markers
         this.createClientsMarkers(0);
         this.createStoresMarkers(0);
 
-        this.route.params.subscribe( (p) => {
 
-
+        // listen for routing param inputs
+        this.route.params.subscribe((p) => {
 
             // Check if there are any params submitted
-            if(Object.keys(p).length === 0 && p.constructor === Object) {
-                console.log("no params in route");
-                // no params? go default!
-                 
+            if (Object.keys(p).length === 0 && p.constructor === Object) {
+
+                // no params? We do not have to do anything special 
 
             } else {
-                switch(p['type']) {
-                case "client":
-                    // this.createClientsMarkers(p['id']);
-                    this.selectMarker(p['id']);
-                break;
-                case "store":
-                    //this.createStoresMarkers(p['id']);
-                    this.selectStore(p['id']);
-                break;
-                case "clientFromStore":
-                    this.clientsService.filterstate.defaultStore.active = true;
-                    this.clientsService.filterstate.defaultStore.value = p['id'];
-                    // this.clientsService.setFilter(null);
-                    this.createClientsMarkers(0);
-                break;
+                switch (p['type']) {
+                    case "client":
+                        this.selectMarker(p['id']);
+                        break;
+                    case "store":
+                        this.selectStore(p['id']);
+                        break;
+                    case "clientFromStore":
+                        this.clientsService.filterstate.defaultStore.active = true;
+                        this.clientsService.filterstate.defaultStore.value = p['id'];
+                        this.createClientsMarkers(0);
+                        break;
+                    case "filter":
+                        this.clientsService.controlFilter("predefined", p['id'], true);
+                        break;
+                    default:
+                        this.snackBar.open('Der Typ <b>' + p['type'] + '</b> ist unbekannt', '', {
+                            duration: 3000
+                        });
 
-                default:
-                    this.snackBar.open('Der Typ <b>' + p['type'] + '</b> ist unbekannt', '', {
-                        duration: 3000
-                    });
-                    
-                break;
+                        break;
+                }
+
             }
 
-            }
-    
         });
-        
+
 
         // Change BaseMap
         this.mapService.baseMap.subscribe(
             (input) => {
 
-                console.log("baseMap in OSM called", input)
-                
-                switch(input) {
+                // TODO Workaround, could be solved better
+
+                switch (input) {
 
                     case "osm":
                         this.map.removeLayer(baseMaps.esri);
                         this.map.removeLayer(baseMaps.cartodb);
-                    break;
+                        break;
 
 
                     case "esri":
                         this.map.removeLayer(baseMaps.cartodb);
                         this.map.removeLayer(baseMaps.osm);
-                    break;
+                        break;
 
 
                     case "cartodb":
                         this.map.removeLayer(baseMaps.esri);
                         this.map.removeLayer(baseMaps.osm);
-                    break;
+                        break;
 
                 }
 
                 // add the new one
-                 baseMaps[input].addTo(this.map);
-                
+                baseMaps[input].addTo(this.map);
+
             }
         )
-    
-        //Check for new visibility
-		this.clientsService.visibilityUpdated.subscribe(
-            (data) => {
-                
-                var opacity:number = (data.visible) ? 0.8 : 0.1;    
-                this.clientsMarkers[data.id].setOpacity(opacity);
-                
-            }
-        );
 
 
-        
+
+
+        // If the dataset has changed we need to rebuild the markers
         this.clientsService.clientsUpdated.subscribe(
             (data) => {
-                
-                console.log("OSM wants to update markers!");
 
                 // L.control.layers(markerLayerGroups).
                 // initialClientsLayerGroup.clearLayers();
@@ -184,84 +160,25 @@ export class OSMComponent implements OnInit {
 
                 // this.map.removeLayer(this.clientsLayerGroup);
                 this.createClientsMarkers(0);
-                
-                
-                
             }
         );
-        
 
-        //Check for new visibility
-		this.clientsService.clientSelectedID.subscribe(
-            (id) => {                
-                
-                // this.clientsMarkers[id].openPopup();
-                // this.map.setView(this.clientsMarkers[id].getLatLng(),18);
+
+        //listen to select marker
+        this.clientsService.clientSelectedID.subscribe(
+            (id) => {
                 this.selectMarker(id);
-
-                
             }
         );
-           
-      
+
+        // update visibility of a marker
         this.clientsService.visibilityUpdated.subscribe(
             (data) => {
-                console.log("Jes?");
-                var opacity:number = (data.visible) ? 0.8 : 0.1;    
+                var opacity: number = (data.visible) ? 0.8 : 0.1;
                 this.clientsMarkers[data.id].setOpacity(opacity);
-                
+
             }
         );
-
-      
-
-
-        /* 
-        
-        this.geocoder.getCurrentLocation()
-            .subscribe(
-                location => map.panTo([location.latitude, location.longitude]),
-                err => console.error(err)
-            );
-        */ 
-        
-
-
-       // this.createMarkers();
-    /*
-    
-        
-
-
-
-        //Check for new visibility
-		
-
-        this.clientsService.clientsUpdated.subscribe(
-            (data) => {
-                this.markerClusters.clearLayers();
-                this.createMarkers();
-                
-            }
-        );
-
-        */
-
-        
-/*
-        //Check for new visibility
-		this.clientsService.clientSelectedID.subscribe(
-            (id) => {                
-                console.log("clientSelectedID watcher OSM called", this.myMarkers[id]);            
-                        
-                this.myMarkers[id].openPopup();
-
-                
-            }
-        );
-
-
-*/ 
 
 
 
@@ -271,179 +188,187 @@ export class OSMComponent implements OnInit {
 
     selectMarker(id) {
         var m = this.clientsMarkers[id];
-                this.clientsLayerGroup.zoomToShowLayer(m, function() {
-                    m.openPopup();
-                });
+        this.clientsLayerGroup.zoomToShowLayer(m, function () {
+            m.openPopup();
+        });
     }
     selectStore(id) {
         var m = this.storesMarkers[id];
-         m.openPopup();
-         /*       this.storesLayerGroups.zoomToShowLayer(m, function() {
-                    m.openPopup();
-                }); */
+        m.openPopup();
     }
 
-    createClientsMarkers(id:number, numbered?:boolean) {
 
-        
-        
-        
+    createClientsMarkers(id: number, numbered?: boolean) {
+
+        console.warn("createClientsMarkers started");
+
+
         var clients;
-        
-        if(id != 0) {
+
+        if (id != 0) {
             clients = this.clientsService.getClient(id);
         } else {
             // ADD CLIENTS
             clients = this.clientsService.getClients();
         }
-        
-        
-        // this.clientsLayerGroup = new L.FeatureGroup(null);
-        this.clientsLayerGroup =  L.markerClusterGroup({
+
+
+
+         this.clientsLayerGroup = L.markerClusterGroup({
             spiderfyDistanceMultiplier: 3,
             zoomToBoundsOnClick: true,
             disableClusteringAtZoom: 16
         });
-        
-        // iterate all stores
-        for(var i = 0; i < clients.length; i++) {
+        /*
+        this.clientsLayerGroup = L.markerClusterGroup({
+            spiderfyDistanceMultiplier: 3,
+            zoomToBoundsOnClick: true
+        });
+        */
+        // iterate all clients
+        for (var i = 0; i < clients.length; i++) {
             var m = clients[i];
-            
+
             // Check if coordinates are set
-            if(clients[i].lat != 0 && clients[i].lng != 0) {
-                
+            if (clients[i].lat != 0 && clients[i].lng != 0) {
+
                 let myIcon;
-                if(numbered) {
-                    myIcon = L.divIcon({className: 'marker_icon', html: ""+i});
+                if (numbered) {
+                    myIcon = L.divIcon({ className: 'marker_icon', html: "" + i });
                 } else {
                     myIcon = L.icon({
-                            iconUrl: "assets/images/marker-icon.png",
-                            shadowUrl: "assets/images/marker-shadow.png"
-                        })
+                        iconUrl: "assets/images/marker-icon.png",
+                        shadowUrl: "assets/images/marker-shadow.png"
+                    })
                 }
 
+                var popupContent = "<section class='cleft'><p class='address'><b>" + m.name + "</b><br />";
+                popupContent += "" + m.address + "<br /> " + m.postleihzahl + " " + m.city + " </p>";
+                if (typeof m.tel !== "undefined") popupContent += "<div class='contact'><span>Telefon</span><a href='tel:" + m.tel + "'>" + m.tel + "</a></div>";
+                if (typeof m.email !== "undefined") popupContent += "<div class='contact'><span>eMail</span><a href='mailto:" + m.email + "'>" + m.email.substring(0, 30) + "</a></div>";
+                console.log(m, m.lastDeliveryDate, this.clientsService.daysSinceDate(m.lastDeliveryDate));
 
-                // <img src=" + this.settingsService.getStoreGroupImage(m.storeGroup, "icon") + "' alt='" + m.defaultStore + "'>
+                // letzte lieferung
+                let daysSinceDate = "" + this.clientsService.daysSinceDate(m.lastDeliveryDate);
+                let mDate = new Date(m.lastDeliveryDate);
+                let lastDeliveryDate = (mDate.getMonth() + 1) + '.' + mDate.getDate() + '.' +  mDate.getFullYear();
+                popupContent += "<div class='leftsideinfo'><span class='number'>" + (daysSinceDate) + "</span><span class='name'>Tage seit Bestellung ( "+ lastDeliveryDate +")</span></div>";
+                
+                // Erste Bestellung
+                daysSinceDate = "" + this.clientsService.daysSinceDate(m.firstOrderDate);
+                mDate = new Date(m.firstOrderDate);
+                let firstOrderDate = (mDate.getMonth() + 1) + '.' + mDate.getDate() + '.' +  mDate.getFullYear();
+                popupContent += "<div class='leftsideinfo'><span class='number'>" + (daysSinceDate) + "</span><span class='name'>Tage Kunde ( "+ firstOrderDate +")</span></div>";
 
                 
-            var popupContent = "<section class='cleft'><p class='name'><b>#" + m.id + "</b> " + m.name + "</p>";
-                popupContent += "<p>" + m.address + "<br /> " + m.postleihzahl + " " + m.city + " </p>";
-                if(typeof m.tel !== "undefined") popupContent += "<p><span *ngIf='m.tel'>" + m.tel + "</span>";
-                if(typeof m.email !== "undefined") popupContent += "<span *ngIf='m.email'> | " + m.email + "</span> </p>";
-                if(m.group != "unkknown") popupContent += "<div class='defaultStore'>Kunde aus <span>" + m.defaultStore + "</span></div>";
                 popupContent += "</section><section class='cright'>";
-                popupContent += "<div class='deliveryCount'><span class='number'>" + m.deliveryCount + "</span><span class='name'>Lieferungen</span></div>";
-                popupContent += "<div class='lastDeliveryDate'>" +  this.datePipe.transform(m.lastDeliveryDate, 'd.M.yy') + " " + this.daysSinceDate(m.lastDeliveryDate) + "</div>";
-                if(typeof m.abo !== "undefined") popupContent += "<p *ngIf='m.abo' class='number'>Abo-Nr. " + m.abo + "</p>";
                 
+                // deliveryCount
+                popupContent += "<div class='fillcontainer'><div class='fill' style='width:" + 100 / 50 * m.deliveryCount + "%'></div><div><span class='number'>" + m.deliveryCount + "</span><span class='name'>Lieferungen</span></div></div>";
+                
+                // ranking
+                let rankingFill = (100 - (100 / clients.length * m.ranking));
+                popupContent += "<div class='fillcontainer'><div class='fill' style='width:" + rankingFill + "%'></div><div><span class='number'>#" + m.ranking + "</span><span class='name'>Ranking</span></div></div>";
+
+                popupContent += "<div class='fillcontainer'><div class='fill' style='width:" + ((m.abo !== 0) ? 100 : 0) + "%'></div><div><span class='name'>Abo-Nr.&nbsp;</span><span class='number'>" + ((m.abo !== 0) ? m.abo : "Ohne") + "</span></div></div>";
+                if (m.group != "unkknown") popupContent += "<div class='fillcontainer'><div class='fill' style='width:" + ((m.abo !== "unknown") ? 100 : 0) + "%'></div><div><span class='img'><img src='" + this.settingsService.getStoreGroupImage(m.storeGroup) + "' alt='" + m.defaultStore + "'></span><span class='name'><span>" + m.defaultStore + "</span></span></div></div>";
+
                 popupContent += "</section><section class='cclear'></section>";
-                
 
-                
-                let coords = {lat: clients[i].lat,  lng: clients[i].lng};
-                var marker = L.marker(coords,{
-                        icon: myIcon,
-                        draggable: false,
-                        opacity: 1,
-                        riseOnHover: true
-                    }).bindPopup(popupContent, {maxWidth : 550, minWidth: 550})
-                    .on("click", (e) => {
 
-                        var id = parseInt(e.target._leaflet_id);                    
-                        this.clientsService.clientSelected(id);
 
-                    });
-                
-                // Add an ID to retrieve thorough the click handler
-                
-                this.clientsMarkers[i] = marker;
-                
-                // TODO Broken sind change on MarkerCluster, cant find properts icon/id
-                
-                this.clientsMarkers[i]._leaflet_id = m.id;
-                
-                this.clientsMarkers[i].addTo(this.clientsLayerGroup);
-
-            }
-            
-            
-            
-            // this.clientsLayerGroup.addLayer(this.clientsMarkers);
-
-        }
-            this.clientsLayerGroup.on('clusterclick', function (a) {
-	           console.log("i react", a);
-               // a.layer.zoomToBounds({padding: [200, 200]});
-               //  a.layer.zoomToBounds({padding: [20, 20]});
-            });
-
-            // return L.layerGroup(this.clientsMarkers);
-            this.map.addLayer(this.clientsLayerGroup);
-            console.info("createClientsMarkers() finished", this.clientsLayerGroup);
-        }
-
-    private createStoresMarkers(id:number) {
-
-        // STORES
-        var stores = this.settingsService.settings.stores;    
-        
-        
-        // iterate all stores
-        for(var i = 0; i < stores.length; i++) {
-            var m = stores[i];
-            let storeSlug = this.settingsService.getStoreGroupById(m.group).slug;
-            var popupContent = "<div class='left'><img src='/assets/icons/stores/" + storeSlug + "_full.svg' alt='" + m.name + "' /></div>";
-                popupContent += "<div class='right'><p class='name'><b>#" + m.id + "</b> " + m.name + "</p>";
-                popupContent += "<p>" + m.address + "</p></div>";
-                // popupContent += "<p><a href='/map/clientFromStore/" + m.slug + "'>Kunden anzeigen</a></p></div><div style='clear: both; float: none'></div>";
-            
-            let coords = {lat: stores[i].lat,  lng: stores[i].lng};
-            this.storesMarkers[i] = L.marker(coords,{
-                    icon: L.icon({
-                        iconUrl: "assets/icons/stores/" +  storeSlug + "_icon.svg",
-                        shadowUrl: "assets/icons/stores_backdrop.png",
-                        iconSize:     [32, 32], // size of the icon
-                        shadowSize:   [48, 48], // size of the shadow
-                        iconAnchor:   [0, 0], // point of the icon which will correspond to marker's location
-                        shadowAnchor: [8, 8],  // the same for the shadow
-                        popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-                    }),
+                let coords = { lat: clients[i].lat, lng: clients[i].lng };
+                var marker = L.marker(coords, {
+                    icon: myIcon,
                     draggable: false,
                     opacity: 1,
                     riseOnHover: true
-                }).bindPopup(popupContent, {
-                    maxWidth: 400,
-                    minWidth: 300
-                });
+                }).bindPopup(popupContent, { maxWidth: 550, minWidth: 550 })
+                    .on("click", (e) => {
+
+                        var id = parseInt(e.target.customID);
+                        this.clientsService.clientSelected(id);
+
+                    });
+
+                // Add an ID to retrieve thorough the click handler
+
+                this.clientsMarkers[i] = marker;
+
+                // TODO Broken sind change on MarkerCluster, cant find properts icon/id
+
+                this.clientsMarkers[i].customID = m.id;
+
+                this.clientsMarkers[i].addTo(this.clientsLayerGroup);
+
+            }
+
+
+
+            // this.clientsLayerGroup.addLayer(this.clientsMarkers);
+
+        }
+        /* this.clientsLayerGroup.on('clusterclick', function (a) {
             
+            // a.layer.zoomToBounds({padding: [200, 200]});
+            //  a.layer.zoomToBounds({padding: [20, 20]});
+        }); */
+
+        // return L.layerGroup(this.clientsMarkers);
+        this.map.addLayer(this.clientsLayerGroup);
+        console.info("createClientsMarkers() finished", this.clientsLayerGroup);
+    }
+
+    private createStoresMarkers(id: number) {
+
+        // STORES
+        var stores = this.settingsService.settings.stores;
+
+
+        // iterate all stores
+        for (var i = 0; i < stores.length; i++) {
+            var m = stores[i];
+            let storeSlug = this.settingsService.getStoreGroupById(m.group).slug;
+            var popupContent = "<div class='left'><img src='/assets/icons/stores/" + storeSlug + "_full.svg' alt='" + m.name + "' /></div>";
+            popupContent += "<div class='right'><p class='name'><b>#" + m.id + "</b> " + m.name + "</p>";
+            popupContent += "<p>" + m.address + "</p></div>";
+            // popupContent += "<p><a href='/map/clientFromStore/" + m.slug + "'>Kunden anzeigen</a></p></div><div style='clear: both; float: none'></div>";
+
+            let coords = { lat: stores[i].lat, lng: stores[i].lng };
+            this.storesMarkers[i] = L.marker(coords, {
+                icon: L.icon({
+                    iconUrl: "assets/icons/stores/" + storeSlug + "_icon.svg",
+                    shadowUrl: "assets/icons/stores_backdrop.png",
+                    iconSize: [32, 32], // size of the icon
+                    shadowSize: [48, 48], // size of the shadow
+                    iconAnchor: [0, 0], // point of the icon which will correspond to marker's location
+                    shadowAnchor: [8, 8],  // the same for the shadow
+                    popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+                }),
+                draggable: false,
+                opacity: 1,
+                riseOnHover: true
+            }).bindPopup(popupContent, {
+                maxWidth: 400,
+                minWidth: 300
+            });
+
             // Add an ID to retrieve thorough the click handler
             // storesMarkers[i]._icon.id = m.id;
-        } 
+        }
 
         // Add it to a layerGroup
         this.storesLayerGroup = L.layerGroup(this.storesMarkers);
-        
+
         this.storesLayerGroup.addTo(this.map);
         // Array to contain ALL types of Markers
         this.storesLayerGroups = {
             "Geschäfte": this.storesLayerGroup
-            
+
         }
 
 
         // 
         L.control.layers(this.storesLayerGroups).addTo(this.map);
     }
-    daysSinceDate(date) {
-  if(typeof date !== "string") {
-    return "Keine"
-  } else {
-    let now = Date.now();
-  let tmpDate = new Date(date); // some mock date
-  var milliseconds = tmpDate.getTime(); 
-  return Math.round((now-milliseconds)/(1000*60*60*24))
-  }
-  
-}
-     
 }

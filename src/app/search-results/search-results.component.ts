@@ -29,7 +29,7 @@ export class SearchResultsComponent implements OnInit {
               this.showOverlay = true;
             }
 
-console.log("recieved update from searchService.searchResult", this.resultsList.length);
+    console.log("recieved update from searchService.searchResult", this.resultsList.length);
             // this.searchHasResults = true;
             
         })

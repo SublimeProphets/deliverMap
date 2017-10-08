@@ -161,7 +161,6 @@ public setClients(clients, workspace?:string) {
 }
 public getClients(workspace?) {
   let ws = (typeof workspace !== "undefined") ? workspace : this.settings.workspace.slug;
-
   return this.settings.clients[ws];
 }
 
@@ -205,6 +204,7 @@ this.snackBar.open('Die Einstellungen wurden gespeichert', '', { duration: 3000 
     let index = this.settings.storesGroups.map(function (e) { return e.id; }).indexOf(id);
     return this.settings.storesGroups[index];
   }
+
   public getStoreGroupIdBySlug(slug: string):number {
     let index = this.settings.storesGroups.map(function (e) { return e.slug; }).indexOf(slug);
     if(index > 0 ) {
@@ -216,28 +216,19 @@ this.snackBar.open('Die Einstellungen wurden gespeichert', '', { duration: 3000 
     
   }
   public getStoreGroupImage(element, type?: string) {
-    console.log("GROUPIMAGE", typeof element, element)
+  
     let index;
-    if(typeof element == "number" ) {
-      // get index 
-      index = this.settings.storesGroups.map(function (e) { return e.id; }).indexOf(element);
-    } else {
-      // get index 
-      index = this.settings.storesGroups.map(function (e) { return e.slug; }).indexOf(element);
-      console.log(index);
-    }
-
-
-    
 
     // failsafe detection of the type
     let suffix = (type == "full") ? "full" : "icon";
 
     // if not found return undefine image
-    if ("undefined" === typeof this.settings.storesGroups[index]) {
-      return "assets/icons/stores/undefined_" + suffix + ".svg";
+    if ("object" != typeof this.settings.storesGroups[element]) {
+      
+      return "assets/icons/stores/undessfined_" + suffix + ".svg";
     } else {
-      return this.settings.storesGroups[index].image[type];
+      
+      return "assets/icons/stores/" +this.settings.storesGroups[element].slug +"_" + suffix + ".svg";
     }
 
   }
@@ -272,6 +263,16 @@ this.snackBar.open('Die Einstellungen wurden gespeichert', '', { duration: 3000 
       },
       workspace: myGlobals.DEFAULT_WORKSPACES.domicile,
       datastorage: "local",
+      map: {
+        center: {
+          lat: 47.1367785,
+          lng: 7.2467909
+        },
+        zoom: 14,
+        minZoom: 11,
+        maxZoom: 18
+        
+      },
       stores: this.defaultStores,
       storesGroups: this.defaultStoresGroups,
       clients: {
@@ -327,6 +328,7 @@ export interface Settings {
   importAssistant: any;
   search: any;
   datastorage: string;
+  map: any;
 }
 
 
