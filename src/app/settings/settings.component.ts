@@ -221,6 +221,11 @@ export class EditStoreDialog {
     this.isNew = data.isNew;
     
   }
+  public mapCenterChanged(vals) {
+    this.tmpData.lat = vals.lat;
+    this.tmpData.lng = vals.lng;
+    console.log("called", vals);
+  }
 }
 
 @Component({
@@ -297,4 +302,8 @@ export class EditStoreGroupDialog {
             )
     }
 }
+
+  
+
+
 }

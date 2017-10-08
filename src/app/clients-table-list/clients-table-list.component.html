@@ -4,31 +4,27 @@
         <button md-icon-button mdSuffix><md-icon>search</md-icon></button>
     </md-input-container>
 </div>
-<ngx-datatable class="material " #table [columnMode]=" 'force' " [messages]="{emptyMessage:'<div class=\'empty\'>Leider keine Einträge vorhanden.</div>'}" [headerHeight]="0" [footerHeight]="28" [rowHeight]="32" [scrollbarV]="true " [scrollbarH]="false "
+<ngx-datatable class="material " #table [columnMode]=" 'force' " [messages]="{emptyMessage:'<div class=\'empty\'>Leider keine Einträge vorhanden.</div>'}" [headerHeight]="0" [footerHeight]="28" [rowHeight]="36" [scrollbarV]="true " [scrollbarH]="false "
     [rows]="data ">
 
     <!-- Row Detail Template -->
-    <ngx-datatable-row-detail [rowHeight]="160" #myDetailRow (toggle)="onDetailToggle($event)">
+    <ngx-datatable-row-detail [rowHeight]="180" #myDetailRow (toggle)="onDetailToggle($event)">
         <ng-template let-row="row" ngx-datatable-row-detail-template>
             <div class="detail-box">
                 <div class="row-detail">
 
                     <section class="address">
-                        {{row.name}}<br /> {{row.address}}
-                        <br /> {{row.postleihzahl}} {{row.city}}
+                        <p>{{row.name}}<br /> {{row.address}}
+                        <br /> {{row.postleihzahl}} {{row.city}}</p>
+                        <div><img src="{{settingsService.getStoreGroupImage(row.storeGroup, 'icon')}}" alt="{{row.defaultStore}}" class="stores-icon-24" /> {{ row.defaultStore }}</div>
                     </section>
 
+                    
                     <section class="infos">
-
-
-                        <round-progress [current]="row.deliveryCount" [max]="25" [color]="'#45ccce'" [background]="'#eaeaea'" [radius]="deliveryCountRadius" [responsive]="true" [stroke]="16" [semicircle]="true" [rounded]="true" [duration]="800" [animation]="'easeInOutQuart'"
-                            [animationDelay]="0"></round-progress>
-                        <div class="deliveryCount"> <span>{{row.deliveryCount}}</span> Lieferungen</div>
-                    </section>
-                    <section class="infos2">
-                        <div><img src="{{settingsService.getStoreGroupImage(row.defaultStore, 'icon')}}" alt="{{row.defaultStore}}" class="stores-icon-24" /> {{row.storeGroup}} {{ row.defaultStore }}</div>
-                        <div *ngIf="row.lastDeliveryDate"><span>{{clientsService.daysSinceDate(row.lastDeliveryDate)}}</span> Tage seit Lieferung ({{row.lastDeliveryDate | date:'d.M.yy' }})</div>
-                        <div *ngIf="row.firstOrderDate">Kunde seit <span>{{clientsService.daysSinceDate(row.firstOrderDate)}}</span> Tagen ({{row.firstOrderDate | date:'d.M.yy' }})</div>
+                        <div class="deliveryCount"><md-icon>shopping_cart</md-icon> <span>{{row.deliveryCount}}</span> Lieferungen</div>
+                        <div><md-icon>trending_up</md-icon> <span>#{{row.ranking}}</span> im Ranking</div>
+                        <div *ngIf="row.lastDeliveryDate"><md-icon>query_builder</md-icon><span>{{clientsService.daysSinceDate(row.lastDeliveryDate)}}</span> Tage seit Lieferung ({{row.lastDeliveryDate | date:'d.M.yy' }})</div>
+                        <div *ngIf="row.firstOrderDate"><md-icon>restore</md-icon>Kunde seit <span>{{clientsService.daysSinceDate(row.firstOrderDate)}}</span> Tagen ({{row.firstOrderDate | date:'d.M.yy' }})</div>
                     </section>
                 </div>
                 <div class="row-actions">

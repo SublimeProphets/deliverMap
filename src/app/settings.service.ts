@@ -22,9 +22,9 @@ export class SettingsService {
     // First load defaults so it does not fail completely
     this.loadDefaults();
 
-
     // Check with datastorage is active - for that check if we have localstorage and PHP 
     if (this.localStorageService.get("isDatastorageLocal") === null) {
+      
       this.readPHPsettingsIfTrue();
 
     } else {
@@ -56,8 +56,14 @@ export class SettingsService {
   }
 
   private readPHPsettingsIfTrue() {
+    
+    this.changeDatastorage("local");
+
+    // Temporarly deactivated 
+
+    /*
     this.phpRequest("isDatastoragePHP", false).subscribe((data) => {
-        console.log("getDatastorage subscribe", data);
+        
         // state is false, then activate localStorage
           if(!data.state)  {
             // if PHP also don't know it is activated, fallback on local storage
@@ -73,7 +79,10 @@ export class SettingsService {
             })
 
           }
+      }, (err) => {
+        console.log("getDatastorage subscribe, i failed", err);
       });
+      */
   }
 
   public changeDatastorage(slug:string) {
@@ -258,6 +267,10 @@ this.snackBar.open('Die Einstellungen wurden gespeichert', '', { duration: 3000 
           {
             name: "longago",
             label: "Lange keine Bestellungen"
+          },
+          {
+            name: "starred",
+            label: "Favoriten"
           }
         ]
       },

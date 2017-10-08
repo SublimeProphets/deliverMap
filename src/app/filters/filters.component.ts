@@ -79,7 +79,10 @@ export class FiltersComponent implements OnInit {
   
 
 ngOnInit() {
-  
+  this.counter = {
+      clientsFound: this.clientsService.clients.length,
+      clientsTotal: this.clientsService.clientsOriginal.length
+  }
 }
   
   

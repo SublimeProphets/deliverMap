@@ -51,6 +51,7 @@
       <md-hint align="end"></md-hint>
     </md-input-container>
 </td>
+<td><location-picker (onChange)="mapCenterChanged($event)" [lat]="tmpData.lat" [lng]="tmpData.lng"></location-picker></td>
   </tr>
   
   </table>

@@ -148,6 +148,7 @@ export class ClientsService {
   }
 
   public emitUpdate() {
+    console.info("clientsUpdated emitted");
     return this.clientsUpdated.emit(true);
   }
 
@@ -243,7 +244,10 @@ public controlFilter(basetype:string, name:string, status?:any, value?:any) {
           this.setFilter();
           
         break;
-
+        case "starred":
+          this.filterstate.custom.starred.active = true;          
+          this.setFilter();
+        break;
       } 
     break;
 
@@ -385,6 +389,11 @@ public controlFilter(basetype:string, name:string, status?:any, value?:any) {
     console.log("getClients() called, we delivered ", this.clients.length);
     return this.clients
   }
+  getStarredClients() {
+    return this.clients.filter(client => {
+      if(client.starred) return client 
+    })
+  }
 
   emitMapFinishedMarkers(): void {
     this.mapFinishedMarkers.emit(true);
@@ -447,6 +456,7 @@ public controlFilter(basetype:string, name:string, status?:any, value?:any) {
 
   // compares the entered days with today and calculates how many days are between.
   public daysSinceDate(date):any {
+   
     if(typeof date !== "string") {
       return "Keine"
     } else {

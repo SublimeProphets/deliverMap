@@ -16,9 +16,17 @@ ngx-datatable {
         width: 100%;
     }
 }
+.datatable-row-detail {
+    width: 435px;
+}
 .detail-box {
     height: 0px !important;
     transition: height 1s;
+    font-size: 0.9em;
+
+    p {
+        margin-top: 0;
+    }
     &:not(:empty){    
         height:150px !important;
         transition: height 1s;
@@ -39,10 +47,10 @@ ngx-datatable {
         > section {
             margin-bottom: 12px;
         }
-        .address {         min-width: 30%;   padding: 0 12px;   }
-        .infos {         max-width: 40%;      }
-        .infos2 {        
-             min-width: 30%;     
+        .address {         width: 40%;   padding: 0 12px;   }
+        
+        .infos {        
+             width: 60%;     
              display: flex;
             flex-direction: column;
             flex-wrap: nowrap;
@@ -55,15 +63,11 @@ ngx-datatable {
 
                  span {
                      font-weight: bold;
-                     font-size: 1.15em;
+                     font-size: 1em;
                  }
              }
               }
-        .deliveryCount {
-            padding: 2px 4px;
-            background: #45ccce;
-            text-align: center;
-        }
+
     }
     .row-actions {
         >section {

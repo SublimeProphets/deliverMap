@@ -1,29 +1,71 @@
-<md-grid-list cols="6" rowHeight="1:1" gutterSize="10" rowHeight="fit" class="gridlist">
-    <md-grid-tile colspan="6" rowspan="1">
+<md-grid-list cols="4" rowHeight="1:1" gutterSize="30" rowHeight="fit" class="gridlist">
+    <md-grid-tile colspan="4" rowspan="1">
         <h1>Willkommen auf <span>DeliverMap</span></h1>
     </md-grid-tile>
-    <md-grid-tile colspan="1" rowspan="1">&nbsp;</md-grid-tile>
+    <!-- <md-grid-tile colspan="1" rowspan="1">&nbsp;</md-grid-tile>
     <md-grid-tile colspan="4" rowspan="1">
-        <navigator showOptions="true"></navigator>
+        <navigator showOptions="true"></navigator> 
     </md-grid-tile>
-    <md-grid-tile colspan="1" rowspan="1">&nbsp;</md-grid-tile>
-    <md-grid-tile colspan="1" rowspan="1" class="quicktile">2</md-grid-tile>
-    <md-grid-tile colspan="1" rowspan="1" class="quicktile">3</md-grid-tile>
-
+    <md-grid-tile colspan="1" rowspan="1">&nbsp;</md-grid-tile>-->
+    <md-grid-tile colspan="1" rowspan="1" class="quicktile">
+        <a routerLink="map/filter/top" class="tile">
+            <md-icon>trending_up</md-icon>
+            <span>Topkunden</span>
+        </a>
+    </md-grid-tile>
+    <md-grid-tile colspan="1" rowspan="1" class="quicktile">
+        <a routerLink="map/filter/new" class="tile">
+            <md-icon>fiber_new</md-icon>
+            <span>Neue Kunden</span>
+        </a>
+    </md-grid-tile>
+    <!-- 
     <md-grid-tile colspan="2" rowspan="2" class="resultsfield">
 
-        <!-- <md-list>
+        <md-list>
             <md-list-item *ngFor="let result of resultItems">
                 {{result.name}}
             </md-list-item>
-        </md-list> -->
+        </md-list>
+    </md-grid-tile> -->
+    <md-grid-tile colspan="2" rowspan="3" class="starred">
+        <h2><md-icon>star</md-icon> Favoriten <a [routerLink]="'map/filter/starred'" md-raised-button class="all">
+                <md-icon>more</md-icon><b> Alle auf Karte anzeigen</b>
+                
+        </a></h2>
+        <a [routerLink]="'map/client/' +client.id" md-button *ngFor="let client of starredClients;  let i=index">
+            
+                <b>{{client.name}}</b><br />
+                <span><md-icon>shopping_cart</md-icon>{{client.deliveryCount}}</span>
+                <span><md-icon>trending_up</md-icon>{{client.ranking}}</span>
+                <span><md-icon>query_builder</md-icon>{{clientsService.daysSinceDate(client.lastDeliveryDate)}}</span>
+            
+        </a>
+        
+
+
     </md-grid-tile>
-    <md-grid-tile colspan="2" rowspan="1" class="righttile">FAV</md-grid-tile>
-    <md-grid-tile colspan="1" rowspan="1" class="quicktile">4</md-grid-tile>
-    <md-grid-tile colspan="1" rowspan="1" class="quicktile">5</md-grid-tile>
+    <md-grid-tile colspan="1" rowspan="1" class="quicktile">
+        <a routerLink="map/filter/loworders" class="tile">
+            <md-icon>trending_down</md-icon>
+            <span>Wenig Bestellungen</span>
+        </a>
+    </md-grid-tile>
+    <md-grid-tile colspan="1" rowspan="1" class="quicktile">
+        <div class="tile">
+            <md-icon>data_usage</md-icon>
+            <span><b>{{clientsService.clientsOriginal.length}}</b> Kunden<br />
+            <b>{{settingsService.settings.stores.length}}</b> Geschäfte</span>
+        </div>
+    </md-grid-tile>
     <md-grid-tile colspan="2" rowspan="1" class="righttile">
-        <h4>Letzter Import</h4>
-        {{settings.importAssistant.lastImportDate | date:'EEEE, d.MMMM y hh:mm'}}
+        <div class="tile">
+            <md-icon>update</md-icon>
+            <span>Letzter Import<br />
+            <b>{{settingsService.settings.importAssistant.lastImportDate | date:'EEEE, d.MMMM y hh:mm'}}</b></span>
+            <a routerLink="settings" md-raised-button>Daten importieren</a>
+        </div>
+
     </md-grid-tile>
 
 

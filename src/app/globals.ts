@@ -54,10 +54,83 @@ export const DEFAULT_WORKSPACES = {
           ]
         }
   }
+// TODO: Replay any with Array[Store] (i had to change it so i can c&p content from localstorage)
 
-// define as Array<any> so we do not need to import setttings.service, seems like an overhead
-export const DEFAULT_STORES:Array<Store> = [
+export const DEFAULT_STORES:Array<any> = [
     {
+		"id": 1,
+		"name": "Distribution Madrid",
+		"slug": "Distribution Madrid",
+		"group": 1,
+		"address": "Valle de Cavalleros 76b",
+		"customerCount": 1,
+		"lat": 40.713955826286046,
+		"lng": -3.7353515625000004,
+		"updated": "1507503939317",
+		"plz": "2345",
+		"city": "Madrid"
+	}, {
+		"id": 2,
+		"name": "Easteurope Shipping Center",
+		"slug": "Easteurope Shipping Center",
+		"group": 1,
+		"address": "Lorem Ipsum dolor sit amet",
+		"customerCount": 3,
+		"lat": 50.45575537567455,
+		"lng": 30.415649414062504,
+		"plz": "9876",
+		"city": "Kiev",
+		"updated": "1507504058612"
+	}, {
+		"id": 3,
+		"name": "Jakarta Distribution Inc.",
+		"slug": "Jakarta Distribution Inc.",
+		"group": 1,
+		"address": "Selamat Pagi 123",
+		"customerCount": 1,
+		"lat": -6.189024687286995,
+		"lng": 106.79534912109376,
+		"plz": "8765",
+		"city": "Jakarta Apa Kabar",
+		"updated": "1507504137516"
+	}, {
+		"id": 4,
+		"name": "OnlineShopper.xy Storage",
+		"slug": "OnlineShopper.xy Storage",
+		"group": 2,
+		"address": "Breitenrainstrasse 456",
+		"customerCount": 1,
+		"lat": 46.95776134668866,
+		"lng": 7.448730468750001,
+		"plz": "3000",
+		"city": "Bern 25",
+		"updated": "1507504224438"
+	}, {
+		"id": 5,
+		"name": " Floras del Hollandia",
+		"slug": "Bahnhof Coop",
+		"group": 4,
+		"address": "Aekersold 34",
+		"customerCount": 1,
+		"lat": 51.986571643810834,
+		"lng": 4.770812988281251,
+		"plz": "4657",
+		"city": "Rotterdam",
+		"updated": "1507504314497"
+	}, {
+		"id": 6,
+		"name": "Storage LasCosas.nc",
+		"slug": "Storage LasCosas.nc",
+		"group": 2,
+		"address": "Calle 12b #c3",
+		"customerCount": 1,
+		"lat": 12.013129123340724,
+		"lng": -83.77109527587892,
+		"plz": "2435",
+		"city": "Bluefields",
+		"updated": "1507504466576"
+	}
+  /*{
       id: 1,
       name: 'Migros Bielerhof',
       slug: 'Bielerhof Migros',
@@ -296,11 +369,63 @@ export const DEFAULT_STORES:Array<Store> = [
       customerCount: 1,
       lat: 47.135585,
       lng: 7.244915
-    }
+    }*/
 ]
 
-export const DEFAULT_STORESGROUPS: StoreGroup[] = [
+// TODO: Replay any with StoreGroup[] (i had to change it so i can c&p content from localstorage)
+export const DEFAULT_STORESGROUPS: any = [
     {
+		"id": 0,
+		"slug": "various",
+		"name": "Various",
+		"image": {
+			"full": "assets/icons/stores/diverses_full.svg",
+			"icon": "assets/icons/stores/diverses_icon.svg"
+		},
+		"$$index": 0,
+		"updated": "1507503277534"
+	}, {
+		"id": 1,
+		"slug": "distribution",
+		"name": "Distribution Center",
+		"image": {
+			"full": "assets/icons/stores/migros_full.svg",
+			"icon": "assets/icons/stores/migros_icon.svg"
+		},
+		"$$index": 1,
+		"updated": "1507503306680"
+	}, {
+		"id": 2,
+		"slug": "onlineshop",
+		"name": "Online Shop",
+		"image": {
+			"full": "assets/icons/stores/coop_full.svg",
+			"icon": "assets/icons/stores/coop_icon.svg"
+		},
+		"$$index": 2,
+		"updated": "1507503327551"
+	}, {
+		"id": 3,
+		"slug": "apotheken",
+		"name": "Apotheken",
+		"image": {
+			"full": "assets/icons/stores/apotheken_full.svg",
+			"icon": "assets/icons/stores/apotheken_icon.svg"
+		},
+		"$$index": 3,
+		"updated": "1507502814524"
+	}, {
+		"id": 4,
+		"slug": "blumen",
+		"name": "Flowercenter",
+		"image": {
+			"full": "assets/icons/stores/blumen_full.svg",
+			"icon": "assets/icons/stores/blumen_icon.svg"
+		},
+		"$$index": 4,
+		"updated": "1507503350051"
+	},
+  /*{
       id: 0,
       slug: "diverses",
       name: "Diverses",
@@ -353,5 +478,5 @@ export const DEFAULT_STORESGROUPS: StoreGroup[] = [
         full: "assets/icons/stores/denner_full.svg",
         icon: "assets/icons/stores/denner_icon.svg"
       }
-    }
+    }*/
   ];

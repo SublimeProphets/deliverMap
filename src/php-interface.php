@@ -9,11 +9,8 @@ Ensure to secure the inputs as well as provide any authentification between the 
 
 switch($_POST['type']) {
     case "file":
-
-        
         $info = pathinfo($_FILES['uploadFile']['name']);
         $imageFileType = $info['extension']; // get the extension of the file
-        
         $target = 'assets/icons/stores/'.$_POST["filename"].'_'.$_POST['size'].'.'.$imageFileType;
         
         // Allow certain file formats

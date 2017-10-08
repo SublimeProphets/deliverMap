@@ -19,8 +19,8 @@ import * as myGlobals from "../globals";
 })
 export class FileuploaderComponent implements OnInit {
   public uploaderContent: BehaviorSubject<string> = new BehaviorSubject('please drop file in');
-  public workspace:any; 
-  public columns:any;
+  public workspace: any;
+  public columns: any;
   public settings: Settings;
   private totalImportCells: number = 0;
   private currentImportCell: number = 0;
@@ -31,7 +31,7 @@ export class FileuploaderComponent implements OnInit {
   private tmpClient: Client[];
   public timePassedSinceImport: Number;
   public totalRows: number = 0; // 
-  public progress:any = {
+  public progress: any = {
     buffer: 0,
     bufferPercent: 0,
     finished: 0,
@@ -60,95 +60,21 @@ export class FileuploaderComponent implements OnInit {
 
     this.settings = this.settingsService.settings;
     let now = Date();
-    
     this.workspace = this.settings.workspace;
-    // console.log(this.workspace.exportColumns);
-
-
-
-
-
-
   }
-  
-public workspaceChanged(workspace) {
-  this.workspace = myGlobals.DEFAULT_WORKSPACES[workspace];
-}
 
-  /*
-  
-    addNext(key: any): void {
-  
-      
-  
-      // fetch base
-      let row = this.uploadResult[this.currentImportCell];
-  
-  
-      
-  
-      // get letter out of cellname
-      var keyLetter: string = key.replace(/[0-9]/g, '');
-  
-      // get number out of cellname
-      var keyNumber: number = Number(key.replace(/^\D+/g, ''));
-  
-      this.currentImportCell++;
-      console.log("NEW currentImportCell", this.currentImportCell);
-  
-  
-  
-  
-    }
-  
-    private addClient(item) {
-      this.uploadResult.push(item);
-    }
-  
-  
-    public fileUploaded(result: UploadResult) {
-  
-      this.uploaderContent.next("File erfolgreich hochgeladen");
-      this.uploadResult = result.payload[0];
-  
-      // New File, reset counter
-      this.currentImportCell = 0;
-  
-  
-      // Figure out how many first level properties
-      let count: number = 0;
-      for (var k in this.uploadResult) {
-        if (this.uploadResult.hasOwnProperty(k))
-          ++count;
-      }
-      this.totalImportCells = count;
-  
-  
-  
-      for (let key in this.uploadResult) {
-        setTimeout(this.addNext(key), 100);
-      }
-  
-  
-  
-  
-  
-  
-      
-  
-      // this.importResults$.next();
-      this.addNext("");
-    }
-  
-  */
+  // Update workspace when user change radiobutton
+  public workspaceChanged(workspace) {
+    this.workspace = myGlobals.DEFAULT_WORKSPACES[workspace];
+  }
 
+  
+  // Called after the file is uploaded
   public xlsxUploaded(result: UploadResult) {
 
-    // this.uploaderContent.next(JSON.stringify(result));
-    console.log(result);
-      this.uploaderContent.next("File erfolgreich hochgeladen");
-      this.userProgress = 2;
-      
+    // Update information
+    this.uploaderContent.next("File erfolgreich hochgeladen");
+    this.userProgress = 2;
 
     // Set last importDate
     this.settingsService.settings.importAssistant.lastImportDate = Date();
@@ -160,29 +86,18 @@ public workspaceChanged(workspace) {
       finished: 0,
       finishedPercent: 0
     }
-    // this.importResults$.next();
-
-
-
-    // Clear previous entries
-    // this.clientsService.removeClients();
-
-
+   
+   // easier access to ressource
     let res = result.payload[0];
-    
-
-    // Check how many row the file contains
-    
-    for (var key in res) {
-        let num = Number(key.replace(/^\D+/g, ''));
-        if(num > this.totalRows) this.totalRows = num;
-        
-    }
-
-
     this.uploadResult = result.payload[0];
 
+    // Check how many row the file contains
+    for (var key in res) {
+      let num = Number(key.replace(/^\D+/g, ''));
+      if (num > this.totalRows) this.totalRows = num;
+    }
 
+    // base templated
     this.tmpClient = [<Client>{
       id: previousRow,
       name: "",
@@ -215,6 +130,7 @@ public workspaceChanged(workspace) {
     // to determine the first rouimport { HttpModule, JsonpModule } from '@angular/http';nd (where we do not have to push the object
     var firstRound: boolean = true;
 
+
     var i = 0;
     var ms = Date.now();
 
@@ -224,12 +140,12 @@ public workspaceChanged(workspace) {
       let skipToFailure = false;
 
       // get letter out of cellname
-      var keyLetter: string = key.replace(/[0-9]/g, '');
+      let keyLetter: string = key.replace(/[0-9]/g, '');
 
       // get number out of cellname
-      var keyNumber: number = Number(key.replace(/^\D+/g, ''));
+      let keyNumber: number = Number(key.replace(/^\D+/g, ''));
 
-      console.log(key, i, previousRow)
+
 
       // Same row...
       if (keyNumber == previousRow) {
@@ -240,70 +156,54 @@ public workspaceChanged(workspace) {
           // Name
           case "A":
             this.tmpClient[previousRow].name = res[key].v;
-            break;
+          break;
 
           // Addresse
           case "B":
-
-              this.tmpClient[previousRow].address = res[key].v;
-
-            break;
+            this.tmpClient[previousRow].address = res[key].v;
+          break;
 
           // Addresse
           case "C":
             this.tmpClient[previousRow].postleihzahl = res[key].v;
-            break;
+          break;
 
           // PLZ
           case "D":
             this.tmpClient[previousRow].city = res[key].v;
-            break;
+          break;
 
           // Telephone
           case "E":
             this.tmpClient[previousRow].tel = res[key].v;
             break;
 
-          // Addresse
+          // eMail oder ServiceTime
           case "G":
-<<<<<<< Updated upstream
-            switch(this.workspace) {
+            switch (this.workspace.slug) {
               case "domicile":
                 this.tmpClient[previousRow].email = res[key].v;
-              break;
+                break;
 
               case "wili":
                 this.tmpClient[previousRow].serviceTime = res[key].v;
-              break;
+                break;
             }
-            
-            
           break;
 
-          // Addresse
+          // abo oder serviceTyp
           case "F":
-
-            switch(this.workspace) {
+            console.log(this.workspace)
+            switch (this.workspace.slug) {
               case "domicile":
                 this.tmpClient[previousRow].abo = res[key].v;
-              break;
+                break;
 
               case "wili":
                 this.tmpClient[previousRow].serviceType = res[key].v;
-              break;
+                break;
             }
-            
-=======
-            this.tmpClient[previousRow].email = res[key].v;
-            
-            break;
-
-          // Addresse
-          case "F":
-            this.tmpClient[previousRow].abo = res[key].v;
->>>>>>> Stashed changes
-            
-            break;
+          break;
 
           // DeliveryCount
           case "H":
@@ -313,75 +213,60 @@ public workspaceChanged(workspace) {
           // defaultStore
           case "I":
             this.tmpClient[previousRow].defaultStore = res[key].v;
-<<<<<<< Updated upstream
-            this.tmpClient[previousRow].storeGroup = this.settingsService.getStoreGroupIdBySlug(this.tmpClient[previousRow].defaultStore);
-=======
->>>>>>> Stashed changes
-            
+
             // get StoreGroup
             let index = this.settingsService.settings.stores.map(function (e) { return e.slug; }).indexOf(res[key].v);
-            
+
             // if not found set 0 
             let storeGroup = (index == -1) ? 0 : this.settingsService.settings.stores[index].group;
-            
+
             // set as property
             this.tmpClient[previousRow].storeGroup = storeGroup;
 
-            break;
+          break;
 
           // lastDeliveryDate
           case "J":
-<<<<<<< Updated upstream
-            this.tmpClient[previousRow].lastDeliveryDate = new Date((parseInt(res[key].v) - (25567 + 1)) * 86400 * 1000);
-=======
+            // LBS 
+            // this.tmpClient[previousRow].lastDeliveryDate = new Date((parseInt(res[key].v) - (25567 + 1)) * 86400 * 1000);
 
-            //this.tmpClient[previousRow].lastDeliveryDate = new Date((parseInt(res[key].v) - (25567 + 1)) * 86400 * 1000);
+            // already conform
             this.tmpClient[previousRow].lastDeliveryDate = res[key].v;
->>>>>>> Stashed changes
-            break;
+            
+          break;
 
           //FirstOrderDate
           case "K":
             this.tmpClient[previousRow].firstOrderDate = res[key].v;
             //this.tmpClient[previousRow].firstOrderDate = new Date((parseInt(res[key].v) - (25567 + 1)) * 86400 * 1000);
-          break;
+            break;
 
           // Starred
           case "L":
-            this.tmpClient[previousRow].starred = (res[key].v == "") ? false : true;
-          break;
+            this.tmpClient[previousRow].starred = (res[key].v == "true") ? true : false;
+            break;
 
           // Comments
           case "M":
             this.tmpClient[previousRow].comments = res[key].v;
-          break;
+            break;
 
           // Latitude
           case "N":
-<<<<<<< Updated upstream
-            if (res[key].v !== "") {
-              this.tmpClient[previousRow].lng = res[key].v;
-=======
-            
 
-            if (res[key].v !== "" && typeof res[key].v == "number") {
+
+            if (res[key].v !== 0 && typeof res[key].v == "number") {
               this.tmpClient[previousRow].lat = res[key].v;
->>>>>>> Stashed changes
             }
-          break;
+            break;
 
           //Longitude
           case "O":
 
-<<<<<<< Updated upstream
-            if (res[key].v !== "") {
-              this.tmpClient[previousRow].lat = res[key].v;
-=======
-            if (res[key].v !== "" && typeof res[key].v == "number") {
+            if (res[key].v !== 0 && typeof res[key].v == "number") {
               this.tmpClient[previousRow].lng = res[key].v;
->>>>>>> Stashed changes
             }
-          break;
+            break;
 
         }
         // this.tmpClient = {name:res[key]};
@@ -402,14 +287,8 @@ public workspaceChanged(workspace) {
 
             //Lookup group membership
 
-<<<<<<< Updated upstream
-            //this.tmpClient[previousRow].storeGroup = this.lookupStoreGroup(this.tmpClient[previousRow].defaultStore);
-            
-            
-=======
-            
-           
->>>>>>> Stashed changes
+
+
 
 
 
@@ -417,30 +296,30 @@ public workspaceChanged(workspace) {
 
             // Finally 
             if ("undefined" === typeof this.tmpClient[previousRow].lat || "undefined" === typeof this.tmpClient[previousRow].lat) {
-              console.log("my adress is...", typeof this.tmpClient[previousRow].address,this.tmpClient[previousRow].address)
-              if(typeof this.tmpClient[previousRow].address == "undefined") {
+              console.log("my adress is...", typeof this.tmpClient[previousRow].address, this.tmpClient[previousRow].address)
+              if (typeof this.tmpClient[previousRow].address == "undefined") {
                 console.log("oh lala address not here BIATCH!!", this.tmpClient[previousRow]);
                 this.importResults.missingCoordinates.push(this.tmpClient[previousRow]);
               } else {
                 this.updateProgess(false);
 
-              // Add coordinates
-              let latLng = this.getCoordinates(this.tmpClient[previousRow].address + ", " + this.tmpClient[previousRow].postleihzahl + " " + this.tmpClient[previousRow].city, previousRow, i).subscribe(
-                (res) => {
-                 
-                },
-                err => {
-                 
-                }
-              );
+                // Add coordinates
+                let latLng = this.getCoordinates(this.tmpClient[previousRow].address + ", " + this.tmpClient[previousRow].postleihzahl + " " + this.tmpClient[previousRow].city, previousRow, i).subscribe(
+                  (res) => {
+
+                  },
+                  err => {
+
+                  }
+                );
               }
 
             } else {
-              
+
               // once true once false to increae buffer as well as finished
               this.updateProgess(false);
               this.updateProgess(true);
-              
+
               // i already have coordinates
               this.importResults.success.push(this.tmpClient[previousRow]);
             }
@@ -482,16 +361,16 @@ public workspaceChanged(workspace) {
             // this.clientsService.emitUpdate();
           }
           */
-          
 
 
 
-          
+
+
 
         }
 
 
-        
+
 
       }
     }
@@ -508,8 +387,8 @@ public workspaceChanged(workspace) {
 
 
   }
- 
-  
+
+
   numKeys(o) {
     var res = 0;
     for (var k in o) {
@@ -518,21 +397,21 @@ public workspaceChanged(workspace) {
     return res;
   }
 
-private updateProgess(isFinished): void {
-  
-  if(isFinished) {
-    this.progress.finished++
-    this.progress.finishedPercent = 100 / this.totalRows * this.progress.finished;
+  private updateProgess(isFinished): void {
 
-    // Check if finished
-    if(this.progress.finishedPercent >= 99) this.userProgress = 3;
+    if (isFinished) {
+      this.progress.finished++
+      this.progress.finishedPercent = 100 / this.totalRows * this.progress.finished;
 
-  } else {
-    this.progress.buffer++;
-  this.progress.bufferpercent = 100 / this.totalRows * this.progress.buffer;
-  }
+      // Check if finished
+      if (this.progress.finishedPercent >= 99) this.userProgress = 3;
+
+    } else {
+      this.progress.buffer++;
+      this.progress.bufferpercent = 100 / this.totalRows * this.progress.buffer;
+    }
     console.info("progress:", this.progress.finishedPercent, this.progress.finished);
-}
+  }
 
 
   // Lookup the stores objects to find the right group membership. StoreSlugString has to be any because it may also pass undefined.
@@ -566,7 +445,6 @@ private updateProgess(isFinished): void {
     return this.http.get(url).map(
       res => {
         if (res.status < 200 || res.status >= 300) {
-          console.log("füge fehler hinzu")
           this.importResults.failure.push(this.tmpClient[index]);
         } else {
           const response = res.json();
@@ -574,23 +452,21 @@ private updateProgess(isFinished): void {
 
           // Just get the locations, containing 2 properties lng and lat 
           if ("undefined" !== typeof response.results[0]) {
-            console.warn(response.results);
+            
             filtered = response.results[0].geometry.location;
             this.tmpClient[index].lat = filtered.lat;
             this.tmpClient[index].lng = filtered.lng;
-            console.log("füge success in coords hinzu");
             this.importResults.success.push(this.tmpClient[index]);
 
           } else {
-            console.log("failed", response)
+            
             filtered = { lng: 0, lat: 0 }
-            console.log("füge missingCoords hinzu");
             this.importResults.missingCoordinates.push(this.tmpClient[index]);
           }
 
           // update status
           this.updateProgess(true);
-          
+
 
         }
 
@@ -599,27 +475,27 @@ private updateProgess(isFinished): void {
       },
       // onComplete
       () => {
-        
+
       }
     )
   }
 
 
-// TOdo old editing try
-editing: {};
-updateValue(event, cell, cellValue, row) {
-   console.log(row.$$index + '-' + cell);
+  // Todo old editing try
+  editing: {};
+  updateValue(event, cell, cellValue, row) {
+    console.log(row.$$index + '-' + cell);
     this.editing[row.$$index + '-' + cell] = false;
     this.importResults[row.$$index][cell] = event.target.value;
-}
+  }
 
-// Opens the row in the missing section
-lastOpenedRow:any = false;
-public toggleExpandRow(row) {
-    
+  // Opens the row in the missing section
+  lastOpenedRow: any = false;
+  public toggleExpandRow(row) {
+
     // Close previous one
-    if(this.lastOpenedRow !== false) this.missingTable.rowDetail.toggleExpandRow(this.lastOpenedRow);
-    
+    if (this.lastOpenedRow !== false) this.missingTable.rowDetail.toggleExpandRow(this.lastOpenedRow);
+
     // Open the new
     this.missingTable.rowDetail.toggleExpandRow(row);
 
@@ -628,42 +504,38 @@ public toggleExpandRow(row) {
   }
 
 
-public updateRow(id, values) {
-  console.log(id, values);
-  let index = this.importResults.missingCoordinates.map(function(e) { return e.id; }).indexOf(id);
-  
-this.importResults.missingCoordinates.splice(index, 1);
-  this.importResults.success.push(values);
-  
-}
-public saveImportedData():void {
-<<<<<<< Updated upstream
-    this.settingsService.setClients(this.importResults.success, this.workspace.slug);
-=======
+  public updateRow(id, values) {
+    console.log(id, values);
+    let index = this.importResults.missingCoordinates.map(function (e) { return e.id; }).indexOf(id);
 
-            // Calculate topusers
+    this.importResults.missingCoordinates.splice(index, 1);
+    this.importResults.success.push(values);
 
-            // first sort string
-            this.importResults.success.sort(this.predicateBy("deliveryCount")).reverse();
+  }
+  public saveImportedData(): void {
 
-            // then add ranking as property
-            for(let i = 0; i < this.importResults.success.length; i++) {
-              this.importResults.success[i].ranking = i + 1;
-            } 
+    // Calculate topusers
+
+    // first sort string
+    this.importResults.success.sort(this.predicateBy("deliveryCount")).reverse();
+
+    // then add ranking as property
+    for (let i = 0; i < this.importResults.success.length; i++) {
+      this.importResults.success[i].ranking = i + 1;
+    }
 
 
 
     this.clientsService.updateStorage(this.importResults.success, true);
->>>>>>> Stashed changes
-}
-private predicateBy(prop){
-   return function(a,b){
-      if( a[prop] > b[prop]){
-          return 1;
-      }else if( a[prop] < b[prop] ){
-          return -1;
+  }
+  private predicateBy(prop) {
+    return function (a, b) {
+      if (a[prop] > b[prop]) {
+        return 1;
+      } else if (a[prop] < b[prop]) {
+        return -1;
       }
       return 0;
-   }
-}
+    }
+  }
 }

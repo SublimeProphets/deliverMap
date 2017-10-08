@@ -108,6 +108,7 @@ import { ClientsExport } from './clients-export/clients-export.component';
     SearchResultsComponent,
     ClientsTableListComponent,
     ClientSetStarredComponent,
+    ClientsExport,
     OrderbyPipe    
   ],
   imports: [

@@ -11,19 +11,20 @@ import { SettingsService, Settings } from "../settings.service";
 export class HomepageComponent implements OnInit {
 
   resultsList:Array<any>;
-  settings: Settings;
+  public starredClients:any;
 
   ngOnInit() {
-    this.settings = this.settingsService.settings;
+      this.starredClients = this.clientsService.getStarredClients().slice(0,100);
     }
 
 
   searchResults:any;
-  constructor( private searchService:SearchService, private settingsService:SettingsService) {
-    this.searchService.searchResult$.subscribe((results) => {
+  constructor( private searchService:SearchService, public settingsService:SettingsService, public clientsService:ClientsService) {
+   
+    /*this.searchService.searchResult$.subscribe((results) => {
       console.log("recieved update from searchService.searchResult");  
       this.resultsList = this.searchService.resultsList;
-    })
+    }) */
   }
 
 

@@ -85,6 +85,7 @@ export class OSMComponent implements OnInit {
             } else {
                 switch (p['type']) {
                     case "client":
+                    console.log("selectclie")
                         this.selectMarker(p['id']);
                         break;
                     case "store":
@@ -97,6 +98,8 @@ export class OSMComponent implements OnInit {
                         break;
                     case "filter":
                         this.clientsService.controlFilter("predefined", p['id'], true);
+                        this.clientsLayerGroup.clearLayers();
+                        this.createClientsMarkers(0);
                         break;
                     default:
                         this.snackBar.open('Der Typ <b>' + p['type'] + '</b> ist unbekannt', '', {
@@ -187,7 +190,22 @@ export class OSMComponent implements OnInit {
 
 
     selectMarker(id) {
-        var m = this.clientsMarkers[id];
+        
+        // figures the related index out (because we have to match the clientsMarker-index with it)
+        let idarray = this.clientsService.clients.map(function (e) { return e.id; });
+        let index;
+        console.log(id, idarray);
+        for (var i = 0; i < idarray.length; i++) {
+            if (idarray[i].toString() === id.toString()) {
+                index = i;
+                i = idarray.length; // equals end of for loop
+            }
+        }
+
+    
+    
+        // open marker
+        let m = this.clientsMarkers[index];
         this.clientsLayerGroup.zoomToShowLayer(m, function () {
             m.openPopup();
         });
@@ -210,6 +228,7 @@ export class OSMComponent implements OnInit {
         } else {
             // ADD CLIENTS
             clients = this.clientsService.getClients();
+            
         }
 
 
@@ -219,12 +238,8 @@ export class OSMComponent implements OnInit {
             zoomToBoundsOnClick: true,
             disableClusteringAtZoom: 16
         });
-        /*
-        this.clientsLayerGroup = L.markerClusterGroup({
-            spiderfyDistanceMultiplier: 3,
-            zoomToBoundsOnClick: true
-        });
-        */
+        
+
         // iterate all clients
         for (var i = 0; i < clients.length; i++) {
             var m = clients[i];
@@ -242,25 +257,25 @@ export class OSMComponent implements OnInit {
                     })
                 }
 
+                // Adress and Contact Column
                 var popupContent = "<section class='cleft'><p class='address'><b>" + m.name + "</b><br />";
                 popupContent += "" + m.address + "<br /> " + m.postleihzahl + " " + m.city + " </p>";
                 if (typeof m.tel !== "undefined") popupContent += "<div class='contact'><span>Telefon</span><a href='tel:" + m.tel + "'>" + m.tel + "</a></div>";
                 if (typeof m.email !== "undefined") popupContent += "<div class='contact'><span>eMail</span><a href='mailto:" + m.email + "'>" + m.email.substring(0, 30) + "</a></div>";
-                console.log(m, m.lastDeliveryDate, this.clientsService.daysSinceDate(m.lastDeliveryDate));
 
-                // letzte lieferung
+                // lastDeliveryDate
                 let daysSinceDate = "" + this.clientsService.daysSinceDate(m.lastDeliveryDate);
                 let mDate = new Date(m.lastDeliveryDate);
                 let lastDeliveryDate = (mDate.getMonth() + 1) + '.' + mDate.getDate() + '.' +  mDate.getFullYear();
                 popupContent += "<div class='leftsideinfo'><span class='number'>" + (daysSinceDate) + "</span><span class='name'>Tage seit Bestellung ( "+ lastDeliveryDate +")</span></div>";
                 
-                // Erste Bestellung
+                // firstOrderDate
                 daysSinceDate = "" + this.clientsService.daysSinceDate(m.firstOrderDate);
                 mDate = new Date(m.firstOrderDate);
                 let firstOrderDate = (mDate.getMonth() + 1) + '.' + mDate.getDate() + '.' +  mDate.getFullYear();
                 popupContent += "<div class='leftsideinfo'><span class='number'>" + (daysSinceDate) + "</span><span class='name'>Tage Kunde ( "+ firstOrderDate +")</span></div>";
 
-                
+                // end left column and start right
                 popupContent += "</section><section class='cright'>";
                 
                 // deliveryCount
@@ -270,9 +285,13 @@ export class OSMComponent implements OnInit {
                 let rankingFill = (100 - (100 / clients.length * m.ranking));
                 popupContent += "<div class='fillcontainer'><div class='fill' style='width:" + rankingFill + "%'></div><div><span class='number'>#" + m.ranking + "</span><span class='name'>Ranking</span></div></div>";
 
+                // abo
                 popupContent += "<div class='fillcontainer'><div class='fill' style='width:" + ((m.abo !== 0) ? 100 : 0) + "%'></div><div><span class='name'>Abo-Nr.&nbsp;</span><span class='number'>" + ((m.abo !== 0) ? m.abo : "Ohne") + "</span></div></div>";
+                
+                // defaultStore
                 if (m.group != "unkknown") popupContent += "<div class='fillcontainer'><div class='fill' style='width:" + ((m.abo !== "unknown") ? 100 : 0) + "%'></div><div><span class='img'><img src='" + this.settingsService.getStoreGroupImage(m.storeGroup) + "' alt='" + m.defaultStore + "'></span><span class='name'><span>" + m.defaultStore + "</span></span></div></div>";
 
+                // end of html
                 popupContent += "</section><section class='cclear'></section>";
 
 
@@ -285,18 +304,13 @@ export class OSMComponent implements OnInit {
                     riseOnHover: true
                 }).bindPopup(popupContent, { maxWidth: 550, minWidth: 550 })
                     .on("click", (e) => {
-
-                        var id = parseInt(e.target.customID);
-                        this.clientsService.clientSelected(id);
-
+                        // nothing to do atm
                     });
 
-                // Add an ID to retrieve thorough the click handler
-
+                // add the marker to the clientsMarkerArray
                 this.clientsMarkers[i] = marker;
 
-                // TODO Broken sind change on MarkerCluster, cant find properts icon/id
-
+                // give the marker a customID property which contains the original ID
                 this.clientsMarkers[i].customID = m.id;
 
                 this.clientsMarkers[i].addTo(this.clientsLayerGroup);
