@@ -21,15 +21,15 @@
     cursor: help !important;
     font-family: "Dosis", sans-serif;
 }
-.leaflet-container .leaflet-popup-content .img {
+.leaflet-container  .img {
     height: 46px;
     line-height: 46px;
     display: block;
     float: left;
     padding: 8px 4px 0 0;
 }
-.leaflet-container .leaflet-popup-content img {
-    max-height: 24px;
+.leaflet-container img {
+    height: 24px;
     width: auto;
     
  
@@ -37,13 +37,23 @@
 
 .leaflet-container .left {
     float: left;
-    width: 90px;
+    width: 100px;
     margin-right: 10px;
+    padding-left: 10px;
+}
+.leaflet-container .left img {
+    width: 90px;
+    height: auto;
+    max-height: auto;
 }
 
 .leaflet-container .right {
     float: right;
-    width: 36.8%;
+    width: 280px;
+}
+
+.leaflet-container .right p {
+    margin: 0px;
 }
 
 .leaflet-container .name {

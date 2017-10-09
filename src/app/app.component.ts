@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 
 
@@ -13,30 +13,7 @@ import { Component, OnInit, NgZone, OnDestroy, ViewEncapsulation } from '@angula
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent  {
-  
-  
-  constructor(private ngZone: NgZone) {
-
-    window.angularComponentRef = {
-      zone: this.ngZone, 
-      componentFn: (value) => this.callFromOutside(value), 
-      component: this
-    };
-
-
-    
-
-
-
-  }
-  callFromOutside(value) {
-      this.ngZone.run(() => {
-       console.log('calledFromOutside ' + value);
-      })
+  constructor() {
   }
 
- 
-
-
-  
 }

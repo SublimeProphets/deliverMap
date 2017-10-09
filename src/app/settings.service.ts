@@ -8,7 +8,10 @@ import { CLIENTS } from './client/client.mock';
 
 @Injectable()
 export class SettingsService {
-
+  
+  public settings: any;
+  private defaultStoresGroups: StoreGroup[] = myGlobals.DEFAULT_STORESGROUPS
+  private defaultStores: Array<Store> = myGlobals.DEFAULT_STORES;
   datastorageMode: string;
   seetingsHasBeenUpdated: EventEmitter<boolean> = new EventEmitter();
 
@@ -24,12 +27,8 @@ export class SettingsService {
 
     // Check with datastorage is active - for that check if we have localstorage and PHP 
     if (this.localStorageService.get("isDatastorageLocal") === null) {
-      
       this.readPHPsettingsIfTrue();
-
     } else {
-
-
       if(this.localStorageService.get("isDatastorageLocal") == true) {
         this.datastorageMode = "local";
         this.getSettingsFromLocalStorage();
@@ -37,22 +36,7 @@ export class SettingsService {
         this.datastorageMode = "php";
         this.readPHPsettingsIfTrue();
       }
-
-
-       
     }
-
-/*
-    // Add default values if localStorage was empty
-    if (this.localStorageService.get("settings") === null) {
-
-      this.loadDefaults();
-      console.info("localStorage(settings) was empty, forced to load Defaults!", this.settings);
-    } else {
-      this.getSettingsFromLocalStorage();
-      console.info("localStorage(settings) has been read!", this.settings);
-    }
-    */
   }
 
   private readPHPsettingsIfTrue() {
@@ -124,43 +108,27 @@ export class SettingsService {
 
   private phpRequest(name, content?):Observable<any> {
     
-    /*
-    let typeDetector = (typeof content == "undefined") ? "getDatastorage" : "setDatastorage";
-    let con = (typeof content == "undefined") ? "" : content;
-
-    let submitData = {
-      type: typeDetector,
-      name: name,
-      content: con
-    }
-    console.log("http submitData", submitData);
-    */ 
     let data = new URLSearchParams();
 
+    // if the content is undefined, we wanna retrieve data
      if (typeof content == "undefined" || content == false) {
-        console.log("getDatastorage");
         data.append('type', "getDatastorage");    
      } else {
-       console.log(content);
+       // we set some data
        data.append('type', "setDatastorage");    
        data.append('content', JSON.stringify(content));    
      }
 
      // append name in all cases
      data.append('name', name);    
-
+    
     return this.http.post(myGlobals.hostURL, data)
             .map(res => res.json())
             .catch(error => Observable.throw(error))
   }
 
 
-  public settings: any;
-  private defaultStoresGroups: StoreGroup[] = myGlobals.DEFAULT_STORESGROUPS
-
-
-  private defaultStores: Array<Store> = myGlobals.DEFAULT_STORES;
-
+ 
 public setClients(clients, workspace?:string) {
   
   let ws = (typeof workspace !== "undefined") ? workspace : this.settings.workspace.slug;
@@ -247,6 +215,7 @@ this.snackBar.open('Die Einstellungen wurden gespeichert', '', { duration: 3000 
       filters: {
         noOrdersSinceDays: 100,
         amountForReturningClients: 5,
+        amountForTopClients: 100,
         predefined: [
           {
             name: "top",
@@ -278,12 +247,12 @@ this.snackBar.open('Die Einstellungen wurden gespeichert', '', { duration: 3000 
       datastorage: "local",
       map: {
         center: {
-          lat: 47.1367785,
-          lng: 7.2467909
+          lat: 47.30903424774781,
+          lng: 7.932128906250001
         },
-        zoom: 14,
-        minZoom: 11,
-        maxZoom: 18
+        zoom: 7,
+        minZoom: 3,
+        maxZoom: 17
         
       },
       stores: this.defaultStores,

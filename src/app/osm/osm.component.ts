@@ -213,6 +213,9 @@ export class OSMComponent implements OnInit {
     selectStore(id) {
         var m = this.storesMarkers[id];
         m.openPopup();
+        var latLngs = [ m.getLatLng() ];
+        var markerBounds = L.latLngBounds(latLngs);
+        this.map.fitBounds(markerBounds);
     }
 
 
@@ -322,15 +325,11 @@ export class OSMComponent implements OnInit {
             // this.clientsLayerGroup.addLayer(this.clientsMarkers);
 
         }
-        /* this.clientsLayerGroup.on('clusterclick', function (a) {
-            
-            // a.layer.zoomToBounds({padding: [200, 200]});
-            //  a.layer.zoomToBounds({padding: [20, 20]});
-        }); */
+       
 
         // return L.layerGroup(this.clientsMarkers);
         this.map.addLayer(this.clientsLayerGroup);
-        console.info("createClientsMarkers() finished", this.clientsLayerGroup);
+       
     }
 
     private createStoresMarkers(id: number) {
@@ -344,8 +343,8 @@ export class OSMComponent implements OnInit {
             var m = stores[i];
             let storeSlug = this.settingsService.getStoreGroupById(m.group).slug;
             var popupContent = "<div class='left'><img src='/assets/icons/stores/" + storeSlug + "_full.svg' alt='" + m.name + "' /></div>";
-            popupContent += "<div class='right'><p class='name'><b>#" + m.id + "</b> " + m.name + "</p>";
-            popupContent += "<p>" + m.address + "</p></div>";
+            popupContent += "<div class='right'><p class='name'><b>" + m.name + "</b></p>";
+            popupContent += "<p>" + m.address + "<br /> " + m.plz + " " + m.city + "</p></div>";
             // popupContent += "<p><a href='/map/clientFromStore/" + m.slug + "'>Kunden anzeigen</a></p></div><div style='clear: both; float: none'></div>";
 
             let coords = { lat: stores[i].lat, lng: stores[i].lng };
@@ -363,22 +362,21 @@ export class OSMComponent implements OnInit {
                 opacity: 1,
                 riseOnHover: true
             }).bindPopup(popupContent, {
-                maxWidth: 400,
-                minWidth: 300
+                maxWidth: 500,
+                minWidth: 400
             });
 
-            // Add an ID to retrieve thorough the click handler
-            // storesMarkers[i]._icon.id = m.id;
+            
         }
 
         // Add it to a layerGroup
         this.storesLayerGroup = L.layerGroup(this.storesMarkers);
 
         this.storesLayerGroup.addTo(this.map);
+        
         // Array to contain ALL types of Markers
         this.storesLayerGroups = {
             "Geschäfte": this.storesLayerGroup
-
         }
 
 

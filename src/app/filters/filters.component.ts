@@ -58,9 +58,9 @@ export class FiltersComponent implements OnInit {
   
 
   constructor(private clientsService: ClientsService,private settingsService:SettingsService, private dateAdapter:DateAdapter<Date>) { 
-  // dateAdapter.setLocale('en'); // DD.MM.YYYY
+  
   this.filterstate = this.clientsService.filterstate;
-  console.log("INIT", this.filterstate);
+  
 
   }
 
@@ -97,7 +97,7 @@ public controlFilter(basetype:string, name?:string, status?:any, value?:any) {
     }
     this.filterstate = result.filterstate;
     this.inProgress = false;
-  //   console.log("filtercomponent got new filterstates", this.filterstate);
+  
 
   }, 50)
   

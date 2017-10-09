@@ -61,31 +61,28 @@ export class clientEditDialogForm implements OnInit {
   }
 
   ngOnInit() {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-    console.log(this.data);
-    this.data.lat = (typeof this.data.lat == "undefined") ? 47.1367785 : this.data.lat;
-    this.data.lng = (typeof this.data.lng == "undefined") ? 7.2467909 : this.data.lng;
+    
+    // set default LatLng if none submitted
+    this.data.lat = (typeof this.data.lat == "undefined") ? this.settingsService.settings.map.center.lat : this.data.lat;
+    this.data.lng = (typeof this.data.lng == "undefined") ? this.settingsService.settings.map.center.lng: this.data.lng;
 
     // Set Default if falsey lat/ng
     let centerLocation = L.latLng(this.data.lat, this.data.lng);
     
 
-
-
     this.map = L.map("locationPickerMap", {
             zoomControl: true,
             center: centerLocation,
-            zoom: 15,
-            minZoom: 11,
-            maxZoom: 18,
+            zoom: 8,
+            minZoom: 2,
+            maxZoom: 19,
             layers: [L.tileLayer("http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png", {
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'
             })]
         });
 
         // Add Controls
-        L.control.zoom({ position: "topright" }).addTo(this.map);
+        
         L.control.scale().addTo(this.map);
 
 
@@ -102,7 +99,6 @@ export class clientEditDialogForm implements OnInit {
                         riseOnHover: true
         }).on("move",(e) => {
           let tmp:any = e;
-          console.log(tmp.latlng);
 
           this.data.lat = tmp.latlng.lat;
           this.data.lng = tmp.latlng.lng;

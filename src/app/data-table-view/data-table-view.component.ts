@@ -27,7 +27,6 @@ export class DataTableViewComponent implements OnInit {
   @ViewChild('datatable') table: any;
 
   pageLimit(num: number) {
-    console.log(num);
     this.ipp = Number(num);
     this.table.pageSize = Number(num);
   }
@@ -38,31 +37,15 @@ export class DataTableViewComponent implements OnInit {
   }
 
   public updateClient(id, client) {
-    console.log("YES", client);
-
     this.clientsService.updateClient(id, client);
-
   }
 
 
   getClients(): void {
-
     this.clients = this.clientsService.getClients();
-
-    //  console.log(this.clients)
   }
 
-  /*
-  // Toggles the "starred" state
-  onSelect(selectedClient:any) {
-
-    // interpole starred status
-    var starredState:boolean = (selectedClient.starred) ? false : true;
-    
-    this.clientsService.setClientStarred(selectedClient.id, starredState);
-  }
-  */
-
+  
   // Actually calls the client from the service and provides them instantly 
   ngOnInit(): void {
     this.getClients();

@@ -28,41 +28,12 @@ export class ClientsTableListComponent implements OnInit {
   }
 
   ngOnInit() {
-    // new Date((parseInt(res[key].v) - (25567 + 1)) * 86400 * 1000)
 
-      var now = Date.now();
-    
-
-    
-    console.log(this.quicksearchEnabled);
     this.originalData = this.data;
     this.stores = this.settingsService.settings.stores;
     
-    var date = new Date(this.originalData[0].lastDeliveryDate); // some mock date
-    var milliseconds = date.getTime(); 
-
-    console.log(milliseconds);
-    console.log(now);
-
-    
-    console.log(Math.round((now-milliseconds)/(1000*60*60*24)));
   }
   
-
-getOverlayStyle() {
-    
-    let transform = 'translateY(-50%) translateX(-50%)';
-
-    return {
-      'top': 'auto',
-      'bottom': '5%',
-      'left': '50%',
-      'transform': transform,
-      '-moz-transform': transform,
-      '-webkit-transform': transform,
-      'font-size': this.deliveryCountRadius / 3.5 + 'px'
-    };
-}
   toggleExpandRow(row) {
     
     // Close previous one
@@ -75,9 +46,8 @@ getOverlayStyle() {
     this.lastOpenedRow = row;
   }
 
-  onDetailToggle(event) {
-    console.log('Detail Toggled', event);
-  }
+  
+  // quicksearch field
   updateFilter(event) {
     let val = event.target.value.toLowerCase();
     if (val != "") {
@@ -86,23 +56,23 @@ getOverlayStyle() {
       // filter our data
       let temp = this.temp.filter(function (d) {
         let isValid:boolean = false;
-        console.log(d);
+        
         isValid = (d.address.toLowerCase().indexOf(val) !== -1 || !val) ? true : false;
         if(!isValid) {
           isValid = (d.name.toLowerCase().indexOf(val) !== -1 || !val) ? true : false;
         }
         
-
         return isValid
       });
 
 
       // update the rows
       this.data = temp;
+
       // Whenever the filter changes, always go back to the first page
       this.table.offset = 0;
-      console.log("filtered", this.data);
     } else {
+      // empty value, so load the complete dataset
       this.data = this.originalData;
     }
 
@@ -110,8 +80,7 @@ getOverlayStyle() {
 
   // Toggles the "starred" state
   public showOnMap(id:number) {    
-     this.clientsService.clientSelected(id);
-    // this.infoToggle.emit(true);
+     this.clientsService.clientSelected(id);    
   }
   public changeVisible(id: number): void {
     this.clientsService.changeVisible(id);  

@@ -2,23 +2,7 @@
     <md-tab-group>
         <md-tab label="Grundeinstellungen">
             <h1 class="title">Grundeinstellungen</h1>
-            <md-card>
-                <md-card-title>Arbeitsmodus</md-card-title>
-                <md-card-subtitle>Hier kannst Du zwischen verschiedenen Workspaces wählen. Beachte, dass für jeden Arbeitsmodus ein eigener Datenspeicher besteht.</md-card-subtitle>
-                <md-card-content>
-
-                    <md-radio-group>
-
-                        <p>
-                            <md-radio-button value="domicile" [checked]="settings.workspace.slug == 'domicile'" (change)="workspaceChanged('domicile')">1-2-Domicile</md-radio-button>
-                        </p>
-                        <p>
-                            <md-radio-button value="wili" [checked]="settings.workspace.slug == 'wili'" (change)="workspaceChanged('wili')">Wili</md-radio-button>
-                        </p>
-                    </md-radio-group>
-
-                </md-card-content>
-            </md-card>
+            
             <md-card class="map">
                 <md-card-title>Karten-Optionen</md-card-title>
                 <md-card-subtitle>Alle Einstellungen zu der Karte.</md-card-subtitle>
@@ -45,7 +29,7 @@
                         </tr>
 
                     </table>
-
+                    
 
                     
 
@@ -82,7 +66,21 @@
 
                 </md-card-content>
             </md-card>
+            <md-card>
+                <md-card-title>Datenspeicheung</md-card-title>
+                <md-card-subtitle>Steuert, wie die Daten gespeichert werden (und somit auch, ob ein Computerübegreifendes Arbeiten möglich ist).</md-card-subtitle>
+                <md-card-content>
+                    <md-radio-group>
+                        <p>
+                            <md-radio-button value="local" [checked]="settings.datastorage === 'local'" (change)="datastorageChanged('local')">LocalStorage (jeder Computer hat eigener Zustand)</md-radio-button>
+                        </p>
+                        <p>
+                            <md-radio-button value="php" [checked]="settings.datastorage === 'php'" (change)="datastorageChanged('php')">PHP (Computerübergreifende Einstellungen)</md-radio-button>
+                        </p>
+                    </md-radio-group>
 
+                </md-card-content>
+            </md-card>
             <md-card>
                 <md-card-title>Filteroptionen</md-card-title>
                 <md-card-subtitle>Alle Einstellungen, welche im Zusammenhang mit Filtern von Daten verwendet werden.</md-card-subtitle>
@@ -98,10 +96,31 @@
                         <span mdSuffix>Tage</span>
                     </md-input-container>
 
+                    <md-input-container hintLabel='Anzahl der maximal angezeigten Topkunden'>
+                        <input mdInput type="number" placeholder="Limit für Topkunde" [(ngModel)]="settings.filters.amountForTopClients">
+                        <span mdSuffix>Kunden</span>
+                    </md-input-container>
+
 
                 </md-card-content>
             </md-card>
+            <md-card>
+                <md-card-title>Arbeitsmodus</md-card-title>
+                <md-card-subtitle>Hier kannst Du zwischen verschiedenen Workspaces wählen. Beachte, dass für jeden Arbeitsmodus ein eigener Datenspeicher besteht.</md-card-subtitle>
+                <md-card-content>
 
+                    <md-radio-group>
+
+                        <p>
+                            <md-radio-button value="domicile" [checked]="settings.workspace.slug == 'domicile'" (change)="workspaceChanged('domicile')">1-2-Domicile</md-radio-button>
+                        </p>
+                        <p>
+                            <md-radio-button value="wili" [checked]="settings.workspace.slug == 'wili'" (change)="workspaceChanged('wili')">Wili</md-radio-button>
+                        </p>
+                    </md-radio-group>
+
+                </md-card-content>
+            </md-card>
             <md-card>
                 <md-card-title>Suche</md-card-title>
                 <md-card-subtitle>Welche Filter grundsätzlich aktiviert sind.</md-card-subtitle>
@@ -120,21 +139,7 @@
                 </md-card-content>
             </md-card>
 
-            <md-card>
-                <md-card-title>Datenspeicheung</md-card-title>
-                <md-card-subtitle>Steuert, wie die Daten gespeichert werden (und somit auch, ob ein Computerübegreifendes Arbeiten möglich ist).</md-card-subtitle>
-                <md-card-content>
-                    <md-radio-group>
-                        <p>
-                            <md-radio-button value="local" [checked]="settings.datastorage === 'local'" (change)="datastorageChanged('local')">LocalStorage (jeder Computer hat eigener Zustand)</md-radio-button>
-                        </p>
-                        <p>
-                            <md-radio-button value="php" [checked]="settings.datastorage === 'php'" (change)="datastorageChanged('php')">PHP (Computerübergreifende Einstellungen)</md-radio-button>
-                        </p>
-                    </md-radio-group>
-
-                </md-card-content>
-            </md-card>
+            
 
 
 

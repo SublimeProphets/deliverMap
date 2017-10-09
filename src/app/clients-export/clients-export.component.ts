@@ -13,13 +13,9 @@ export class ClientsExport implements OnInit {
   keysGetter = Object.keys;
   workspace: string;
   
-
-  // Get the clients
   constructor(private settingsService: SettingsService) { }
 
   ngOnInit() {
-    
-    
     this.workspace = this.settingsService.settings.workspace.slug;
   }
   public workspaceChanged(workspace) {
@@ -27,7 +23,6 @@ export class ClientsExport implements OnInit {
   }
 
   public exportAsCSV() {
-    
     
     this.clients = this.settingsService.getClients(this.workspace);
     // Create a export friendly array of clients
@@ -37,7 +32,8 @@ export class ClientsExport implements OnInit {
     let d = new Date();
     let title = "mdmap_export_" + d.getFullYear() + d.getMonth() + d.getDay() + "_" + d.getHours() +"-" + d.getMinutes() ;
     
-     new Angular2Csv(this.clients, title);
+    // export
+    new Angular2Csv(this.clients, title);
   }
 
 
@@ -49,7 +45,7 @@ private cleanClients(clients) {
     
     // make a new empty object and for each property as defined above...
     let tmpClient = {};
-    console.log(this.settingsService.settings.workspace.exportColumns);
+
     for(let key in this.settingsService.settings.workspace.exportColumns) {
       // For starred we need a special detector to transform "TRUE" into "x" (stupid shit..)
       if(this.settingsService.settings.workspace.exportColumns[key].slug != "starred") {

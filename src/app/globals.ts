@@ -71,8 +71,8 @@ export const DEFAULT_STORES:Array<any> = [
 		"city": "Madrid"
 	}, {
 		"id": 2,
-		"name": "Easteurope Shipping Center",
-		"slug": "Easteurope Shipping Center",
+		"name": "Easteurope Shipping",
+		"slug": "Easteurope Shipping",
 		"group": 1,
 		"address": "Lorem Ipsum dolor sit amet",
 		"customerCount": 3,
@@ -83,8 +83,8 @@ export const DEFAULT_STORES:Array<any> = [
 		"updated": "1507504058612"
 	}, {
 		"id": 3,
-		"name": "Jakarta Distribution Inc.",
-		"slug": "Jakarta Distribution Inc.",
+		"name": "Jakarta Distribution",
+		"slug": "Jakarta Distribution",
 		"group": 1,
 		"address": "Selamat Pagi 123",
 		"customerCount": 1,
@@ -95,8 +95,8 @@ export const DEFAULT_STORES:Array<any> = [
 		"updated": "1507504137516"
 	}, {
 		"id": 4,
-		"name": "OnlineShopper.xy Storage",
-		"slug": "OnlineShopper.xy Storage",
+		"name": "OnlineShopper.xy",
+		"slug": "OnlineShopper.xy",
 		"group": 2,
 		"address": "Breitenrainstrasse 456",
 		"customerCount": 1,
@@ -108,8 +108,8 @@ export const DEFAULT_STORES:Array<any> = [
 	}, {
 		"id": 5,
 		"name": " Floras del Hollandia",
-		"slug": "Bahnhof Coop",
-		"group": 4,
+		"slug": "Floras del Hollandia",
+		"group": 3,
 		"address": "Aekersold 34",
 		"customerCount": 1,
 		"lat": 51.986571643810834,
@@ -379,8 +379,8 @@ export const DEFAULT_STORESGROUPS: any = [
 		"slug": "various",
 		"name": "Various",
 		"image": {
-			"full": "assets/icons/stores/diverses_full.svg",
-			"icon": "assets/icons/stores/diverses_icon.svg"
+			"full": "assets/icons/stores/various.svg",
+			"icon": "assets/icons/stores/various_icon.svg"
 		},
 		"$$index": 0,
 		"updated": "1507503277534"
@@ -389,8 +389,8 @@ export const DEFAULT_STORESGROUPS: any = [
 		"slug": "distribution",
 		"name": "Distribution Center",
 		"image": {
-			"full": "assets/icons/stores/migros_full.svg",
-			"icon": "assets/icons/stores/migros_icon.svg"
+			"full": "assets/icons/stores/distribution.svg",
+			"icon": "assets/icons/stores/distribution.svg"
 		},
 		"$$index": 1,
 		"updated": "1507503306680"
@@ -399,23 +399,13 @@ export const DEFAULT_STORESGROUPS: any = [
 		"slug": "onlineshop",
 		"name": "Online Shop",
 		"image": {
-			"full": "assets/icons/stores/coop_full.svg",
-			"icon": "assets/icons/stores/coop_icon.svg"
+			"full": "assets/icons/stores/onlineshop_full.svg",
+			"icon": "assets/icons/stores/onlineshop_icon.svg"
 		},
 		"$$index": 2,
 		"updated": "1507503327551"
-	}, {
+	},  {
 		"id": 3,
-		"slug": "apotheken",
-		"name": "Apotheken",
-		"image": {
-			"full": "assets/icons/stores/apotheken_full.svg",
-			"icon": "assets/icons/stores/apotheken_icon.svg"
-		},
-		"$$index": 3,
-		"updated": "1507502814524"
-	}, {
-		"id": 4,
 		"slug": "blumen",
 		"name": "Flowercenter",
 		"image": {
@@ -480,3 +470,56 @@ export const DEFAULT_STORESGROUPS: any = [
       }
     }*/
   ];
+  // Empty Filterset to restore if reset called
+export const FILTERSTATEORG = {
+  _active: false,
+  custom: {
+    _active: false,
+    abo: { active: false, value: true },
+    area: {
+      active: false,
+      value: 0
+    },
+    defaultStore: {
+      active: false,
+      value: ""
+    },
+    lastDeliveryDate: {
+      active: false,
+      value: ""
+    },
+    firstOrderDate: {
+      active: false,
+      value: ""
+    },
+    starred: {
+      active: false,
+      value: true
+    },
+    new: {
+      active: false,
+      value: ""
+    },
+    top: {
+      active: false,
+      value: 50
+    },
+    returning: {
+      active: false,
+      value: 10
+    },
+    loworders: {
+      active: false,
+      value: 3
+    },
+    longago: {
+      active: false,
+      value: 100
+    }
+  },
+  predefined: {
+          _active: false,
+          value: 0
+        }
+
+};

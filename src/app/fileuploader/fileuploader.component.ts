@@ -68,7 +68,7 @@ export class FileuploaderComponent implements OnInit {
     this.workspace = myGlobals.DEFAULT_WORKSPACES[workspace];
   }
 
-  
+
   // Called after the file is uploaded
   public xlsxUploaded(result: UploadResult) {
 
@@ -86,8 +86,8 @@ export class FileuploaderComponent implements OnInit {
       finished: 0,
       finishedPercent: 0
     }
-   
-   // easier access to ressource
+
+    // easier access to ressource
     let res = result.payload[0];
     this.uploadResult = result.payload[0];
 
@@ -156,22 +156,22 @@ export class FileuploaderComponent implements OnInit {
           // Name
           case "A":
             this.tmpClient[previousRow].name = res[key].v;
-          break;
+            break;
 
           // Addresse
           case "B":
             this.tmpClient[previousRow].address = res[key].v;
-          break;
+            break;
 
           // Addresse
           case "C":
             this.tmpClient[previousRow].postleihzahl = res[key].v;
-          break;
+            break;
 
           // PLZ
           case "D":
             this.tmpClient[previousRow].city = res[key].v;
-          break;
+            break;
 
           // Telephone
           case "E":
@@ -189,11 +189,11 @@ export class FileuploaderComponent implements OnInit {
                 this.tmpClient[previousRow].serviceTime = res[key].v;
                 break;
             }
-          break;
+            break;
 
           // abo oder serviceTyp
           case "F":
-            console.log(this.workspace)
+
             switch (this.workspace.slug) {
               case "domicile":
                 this.tmpClient[previousRow].abo = res[key].v;
@@ -203,7 +203,7 @@ export class FileuploaderComponent implements OnInit {
                 this.tmpClient[previousRow].serviceType = res[key].v;
                 break;
             }
-          break;
+            break;
 
           // DeliveryCount
           case "H":
@@ -223,7 +223,7 @@ export class FileuploaderComponent implements OnInit {
             // set as property
             this.tmpClient[previousRow].storeGroup = storeGroup;
 
-          break;
+            break;
 
           // lastDeliveryDate
           case "J":
@@ -232,8 +232,8 @@ export class FileuploaderComponent implements OnInit {
 
             // already conform
             this.tmpClient[previousRow].lastDeliveryDate = res[key].v;
-            
-          break;
+
+            break;
 
           //FirstOrderDate
           case "K":
@@ -275,7 +275,7 @@ export class FileuploaderComponent implements OnInit {
       } else {
 
         if (skipToFailure) {
-          console.log("skip to failure");
+
           this.importResults.failure.push(this.tmpClient[previousRow]);
         } else {
 
@@ -296,9 +296,9 @@ export class FileuploaderComponent implements OnInit {
 
             // Finally 
             if ("undefined" === typeof this.tmpClient[previousRow].lat || "undefined" === typeof this.tmpClient[previousRow].lat) {
-              console.log("my adress is...", typeof this.tmpClient[previousRow].address, this.tmpClient[previousRow].address)
+
               if (typeof this.tmpClient[previousRow].address == "undefined") {
-                console.log("oh lala address not here BIATCH!!", this.tmpClient[previousRow]);
+
                 this.importResults.missingCoordinates.push(this.tmpClient[previousRow]);
               } else {
                 this.updateProgess(false);
@@ -349,43 +349,9 @@ export class FileuploaderComponent implements OnInit {
           firstRound = false;
           i++;
 
-          /*
-          if (this.totalRows <= i) {
-            console.error("ALL IMPORTED");
-            console.log(this.importResults);
-            
-
-
-
-            //Do something if the end of the loop
-            // this.clientsService.emitUpdate();
-          }
-          */
-
-
-
-
-
-
         }
-
-
-
-
       }
     }
-    //Do something if the end of the loop
-    // this.clientsService.emitUpdate();
-
-
-
-
-    // Data extracted, update the clients now
-
-
-
-
-
   }
 
 
@@ -420,12 +386,8 @@ export class FileuploaderComponent implements OnInit {
       return "unknown";
     } else {
       let storeArray = this.settingsService.settings.stores.map(function (e) { if (e.slug == storeSlugString) return e.group });
-      console.log(storeArray);
-
       for (var i = 0; i <= storeArray.length; i++) {
-        console.log(typeof storeArray[i])
         if (typeof storeArray[i] == "string") {
-          console.log("JAAAH IG STINRG!")
           return storeArray[i];
 
         }
@@ -452,14 +414,14 @@ export class FileuploaderComponent implements OnInit {
 
           // Just get the locations, containing 2 properties lng and lat 
           if ("undefined" !== typeof response.results[0]) {
-            
+
             filtered = response.results[0].geometry.location;
             this.tmpClient[index].lat = filtered.lat;
             this.tmpClient[index].lng = filtered.lng;
             this.importResults.success.push(this.tmpClient[index]);
 
           } else {
-            
+
             filtered = { lng: 0, lat: 0 }
             this.importResults.missingCoordinates.push(this.tmpClient[index]);
           }
@@ -484,7 +446,7 @@ export class FileuploaderComponent implements OnInit {
   // Todo old editing try
   editing: {};
   updateValue(event, cell, cellValue, row) {
-    console.log(row.$$index + '-' + cell);
+    
     this.editing[row.$$index + '-' + cell] = false;
     this.importResults[row.$$index][cell] = event.target.value;
   }
@@ -505,7 +467,7 @@ export class FileuploaderComponent implements OnInit {
 
 
   public updateRow(id, values) {
-    console.log(id, values);
+    
     let index = this.importResults.missingCoordinates.map(function (e) { return e.id; }).indexOf(id);
 
     this.importResults.missingCoordinates.splice(index, 1);

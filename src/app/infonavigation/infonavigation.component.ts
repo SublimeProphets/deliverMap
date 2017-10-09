@@ -5,7 +5,7 @@ import { ClientsService } from '../clients.service';
 @Component({
   selector: 'infonavigation',
   templateUrl: './infonavigation.component.html',
-  styleUrls: ['./infonavigation.component.css']
+  styleUrls: ['./infonavigation.component.less']
 })
 export class InfonavigationComponent implements OnInit {
 

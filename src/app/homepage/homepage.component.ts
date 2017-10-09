@@ -19,16 +19,7 @@ export class HomepageComponent implements OnInit {
 
 
   searchResults:any;
-  constructor( private searchService:SearchService, public settingsService:SettingsService, public clientsService:ClientsService) {
-   
-    /*this.searchService.searchResult$.subscribe((results) => {
-      console.log("recieved update from searchService.searchResult");  
-      this.resultsList = this.searchService.resultsList;
-    }) */
-  }
-
-
-
+  constructor( private searchService:SearchService, public settingsService:SettingsService, public clientsService:ClientsService) {}
 
 
 
