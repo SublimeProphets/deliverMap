@@ -5,11 +5,12 @@
     </md-sidenav>
 
     <div class="mainframe">
-        <!-- <search-results></search-results> -->
+        
         <router-outlet></router-outlet>
     </div>
 
     <md-sidenav #infonav mode="side" align="end" class="infonav">
+        <search-results></search-results>
         <md-tab-group>
             <md-tab>
                 <ng-template md-tab-label>

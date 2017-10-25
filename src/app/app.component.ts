@@ -1,4 +1,6 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MdSidenav } from '@angular/material';
+import { SearchService } from "./search.service";
 
 
 
@@ -12,8 +14,29 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
   styleUrls: ['./app.component.less'],
   encapsulation: ViewEncapsulation.None
 })
-export class AppComponent  {
-  constructor() {
+export class AppComponent implements OnInit  {
+  public sidenavOpened:boolean = false;
+  @ViewChild('infonav') infonav: MdSidenav;
+
+  constructor(private searchService:SearchService) {
+
+    
+  }
+
+  ngOnInit() {
+    console.log(this.infonav);
+    
+    this.searchService.searchResult$.subscribe((results) => {
+      console.log(results)
+      if(results.hasResults) {
+        
+        this.infonav.open();
+      } else {
+        this.infonav.close();
+      }
+      
+      
+    });
   }
 
 }

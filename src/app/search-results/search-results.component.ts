@@ -12,7 +12,8 @@ export class SearchResultsComponent implements OnInit {
   resultsList:Array<any> = [];
   hasResults:boolean = false;
   showOverlay:boolean = false;
-  
+  public isVisible:boolean = false;
+
   constructor(private searchService:SearchService) { 
 
     this.searchService.searchResult$.subscribe((results) => {
@@ -23,14 +24,13 @@ export class SearchResultsComponent implements OnInit {
             if(this.resultsList.length <= 0) {
               //hide myself
               this.hasResults = false;
-              this.showOverlay = false;
+              this.isVisible = false;
             } else {
               this.hasResults = true;
-              this.showOverlay = true;
+              this.isVisible = true;
             }
 
-    console.log("recieved update from searchService.searchResult", this.resultsList.length);
-            // this.searchHasResults = true;
+    
             
         })
 
@@ -39,8 +39,10 @@ export class SearchResultsComponent implements OnInit {
   ngOnInit() {
   }
 
-  public closeOverlay() {
-    this.showOverlay = false;
+  public close() {
+    this.searchService.executeSearch(""); // Execute empty search so it will close
+    this.isVisible = false;
   }
 
+  
 }

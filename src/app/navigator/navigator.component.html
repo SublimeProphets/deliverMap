@@ -10,16 +10,10 @@
             search
         </md-icon>
     </md-input-container>
-    <button md-raised-button [disabled]="!searchHasResults" (click)="openSearchResults()" class="showResults">
-        <md-icon class="md-24">arrow_drop_down</md-icon>Ergebnisse</button>
+    
 </div>
 
-<div [ngClass]="{'active': searchHasFocus}" class="searchoptions-container" (click)="toggleInputFocus(true)">
-    <md-checkbox [(ngModel)]="searchStorage.places.active" (change)="goto()">Orte (Strassen etc.)</md-checkbox>
-    <md-checkbox [(ngModel)]="searchStorage.clients.active" (change)="goto()">Kunden</md-checkbox>
-    <md-checkbox [(ngModel)]="searchStorage.stores.active" (change)="goto()">Geschäfte</md-checkbox>
 
-</div>
 <!--
 <div class="searchresults-container" [ngClass]="{'active': showSearchResults}">
     <button md-icon-button class="close" (click)="closeSearchResults()"><md-icon>close</md-icon></button>

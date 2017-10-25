@@ -28,8 +28,12 @@ export class SearchService {
   }
 
   public executeSearch(term) {
+    if(term == "") {
+        this.searchResult$.next({hasResults: false})
+    } else {
     this.searchString = term.toLowerCase();
     this.findItems();
+    }
   }
 
   private addResultItem(item) {
@@ -38,7 +42,7 @@ export class SearchService {
     
   }
    private pushResultItems():void {
-        this.searchResult$.next(true);
+        this.searchResult$.next({hasResults: true});
         
     }
 

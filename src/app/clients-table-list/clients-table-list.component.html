@@ -1,4 +1,5 @@
-<div class="quicksearch">
+
+<div class="quicksearch" *ngIf="quicksearchEnabled">
     <md-input-container>
         <input mdInput type='text' placeholder='Schnellsuche nach Namen..' (keyup)='updateFilter($event)' value="" />
         <button md-icon-button mdSuffix><md-icon>search</md-icon></button>

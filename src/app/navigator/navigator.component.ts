@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, Output, EventEmitter } from "@angular/core";
 import { GeocodingService } from "../geocoding.service";
 import { MapService } from "../map.service";
 import { ClientsService } from "../clients.service";
@@ -18,9 +18,22 @@ import { SearchService } from "../search.service";
 
 
 export class NavigatorComponent {
+    @Output() infoToggle = new EventEmitter<boolean>();
+    @Input('showOptions') showOptions: boolean;
+    searchTerm$ = new Subject<string>();
+    searchString: string;
+    
+    private searchResultMarker: any;
+    private stores: any;
+    private clients: any;
+    public searchStorage: any;
+    public results = [];
 
+    searchHasFocus: boolean;
+    searchHasResults: boolean; // switchen the disabled state of the button
+    showSearchResults: boolean = false;
 
-    constructor(
+     constructor(
         private geocoder: GeocodingService,
         private mapService: MapService,
         private clientService: ClientsService,
@@ -36,29 +49,13 @@ export class NavigatorComponent {
             this.results = this.searchService.resultsList;
             this.searchHasResults = true;
             this.showSearchResults = true;
+            this.infoToggle.emit(true);
         })
 
 
 
 
     }
-
-    @Input('showOptions') showOptions: boolean;
-    searchTerm$ = new Subject<string>();
-
-    searchString: string;
-
-    private searchResultMarker: any;
-    private stores: any;
-    private clients: any;
-    public searchStorage: any;
-    public results = [];
-
-
-    searchHasFocus: boolean;
-    searchHasResults: boolean; // switchen the disabled state of the button
-    showSearchResults: boolean = false;
-
 
     ngOnInit() {
 
@@ -118,7 +115,7 @@ export class NavigatorComponent {
 
 
     goto() {
-        if (!this.searchString) { return; }
+        if (!this.searchString) { this.searchService.executeSearch(""); return; }
 
         // Back to 0
         this.resetResults();

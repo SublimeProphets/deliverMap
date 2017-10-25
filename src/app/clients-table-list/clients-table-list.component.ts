@@ -11,8 +11,8 @@ export class ClientsTableListComponent implements OnInit {
 
   @Input("data") data: any;
   @Input("limit") limit: any;
-  @Input("quicksearch") quicksearchEnabled: boolean;
-
+  @Input("quicksearch") quicksearchEnabled: string;
+  
   @ViewChild('table') table: any;
   temp = [];
   originalData:any;
@@ -24,14 +24,14 @@ export class ClientsTableListComponent implements OnInit {
     public clientsService:ClientsService,
     private settingsService:SettingsService
   ) {
-
+  
   }
 
   ngOnInit() {
 
     this.originalData = this.data;
     this.stores = this.settingsService.settings.stores;
-    
+    console.log(this.quicksearchEnabled, this.limit);
   }
   
   toggleExpandRow(row) {

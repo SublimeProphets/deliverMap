@@ -1,10 +1,13 @@
-<div class="search-result-container" [ngClass]="{'active': hasResults && showOverlay }">
-
+<div class="search-result-container" [ngClass]="{'active': isVisible }" *ngIf="isVisible">
+    <div class="header">
+        <h2>{{ resultsList.length }} Suchergebnisse</h2>
+        <button md-icon-button (click)="close()"><md-icon>close</md-icon></button>
+    </div>
     <div class="search-result-content">
         <div class="row">
             <section>
                 <h3> Kunden</h3>
-                <clients-table-list [data]="resultsList" limit="6" quicksearch="false"></clients-table-list>
+                <clients-table-list [data]="resultsList" [limit]="6" [quicksearch]="false"></clients-table-list>
                 <!--
                <ngx-datatable class="datatable " [columnMode]=" 'force' " [headerHeight]="0" [footerHeight]="0 " [rowHeight]="30 " [scrollbarV]="true " [scrollbarH]="false " [rows]="resultsList ">
 
@@ -12,11 +15,7 @@
 
                 </ngx-datatable> -->
             </section>
-            <section>
-                2
-            </section>
-            <section>
-                3</section>
+          
 
         </div>
 
